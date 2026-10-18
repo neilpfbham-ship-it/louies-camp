@@ -25,7 +25,7 @@
   --ink:#ede6d6; --muted:#a3ab9c; --faint:#77806f;
   --ember:#e8913f; --ember-ink:#1b130a; --ember-soft:rgba(232,145,63,.14);
   --good:#8dbb7f; --warn:#e2b552; --bad:#e3765f;
-  --geo:#8fc0a0; --lit:#e39a86; --lang:#93b6e0;
+  --geo:#8fc0a0; --lit:#e39a86; --lang:#93b6e0; --span:#c5a6e8;
   --display:"Rye","Rockwell","Georgia",serif;
   --body:"Alegreya Sans","Avenir Next","Segoe UI",system-ui,sans-serif;
   --serif:"Alegreya","Georgia","Times New Roman",serif;
@@ -38,7 +38,7 @@
   --ink:#1b231e; --muted:#566057; --faint:#7d867a;
   --ember:#b4581a; --ember-ink:#fff8f0; --ember-soft:rgba(180,88,26,.12);
   --good:#3f7a37; --warn:#97700e; --bad:#b4422e;
-  --geo:#2f7a52; --lit:#b2533b; --lang:#36679f;
+  --geo:#2f7a52; --lit:#b2533b; --lang:#36679f; --span:#7a4fb0;
   color-scheme:light;
 }}
 :root[data-theme="light"]{
@@ -46,7 +46,7 @@
   --ink:#1b231e; --muted:#566057; --faint:#7d867a;
   --ember:#b4581a; --ember-ink:#fff8f0; --ember-soft:rgba(180,88,26,.12);
   --good:#3f7a37; --warn:#97700e; --bad:#b4422e;
-  --geo:#2f7a52; --lit:#b2533b; --lang:#36679f;
+  --geo:#2f7a52; --lit:#b2533b; --lang:#36679f; --span:#7a4fb0;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -96,7 +96,7 @@ b,strong{font-weight:700}
 .chip[aria-pressed="true"]{border-color:var(--ember);background:var(--ember-soft);color:var(--ink)}
 .subj{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .subj::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--c,var(--faint))}
-.s-geo{--c:var(--geo)} .s-lit{--c:var(--lit)} .s-lang{--c:var(--lang)} .s-mine{--c:var(--ember)}
+.s-geo{--c:var(--geo)} .s-lit{--c:var(--lit)} .s-lang{--c:var(--lang)} .s-span{--c:var(--span)} .s-mine{--c:var(--ember)}
 .back{background:none;border:0;color:var(--muted);padding:6px 0;font-size:15px;display:inline-flex;gap:6px;align-items:center}
 .hr{height:1px;background:var(--line);border:0;margin:4px 0}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:14.5px;z-index:50;max-width:calc(100% - 32px);text-align:center;transition:opacity .25s}
@@ -222,6 +222,25 @@ a{color:var(--ember)}
 .empty{text-align:center;padding:26px 16px}
 .empty img{width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto 10px;display:block;border:2px solid var(--line)}
 .confirm{border:1px solid var(--bad);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+
+/* Spanish tools */
+.playrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.play{border:1px solid var(--c,var(--ember));color:var(--ink);background:var(--card2);border-radius:999px;padding:7px 14px;font-weight:700;font-size:15px;min-height:40px}
+.play.ghost{background:transparent;font-weight:500}
+.accbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.accbar button{min-width:40px;min-height:40px;border:1px solid var(--line);background:var(--card2);border-radius:9px;font-size:18px;padding:0 8px}
+.es-big{font-family:var(--serif);font-size:26px}
+.w{border-radius:5px;padding:1px 4px;font-family:var(--serif);font-size:18px}
+.w.ok{background:color-mix(in srgb,var(--good) 34%,transparent);color:var(--ink)}
+.w.acc{background:color-mix(in srgb,var(--warn) 28%,transparent)}
+.w.miss{background:color-mix(in srgb,var(--bad) 25%,transparent);text-decoration:underline wavy var(--bad)}
+.answer.dict{line-height:2.1}
+.grade .sug{box-shadow:0 0 0 2px currentColor inset}
+.grade button small{display:block;font-weight:400;font-size:11.5px;opacity:.8}
+.photos2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.photos2 figure{margin:0}
+.photos2 img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.sp-item p{font-size:16px}
 </style>
 <header class="top"><div class="top-in">
   <img class="avatar" id="avatar" alt="Louie">
@@ -898,11 +917,314 @@ Hannah`};
 D.sources.p2both={title:'Sources A and B',combo:['p2a','p2b']};
 D.sources.louiepic={title:'The picture',image:'p1',note:'Louie on lookout duty.'};
 })();
+
+/* Spanish — AQA GCSE Spanish (8692), Higher tier */
+(function(){
+const D = window.CAMP = window.CAMP || {decks:[],cards:[],bounties:[],sources:{}};
+const deck=(id,name,paper,note)=>D.decks.push({id,s:'span',name,paper,note});
+const split=s=>s.split('|').map(x=>x.trim()).filter(Boolean);
+/* Spanish shown, type the English */
+const ES=(d,pfx,rows)=>rows.forEach((r,i)=>{const [es,en,x]=r;const ans=split(en);D.cards.push({id:pfx+i,d,t:'v',q:es,say:es.replace(/\(.*?\)/g,''),ans,show:ans[0],al:'en',x})});
+/* English shown, type the Spanish */
+const EN=(d,pfx,rows)=>rows.forEach((r,i)=>{const [en,es,x]=r;const ans=split(es);D.cards.push({id:pfx+i,d,t:'v',q:en,ans,show:ans[0],al:'es',sayA:ans[0],x})});
+const R=(id,d,q,a,o)=>D.cards.push(Object.assign({id,d,t:'r',q,a},o||{}));
+const M=(id,d,q,opts,x,o)=>D.cards.push(Object.assign({id,d,t:'m',q,o:opts,x},o||{}));
+const DICT=(id,d,es,en)=>D.cards.push({id,d,t:'d',q:'Dictation: listen and type exactly what you hear, in Spanish.',say:es,show:es,x:en});
+
+deck('s-core','Key words and connectives','All papers');
+deck('s-verbs','Verbs and tenses','Speaking and writing','You type the Spanish. Accents count, but a missing accent is marked as a small slip, not a wrong answer.');
+deck('s-ops','Opinions and power phrases','Speaking and writing');
+deck('s-t1','People and lifestyle','Theme 1','Words from the AQA vocabulary list. The full Higher list has about 1,700 words. This pack covers the most useful ones.');
+deck('s-t2','Popular culture','Theme 2');
+deck('s-t3','Communication and the world','Theme 3');
+deck('s-gram','Higher grammar','Higher tier');
+deck('s-trans','Translation','Reading and Writing papers');
+deck('s-listen','Listening and dictation','Paper 1','Tap ▶ to hear the Spanish. If you hear nothing, see Guide → Spanish audio.');
+deck('s-speak','Speaking','Paper 2','Answer out loud, then play the model answer and compare.');
+
+/* ---------- Key words ---------- */
+ES('s-core','sc',[
+['también','also|too|as well'],['pero','but'],['sin embargo','however|nevertheless'],['además','also|furthermore|moreover|in addition|besides|what\'s more'],
+['porque','because'],['ya que','since|because|as|given that'],['así que','so|therefore'],['por eso','that\'s why|so|therefore|for that reason|that is why'],
+['aunque','although|even though|though|even if'],['sobre todo','above all|especially|mainly|particularly'],['por ejemplo','for example|for instance'],
+['a veces','sometimes'],['siempre','always'],['nunca','never'],['a menudo','often'],['de vez en cuando','from time to time|now and then|occasionally|every now and then|sometimes'],
+['todos los días','every day'],['el fin de semana pasado','last weekend|the last weekend'],['el año que viene','next year'],['ayer','yesterday'],['anoche','last night'],
+['hace dos años','two years ago'],['dentro de poco','soon|shortly|in a little while|before long'],['cuando era pequeño','when i was little|when i was small|when i was young|when i was a child'],
+['¿por qué?','why'],['¿cuándo?','when'],['¿dónde?','where'],['¿cuánto?','how much'],['¿cuál?','which|which one|what'],['¿quién?','who'],
+['bastante','quite|enough|fairly|rather'],['demasiado','too|too much'],['muy','very'],['un poco','a bit|a little|a little bit|slightly'],
+['luego','then|later|afterwards'],['después','after|afterwards|later|then'],['antes','before|beforehand'],['mientras','while|whilst|meanwhile'],
+['ahora','now'],['todavía','still|yet'],['ya','already|now|yet'],['casi','almost|nearly']]);
+
+/* ---------- Verbs (type the Spanish) ---------- */
+EN('s-verbs','sv',[
+['I am (describing what you\'re like)','soy|yo soy','Use **ser** for what something is like, and **estar** for location and how you feel.'],
+['I am (how you feel, or where you are)','estoy|yo estoy'],['I have','tengo|yo tengo'],['I go','voy|yo voy'],['I do / I make','hago|yo hago'],
+['I play (a sport or game)','juego|yo juego','Stem change: jugar → j**ue**go.'],['I prefer','prefiero|yo prefiero'],['I want','quiero|yo quiero'],['I can','puedo|yo puedo'],
+['I have to','tengo que|yo tengo que'],['you have to / one must (general)','hay que'],['I usually … (+ infinitive)','suelo|yo suelo','e.g. **Suelo** jugar al fútbol los sábados.'],
+['I went (one occasion)','fui|yo fui','Preterite of **ir**. The same form also means "I was" from **ser**.'],['we went','fuimos|nosotros fuimos'],
+['I did / I made (one occasion)','hice|yo hice'],['I had (one occasion)','tuve|yo tuve'],['I saw','vi|yo vi'],['I ate','comí|yo comí'],
+['I played (one occasion)','jugué|yo jugué','Spelling change: jug**u**é keeps the hard "g" sound.'],['I visited','visité|yo visité'],['I stayed','me quedé|yo me quedé'],
+['I bought','compré|yo compré'],['I spent (time)','pasé|yo pasé'],['it was (a one-off judgement, e.g. "it was fun")','fue','Preterite for a finished event. Use **era** for description.'],
+['it was (description, e.g. "the hotel was big")','era'],['I used to play','jugaba|yo jugaba','Imperfect: what you used to do, or were doing.'],
+['I used to go','iba|yo iba'],['there was / there were (description)','había'],['I was playing','estaba jugando|yo estaba jugando'],
+['I am going to go','voy a ir|yo voy a ir'],['I will go','iré|yo iré'],['I will be (in the future)','seré|estaré'],['I will have','tendré|yo tendré'],
+['I would like','me gustaría','The single most useful phrase for the future in speaking and writing.'],['I would go','iría|yo iría'],['it would be','sería|estaría'],
+['I have visited','he visitado|yo he visitado'],['I have seen','he visto|yo he visto','Irregular past participle: **visto**.'],['I have done','he hecho|yo he hecho'],
+['he slept (preterite)','durmió|él durmió','Higher: stem change o → u in the third person preterite.'],['she asked for (preterite)','pidió|ella pidió','Higher: stem change e → i.'],
+['I read (past)','leí|yo leí'],['he read (past)','leyó|él leyó','Higher spelling change: le**y**ó.']]);
+
+/* ---------- Opinions and power phrases ---------- */
+EN('s-ops','so',[
+['I love (+ one thing or activity)','me encanta','**Me encantan** + plural noun: me encantan los videojuegos.'],['I like (+ plural things)','me gustan'],['I don\'t like (+ one thing or activity)','no me gusta'],
+['I hate','odio|yo odio'],['I\'m interested in (+ one thing)','me interesa'],['in my opinion','en mi opinión'],['I think that','creo que|pienso que|opino que'],
+['it seems to me that','me parece que'],['what I like most is','lo que más me gusta es'],['the best thing is','lo mejor es'],['the worst thing is','lo peor es'],
+['it\'s worth it','vale la pena','Higher impersonal verb. Examiners like it.'],['it was a disaster','fue un desastre'],['I really want to / I\'m looking forward to','tengo ganas de|tengo muchas ganas de'],
+['I would love to','me encantaría'],['it would be great','sería genial|sería estupendo|sería fenomenal'],['I\'ve just (+ infinitive)','acabo de','Higher: **acabo de** jugar = I\'ve just played.'],
+['it scares me / it frightens me','me da miedo'],['it makes me laugh','me hace reír'],['I find it boring','me parece aburrido'],
+['if I had the chance, I would …','si tuviera la oportunidad|si tuviera la oportunidad,','A "show-off" phrase (imperfect subjunctive + conditional). Learn it as one chunk.'],
+['I hope that (+ subjunctive)','espero que|ojalá'],['it\'s important to','es importante'],['you need to / it\'s necessary to','hace falta|es necesario|hay que']]);
+
+/* ---------- Theme 1: People and lifestyle ---------- */
+ES('s-t1','s1',[
+['los padres','parents|the parents'],['los hermanos','brothers and sisters|siblings|brothers'],['los abuelos','grandparents'],['la madrastra','stepmother|stepmum'],
+['mi mejor amigo','my best friend'],['el novio','boyfriend'],['llevarse bien con','to get on well with|get on well with|get along with|to get along with'],['pelearse','to fight|to argue|to quarrel|fight|argue'],
+['discutir','to argue|argue|to discuss'],['apoyar','to support|support'],['la confianza','trust|confidence'],['gracioso','funny'],['simpático','nice|kind|friendly|likeable'],
+['maleducado','rude|bad-mannered|impolite'],['perezoso','lazy'],['trabajador','hard-working|hardworking|worker'],['celoso','jealous'],['tímido','shy|timid'],
+['casarse','to get married|get married|to marry'],['la boda','wedding|the wedding'],['sano','healthy'],['la salud','health'],['la comida basura','junk food'],
+['las verduras','vegetables|veg|greens'],['hacer ejercicio','to exercise|to do exercise|exercise'],['dormir','to sleep|sleep'],['el estrés','stress'],
+['fumar','to smoke|smoke|smoking'],['dejar de (fumar)','to stop|to give up|to quit|stop|give up|stop smoking|to stop smoking'],['estar en forma','to be fit|to be in shape|being fit'],
+['la asignatura','subject|school subject'],['el instituto','school|secondary school|high school'],['los deberes','homework'],['aprobar','to pass|pass|to pass an exam'],
+['suspender','to fail|fail|to fail an exam'],['las normas','rules|the rules'],['la presión','pressure'],['el recreo','break|break time|playtime|recess'],
+['el trabajo','job|work'],['el sueldo','salary|wage|wages|pay'],['ganar dinero','to earn money|earn money|to make money|make money'],['las prácticas','work experience|placement|internship'],
+['la empresa','company|business|firm'],['el jefe','boss|the boss'],['la universidad','university|uni|college']]);
+
+/* ---------- Theme 2: Popular culture ---------- */
+ES('s-t2','s2',[
+['el tiempo libre','free time|spare time|leisure time'],['los videojuegos','video games|videogames|computer games|games'],['las redes sociales','social media|social networks'],
+['el móvil','mobile|mobile phone|phone|cell phone'],['la película de miedo','horror film|scary film|horror movie|scary movie'],['la serie','series|tv series|show|tv show'],
+['el cantante','singer'],['el concierto','concert|gig'],['el partido','match|game'],['el equipo','team'],['ganar','to win|win|to earn'],['perder','to lose|lose|to miss'],
+['la natación','swimming'],['el ajedrez','chess'],['quedar (con amigos)','to meet up|meet up|to arrange to meet|to meet|meet'],['ir de compras','to go shopping|go shopping'],
+['las Navidades','christmas|christmas time'],['la Nochevieja','new year\'s eve'],['los Reyes Magos','the three kings|three kings|the three wise men|wise men'],['el cumpleaños','birthday'],
+['celebrar','to celebrate|celebrate'],['los fuegos artificiales','fireworks'],['el desfile','parade|procession'],['disfrazarse','to dress up|dress up|to wear a costume'],
+['el regalo','present|gift'],['la Semana Santa','holy week|easter'],['el famoso','famous person|celebrity|celeb'],['la fama','fame'],['el seguidor','follower|fan|supporter'],
+['el aficionado','fan|supporter|enthusiast'],['el modelo a seguir','role model'],['la vida privada','private life'],['la estrella','star'],['aburrido','boring|bored'],
+['emocionante','exciting|thrilling|moving'],['divertido','fun|funny|enjoyable|entertaining']]);
+
+/* ---------- Theme 3: Communication and the world ---------- */
+ES('s-t3','s3',[
+['viajar','to travel|travel'],['el viaje','trip|journey|travel'],['el avión','plane|aeroplane|airplane'],['el billete','ticket'],['el alojamiento','accommodation|lodging'],
+['alojarse','to stay|stay|to lodge'],['el extranjero','abroad|foreign countries|foreigner'],['la maleta','suitcase|case'],['hacer turismo','to go sightseeing|go sightseeing|sightseeing|to sightsee'],
+['el paisaje','landscape|scenery|countryside view'],['tomar el sol','to sunbathe|sunbathe|sunbathing'],['el ordenador','computer|pc'],['la pantalla','screen'],['descargar','to download|download'],
+['subir (fotos)','to upload|upload|to post|post|upload photos|to upload photos'],['la contraseña','password'],['el ciberacoso','cyberbullying|online bullying'],['peligroso','dangerous'],
+['la aplicación','app|application'],['el medio ambiente','environment|the environment'],['la contaminación','pollution'],['el cambio climático','climate change'],
+['reciclar','to recycle|recycle|recycling'],['la basura','rubbish|litter|trash|garbage|waste'],['ahorrar','to save|save'],['malgastar','to waste|waste'],['la sequía','drought'],
+['las inundaciones','floods|flooding'],['el ruido','noise'],['el pueblo','village|town|small town'],['el barrio','neighbourhood|area|district|neighborhood'],['las afueras','outskirts|suburbs'],
+['el campo','countryside|country|field|pitch'],['tranquilo','quiet|calm|peaceful|relaxed'],['ruidoso','noisy|loud'],['los atascos','traffic jams|jams|traffic'],
+['el transporte público','public transport|public transportation'],['el piso','flat|apartment|floor|storey']]);
+
+/* ---------- Higher grammar ---------- */
+M('sg1','s-gram','Which tense? "Cuando ___ pequeño, vivía en Leeds." (When I was little, I lived in Leeds.)',['era','fui','seré','sería'],'Imperfect (**era**) for background description and "used to". Preterite (**fui**) is for a single completed event.');
+M('sg2','s-gram','Which tense? "El sábado pasado ___ al cine con mis primos."',['fui','iba','iré','iría'],'One completed event at a specific time, so preterite: **fui**.');
+M('sg3','s-gram','Which tense? "Mientras ___ la tele, sonó el teléfono." (While I was watching TV, the phone rang.)',['veía','vi','veré','vería'],'Background action in progress, so imperfect: **veía**. Interruption, so preterite: **sonó**.');
+M('sg4','s-gram','Choose the subjunctive: "Cuando ___ mayor, quiero ser periodista."',['sea','soy','seré','era'],'Higher: **cuando** + future meaning takes the present subjunctive (**sea**).');
+M('sg5','s-gram','Choose the correct form: "Mis padres quieren que yo ___ más."',['estudie','estudio','estudiar','estudiaré'],'**querer que** + a different person, so subjunctive: **estudie**.');
+M('sg6','s-gram','Which means "I have been learning Spanish for five years"?',['Llevo cinco años aprendiendo español','Acabo de aprender español','Aprendí español hace cinco años','Voy a aprender español cinco años'],'Higher: **llevar** + time + gerund.');
+M('sg7','s-gram','"Acabo de terminar los deberes" means…',['I\'ve just finished my homework','I\'m going to finish my homework','I finished my homework ages ago','I never finish my homework'],'**acabar de** + infinitive = to have just done something.');
+M('sg8','s-gram','"Vivo aquí desde hace tres años" means…',['I have lived here for three years','I lived here three years ago','I will live here for three years','I lived here for three years'],'Present tense + **desde hace** = have been doing (and still are).');
+M('sg9','s-gram','"El castillo fue construido por los romanos" is an example of…',['the passive','the conditional','the subjunctive','the imperative'],'Higher: **ser** + past participle + **por**.');
+M('sg10','s-gram','"Se habla español en México" is best translated as…',['Spanish is spoken in Mexico','He speaks Spanish in Mexico','You speak Spanish to Mexico','Spain speaks Mexican'],'**se** + verb is a common way to avoid the passive.');
+R('sg11','s-gram','Translate into Spanish: "Ojalá haga sol mañana" means "I hope it\'s sunny tomorrow". Now write "I hope that my team wins."','**Espero que mi equipo gane.** (or: Ojalá gane mi equipo.)\n**esperar que** / **ojalá** + present subjunctive: ganar → gane.',{al:'es'});
+R('sg12','s-gram','How do you form the present subjunctive of regular verbs?','Take the **yo** form of the present, drop the **-o**, then add the "opposite" endings.\n**-ar → -e:** hablo → hable, hables, hable…\n**-er/-ir → -a:** como → coma; vivo → viva.\nIrregulars to learn: sea, vaya, haga, tenga, pueda.');
+R('sg13','s-gram','Give four triggers for the present subjunctive that are useful in a GCSE answer.','• **cuando** + future: Cuando **sea** mayor…\n• **quiero que** / **espero que**: Espero que **haga** buen tiempo.\n• **para que**: …para que mis padres **estén** orgullosos.\n• **es importante que**: Es importante que **reciclemos**.');
+M('sg14','s-gram','Which is correct? "Me ___ los videojuegos."',['encantan','encanta','encanto','encantas'],'Plural noun, so **encantan**. (Me gusta**n** los perros, me interesa**n** las noticias.)');
+M('sg15','s-gram','"Hace falta proteger el medio ambiente" means…',['It\'s necessary to protect the environment','The environment lacks protection','The environment was protected','We failed to protect the environment'],'**hace falta** = it is necessary / you need to (Higher impersonal verb).');
+R('sg16','s-gram','Give the 2nd person plural affirmative command (vosotros) for "hablar", "comer" and "escribir".','**hablad, comed, escribid**: swap the infinitive\'s final **-r** for **-d**. (Higher only.)');
+M('sg17','s-gram','"Parece que va a llover" means…',['It looks like it\'s going to rain','It rained a lot','It never rains','It stopped raining'],'**parecer** used impersonally (Higher).');
+M('sg18','s-gram','Which sentence uses the conditional?',['Me gustaría vivir en Madrid','Vivo en Madrid','Viví en Madrid','He vivido en Madrid']);
+
+/* ---------- Translation sentences ---------- */
+const TE=(id,en,es)=>R(id,'s-trans','Translate into Spanish:\n"'+en+'"','**'+es+'**',{al:'es',sayA:es.split(' / ')[0].replace(/\*|\(.*?\)/g,'')});
+const TS=(id,es,en)=>R(id,'s-trans','Translate into English:\n"'+es+'"','**'+en+'**',{say:es});
+TE('st1','I usually play football with my friends on Saturdays.','Normalmente juego al fútbol con mis amigos los sábados. / Suelo jugar al fútbol con mis amigos los sábados.');
+TE('st2','Last year we went to Spain and stayed in a hotel near the beach.','El año pasado fuimos a España y nos quedamos en un hotel cerca de la playa.');
+TE('st3','When I was younger, I used to watch a lot of cartoons.','Cuando era más joven, veía muchos dibujos animados. / Cuando era más pequeño, veía muchos dibujos animados.');
+TE('st4','In the future I would like to work abroad.','En el futuro me gustaría trabajar en el extranjero.');
+TE('st5','My sister is very funny but sometimes she is lazy.','Mi hermana es muy graciosa pero a veces es perezosa.');
+TE('st6','We must recycle more to protect the environment.','Debemos reciclar más para proteger el medio ambiente. / Hay que reciclar más para proteger el medio ambiente.');
+TE('st7','I have never visited Mexico, but I would love to go.','Nunca he visitado México, pero me encantaría ir.');
+TE('st8','Next weekend I am going to play video games with my cousin.','El fin de semana que viene voy a jugar a los videojuegos con mi primo. / El próximo fin de semana voy a jugar a los videojuegos con mi primo.');
+TE('st9','I think that social media can be dangerous for young people.','Creo que las redes sociales pueden ser peligrosas para los jóvenes.');
+TE('st10','Yesterday I didn\'t do my homework because I was tired.','Ayer no hice los deberes porque estaba cansado.');
+TS('st11','Mis padres no me dejan usar el móvil durante la cena.','My parents don\'t let me use my phone during dinner.');
+TS('st12','Hace dos años mi familia se mudó a un piso en el centro.','Two years ago my family moved to a flat in the centre.');
+TS('st13','Si tuviera mucho dinero, compraría una casa en la playa.','If I had a lot of money, I would buy a house on the beach.');
+TS('st14','Mi abuela siempre prepara una cena enorme en Nochebuena.','My grandmother always makes a huge dinner on Christmas Eve.');
+TS('st15','No me gusta nada la comida basura, aunque es barata.','I don\'t like junk food at all, although it is cheap.');
+TS('st16','Llevo tres años jugando en el mismo equipo de baloncesto.','I have been playing in the same basketball team for three years.');
+
+/* ---------- Listening and dictation ---------- */
+DICT('sl1','s-listen','Los fines de semana suelo quedar con mis amigos.','At weekends I usually meet up with my friends.');
+DICT('sl2','s-listen','El año pasado fuimos a Valencia en tren.','Last year we went to Valencia by train.');
+DICT('sl3','s-listen','Creo que las redes sociales pueden ser peligrosas.','I think social media can be dangerous.');
+DICT('sl4','s-listen','Mañana voy a ayudar a mi abuela en el jardín.','Tomorrow I\'m going to help my grandmother in the garden.');
+DICT('sl5','s-listen','Mi hermano mayor juega al ajedrez todos los jueves.','My older brother plays chess every Thursday.');
+DICT('sl6','s-listen','Me gustaría vivir en una ciudad más tranquila.','I would like to live in a quieter city.');
+DICT('sl7','s-listen','Ayer hacía mucho calor y fuimos a la playa.','Yesterday it was very hot and we went to the beach.');
+DICT('sl8','s-listen','Hay que ahorrar agua y reciclar la basura.','We must save water and recycle rubbish.');
+const LM=(id,es,opts,x)=>M(id,'s-listen','Listen. What does the speaker say?',opts,x,{say:es,hide:true});
+LM('sl9','Odio los deberes porque nunca tengo tiempo libre.',['They hate homework because they never have free time','They love homework because it is easy','They never get homework','They do homework in their free time']);
+LM('sl10','El verano que viene voy a trabajar en un hotel.',['Next summer they will work in a hotel','Last summer they stayed in a hotel','They work in a hotel every summer','They want to build a hotel']);
+LM('sl11','Mi madre es médica y trabaja en un hospital en el centro.',['Their mother is a doctor in a hospital in the centre','Their mother is a nurse in a village','Their mother is ill in hospital','Their mother works from home']);
+LM('sl12','Lo que más me gusta de mi barrio es el parque.',['What they like most about their area is the park','They don\'t like the park in their area','Their area has no park','They want to move near a park']);
+LM('sl13','Antes jugaba mucho al fútbol, pero ahora prefiero nadar.',['They used to play football but now prefer swimming','They play football and swim every day','They have never liked football','They are going to start swimming']);
+LM('sl14','No pude ir al concierto porque estaba enfermo.',['They couldn\'t go to the concert because they were ill','The concert was cancelled','They went to the concert with a friend','They didn\'t want to go to the concert']);
+
+/* ---------- Speaking ---------- */
+const SQ=(id,es,en,model,modelEn)=>R(id,'s-speak','Answer out loud in Spanish, in 3–4 sentences:\n**'+es+'**\n('+en+')','**'+model+'**\n\n'+modelEn,{say:es,sayA:model.replace(/\*/g,'')});
+SQ('sk1','¿Qué haces en tu tiempo libre?','What do you do in your free time?','En mi tiempo libre me encanta jugar a los videojuegos, sobre todo a Red Dead Redemption 2, porque el mundo es enorme. También juego al baloncesto dos veces a la semana. El sábado pasado fui al cine con mis amigos. El fin de semana que viene voy a quedar con mi primo.','Tip: present, past and future in one answer earns marks for range.');
+SQ('sk2','¿Cómo es tu mejor amigo?','What is your best friend like?','Mi mejor amigo se llama Sam. Es muy gracioso y siempre me apoya. Nos conocimos en la escuela primaria y desde entonces nos llevamos muy bien. Lo mejor es que tenemos los mismos gustos: nos encantan las series de zombis.','Use "lo mejor es que…" to develop an answer.');
+SQ('sk3','¿Qué piensas de las redes sociales?','What do you think of social media?','Creo que las redes sociales son útiles para hablar con amigos y para informarse. Sin embargo, pueden ser peligrosas a causa del ciberacoso. Personalmente, intento no pasar demasiado tiempo en el móvil, porque antes dormía muy mal.','Give an opinion, a reason, then the other side.');
+SQ('sk4','Describe tu instituto.','Describe your school.','Mi instituto es bastante grande y moderno, y hay unos mil alumnos. Mi asignatura favorita es el inglés porque me encanta leer. Lo que no me gusta es el uniforme, que es muy incómodo. Si pudiera cambiar algo, quitaría las normas sobre el móvil.','"Si pudiera…" is a Higher show-off phrase.');
+SQ('sk5','¿Qué hiciste el fin de semana pasado?','What did you do last weekend?','El sábado pasado fui al centro con mis amigos y compré una camiseta nueva. Por la tarde jugamos a los videojuegos en casa de mi amigo. El domingo comí con mis abuelos y luego hice los deberes. Fue un fin de semana muy relajante.','Use the preterite for completed actions.');
+SQ('sk6','¿Qué vas a hacer después de los exámenes?','What are you going to do after your exams?','Después de los exámenes voy a descansar mucho. Me gustaría ir de vacaciones con mi familia a la costa. En septiembre voy a empezar el bachillerato, y en el futuro me encantaría estudiar en la universidad.','Mix "voy a…" with "me gustaría…" for two future structures.');
+SQ('sk7','¿Llevas una vida sana?','Do you lead a healthy lifestyle?','Intento llevar una vida sana. Como fruta y verduras casi todos los días y hago deporte tres veces a la semana. Sin embargo, a veces como demasiada comida basura. En el futuro voy a dormir más, porque los exámenes me causan mucho estrés.','');
+SQ('sk8','¿Cómo celebras tu cumpleaños?','How do you celebrate your birthday?','Normalmente celebro mi cumpleaños con mi familia. Comemos una tarta enorme y abro mis regalos. El año pasado fuimos a un restaurante italiano con mis amigos y lo pasamos genial. Este año me gustaría ir a un concierto.','');
+SQ('sk9','¿Qué haces para proteger el medio ambiente?','What do you do to protect the environment?','En casa reciclamos el plástico y el papel, y siempre apago las luces. Además, voy al instituto a pie. Creo que hace falta usar más el transporte público. En el futuro me gustaría tener un coche eléctrico.','');
+SQ('sk10','¿Prefieres vivir en la ciudad o en el campo?','Do you prefer living in the city or the countryside?','Prefiero vivir en la ciudad porque hay más cosas que hacer, como cines y tiendas. Sin embargo, el campo es más tranquilo y hay menos contaminación. Cuando era pequeño vivía en un pueblo, y a veces lo echo de menos.','');
+SQ('sk11','¿Te gustaría ser famoso? ¿Por qué?','Would you like to be famous? Why?','No me gustaría nada ser famoso, porque los famosos no tienen vida privada. Lo peor es que la gente siempre te critica en las redes sociales. Sin embargo, sería genial tener mucho dinero para ayudar a mi familia.','');
+SQ('sk12','Háblame de tus últimas vacaciones.','Tell me about your last holiday.','El verano pasado fui a Escocia con mi familia. Nos alojamos en una casa en el campo y el paisaje era precioso. Hicimos muchas excursiones, aunque llovió casi todos los días. Fue una experiencia inolvidable.','Preterite for events, imperfect for description.');
+R('sk13','s-speak','Role-play prompt: **Ask** a Spanish friend what they did last weekend.','**¿Qué hiciste el fin de semana pasado?**\nOne Higher role-play task always asks you to **ask a question**. Raise your voice at the end so it sounds like one.',{sayA:'¿Qué hiciste el fin de semana pasado?'});
+R('sk14','s-speak','Role-play prompt: **Ask** how much the train ticket costs.','**¿Cuánto cuesta el billete de tren?**',{sayA:'¿Cuánto cuesta el billete de tren?'});
+R('sk15','s-speak','Role-play prompt: Say that you have been learning Spanish for five years.','**Llevo cinco años aprendiendo español.** (or: Aprendo español desde hace cinco años.)',{sayA:'Llevo cinco años aprendiendo español.'});
+R('sk16','s-speak','Role-play prompt: **Ask** your friend if they like horror films.','**¿Te gustan las películas de miedo?**',{sayA:'¿Te gustan las películas de miedo?'});
+R('sk17','s-speak','Reading aloud: how is the Spanish **j** pronounced (e.g. **jugar**, **joven**)?','A rough, breathy sound in the throat, like the "ch" in Scottish "loch". The same sound comes from **g** before **e** or **i**: **gente**, **gimnasio**.',{say:'jugar, joven, gente, gimnasio'});
+R('sk18','s-speak','Reading aloud: what happens to the letter **h** (e.g. **hermano**, **hacer**)?','It\'s **silent**: "ermano", "acer". Saying an English "h" is one of the most common pronunciation slips.',{say:'hermano, hacer, hoy'});
+R('sk19','s-speak','Reading aloud: how do you say **ll** and **ñ** (e.g. **llamo**, **España**)?','**ll** sounds like the "y" in "yes": "yamo".\n**ñ** sounds like the "ny" in "canyon": "Es-pa-nya".',{say:'me llamo, España, mañana'});
+R('sk20','s-speak','Reading aloud: how do you say **c** and **z** before e or i (e.g. **cine**, **zapato**, **once**)?','In Spain they sound like the "th" in "think": **cine** = "thee-neh", **zapato** = "tha-pa-toh", **once** = "on-theh". (In Latin America they sound like "s", which is also accepted.)',{say:'cine, zapato, once, gracias'});
+R('sk21','s-speak','Reading aloud: what about **qu**, **gue** and **gui** (e.g. **queso**, **guitarra**)?','The **u** is silent: **queso** = "keh-so", **guitarra** = "gee-tah-rra" (hard g).',{say:'queso, guitarra, quiero'});
+R('sk22','s-speak','Reading aloud: how do you say **r** and **rr** (e.g. **pero**, **perro**)?','Single **r** is one quick tap of the tongue. **rr** (and **r** at the start of a word) is rolled. **pero** = but, **perro** = dog, so it changes the meaning.',{say:'pero, perro, radio'});
+R('sk23','s-speak','Reading aloud: what does a written accent tell you (e.g. **música**, **inglés**)?','Where to put the **stress**: MÚ-si-ca, in-GLÉS. Without an accent, stress the second-to-last syllable if the word ends in a vowel, n or s (CA-sa, HA-blan), otherwise the last (ha-BLAR).',{say:'música, inglés, casa, hablar'});
+
+/* ===================== BOUNTIES ===================== */
+const B=b=>D.bounties.push(Object.assign({s:'span'},b));
+const NOTE_W='The real mark scheme marks communication and language separately. These combined bands are a quick guide.';
+const q2Levels=[
+ {lv:'Top band',range:'13–15',d:'All three bullets covered clearly, ideas regularly developed. Good variety, regular complex language, past, present AND future mainly correct, errors mainly minor.'},
+ {lv:'Good',range:'10–12',d:'All three bullets, mostly clear, ideas often developed. Some complex language; at least two time frames mainly correct.'},
+ {lv:'Developing',range:'7–9',d:'At least two bullets, generally clear, a few ideas developed. Two time frames attempted but not always correct.'},
+ {lv:'Basic',range:'1–6',d:'Some bullets covered; often unclear; mainly simple language; time frames not successful.'}];
+const q3Levels=[
+ {lv:'Top band',range:'21–25',d:'A lot of relevant information, regularly developed, very few lapses. Very good variety, complex language often successful, usually accurate with secure verbs and tenses.'},
+ {lv:'Good',range:'16–20',d:'Quite a lot of information, mostly well developed. Good variety with some complex language; generally accurate.'},
+ {lv:'Developing',range:'11–15',d:'An adequate amount of information, some development. Some variety; reasonably accurate but with major errors.'},
+ {lv:'Basic',range:'1–10',d:'Limited information and development; mainly simple language; many errors. (Covering only one bullet caps communication marks.)'}];
+const wCheck=['Covered every bullet point','Used the past, present AND future','Gave opinions with reasons (porque, ya que)','Used at least two complex structures (e.g. lo que más me gusta, si pudiera…, me gustaría, acabo de)','Varied connectives (además, sin embargo, aunque)','Checked verb endings and agreements (-o/-a, -s)','Checked accents'];
+
+B({id:'bs1',paper:'Writing · Q2',marks:15,mins:15,type:'essay',lang:'es',
+ q:'Your Spanish friend has asked about your free time.\nWrite approximately **90 words in Spanish**. You must write something about each bullet point.\nMention:\n• what you usually do in your free time\n• an activity you did recently\n• your plans for next weekend.',
+ plan:['Present: what I usually do (+ opinion + reason)','Past: what I did recently (+ how it was)','Future: plans for next weekend','Show-off phrase to include'],
+ check:wCheck,levels:q2Levels,note:NOTE_W,
+ model:'En mi tiempo libre me encanta jugar a los videojuegos con mis amigos, sobre todo los fines de semana, porque es muy divertido y me ayuda a relajarme. También juego al baloncesto dos veces a la semana. El sábado pasado fui al cine con mi hermano y vimos una película de acción que fue increíble, aunque las palomitas eran carísimas. El próximo fin de semana voy a visitar a mis abuelos. Si hace buen tiempo, daremos un paseo por el campo con su perro. ¡Tengo muchas ganas!\n\n*About 90 words. Three time frames: present (me encanta), past (fui, vimos, fue, eran), future (voy a visitar, daremos).*'});
+
+B({id:'bs2',paper:'Writing · Q2',marks:15,mins:15,type:'essay',lang:'es',
+ q:'You are writing a blog post about your school.\nWrite approximately **90 words in Spanish**. You must write something about each bullet point.\nMention:\n• what you think of your school\n• something you did at school last week\n• what you want to do after your exams.',
+ plan:['Opinion of school + reason','Last week: one event','After exams: plans','Show-off phrase'],
+ check:wCheck,levels:q2Levels,note:NOTE_W,
+ model:'Mi instituto es bastante grande y los profesores son muy simpáticos, pero hay demasiadas normas. Lo que más me gusta es la clase de inglés, ya que me encanta leer. La semana pasada hicimos un examen de ciencias que fue muy difícil, así que estaba muy nervioso. Por suerte, aprobé. Después de los exámenes voy a descansar y en septiembre me gustaría estudiar historia y geografía en el bachillerato. ¡Espero que mis notas sean buenas!\n\n*"Espero que … sean" is a Higher subjunctive structure.*'});
+
+B({id:'bs3',paper:'Writing · Q3',marks:25,mins:25,type:'essay',lang:'es',
+ q:'You are writing an article about **technology and video games**.\nWrite approximately **150 words in Spanish**. You must write something about both bullet points.\nMention:\n• the role of technology in your life, now and when you were younger\n• how you would like to use technology in the future.',
+ plan:['Now: how I use technology (+ opinions)','Then: when I was younger (imperfect)','Pros and cons (balanced)','Future: how I would like to use it','Show-off phrases (si pudiera…, lo que más me gusta…)'],
+ check:wCheck,levels:q3Levels,note:NOTE_W,
+ model:'Hoy en día la tecnología es muy importante en mi vida. Uso el móvil todos los días para hablar con mis amigos y para escuchar música. Lo que más me gusta son los videojuegos, sobre todo Red Dead Redemption 2, porque el mundo es enorme y la historia es muy emocionante.\n\nCuando era pequeño, no tenía móvil y pasaba más tiempo al aire libre. Jugaba al fútbol en el parque con mis vecinos y leía muchos cómics. A veces echo de menos esa época, ya que ahora paso demasiado tiempo delante de una pantalla.\n\nSin embargo, creo que la tecnología tiene muchas ventajas. Por ejemplo, durante los exámenes uso aplicaciones para repasar.\n\nEn el futuro me gustaría estudiar diseño de videojuegos en la universidad. Si pudiera, crearía mi propio juego, ¡con zombis, por supuesto! Espero que la tecnología nos ayude a resolver problemas como el cambio climático.\n\n*About 150 words. Imperfect for "when I was younger" (tenía, pasaba, jugaba), conditional and subjunctive for the future.*'});
+
+B({id:'bs4',paper:'Writing · Q3',marks:25,mins:25,type:'essay',lang:'es',
+ q:'You are writing an article about **the environment where you live**.\nWrite approximately **150 words in Spanish**. You must write something about both bullet points.\nMention:\n• the environmental problems in your area\n• what you have done, and will do, to help.',
+ plan:['Where I live + main problems','Why it matters (opinion)','What I have done / did','What I will do + what others should do','Show-off phrases'],
+ check:wCheck,levels:q3Levels,note:NOTE_W,
+ model:'Vivo en Birmingham, una ciudad grande en el centro de Inglaterra. Me gusta vivir aquí porque hay muchas cosas que hacer, pero hay bastantes problemas medioambientales. El problema más grave es la contaminación del aire, a causa de los atascos. Además, en mi barrio hay mucha basura en las calles, lo que me parece fatal.\n\nCreo que todos tenemos que hacer algo. En casa siempre reciclamos el plástico y el vidrio, y el año pasado mi familia instaló paneles solares. También he empezado a ir al instituto en bicicleta en lugar de en coche.\n\nEn el futuro voy a usar más el transporte público y me gustaría participar en un grupo de voluntarios que limpia los parques. Además, sería genial si el ayuntamiento creara más carriles bici. Si no hacemos nada ahora, será demasiado tarde.\n\n*Perfect tense (he empezado), preterite (instaló), future (voy a usar, será), conditional (sería).*'});
+
+B({id:'bs5',paper:'Writing · Q1 translation',marks:10,mins:12,type:'trans',lang:'es',
+ q:'Translate the following passage into **Spanish**.\n"My brother and I love going to the cinema. Last weekend we saw a horror film that was very scary. Usually I prefer comedies because they make me laugh. Next summer we are going to travel to Spain with our parents. I would like to visit Madrid, but my brother wants to go to the beach."',
+ model:'A mi hermano y a mí nos encanta ir al cine. El fin de semana pasado vimos una película de miedo que daba mucho miedo. Normalmente prefiero las comedias porque me hacen reír. El verano que viene vamos a viajar a España con nuestros padres. Me gustaría visitar Madrid, pero mi hermano quiere ir a la playa.',
+ elements:[['My brother and I love','A mi hermano y a mí nos encanta (or: Mi hermano y yo… nos encanta)'],['going to the cinema','ir al cine'],['Last weekend','El fin de semana pasado'],['we saw','vimos'],['a horror film','una película de miedo / de terror'],['that was very scary','que daba mucho miedo / que fue muy aterradora'],['Usually','Normalmente / Generalmente'],['I prefer comedies','prefiero las comedias'],['because they make me laugh','porque me hacen reír'],['Next summer','El verano que viene / El próximo verano'],['we are going to travel','vamos a viajar'],['to Spain with our parents','a España con nuestros padres'],['I would like to visit Madrid','Me gustaría visitar Madrid'],['but my brother wants','pero mi hermano quiere'],['to go to the beach','ir a la playa']]});
+
+B({id:'bs6',paper:'Reading · Section B translation',marks:10,mins:10,type:'trans',lang:'en',
+ q:'Translate the following passage into **English**.\n"Cuando era pequeño, vivía en un pueblo cerca de la costa. Todos los días jugaba al fútbol con mis primos en la playa. Hace tres años nos mudamos a la ciudad porque mi madre encontró un trabajo nuevo. Ahora tengo más amigos, pero echo de menos el mar. En el futuro me gustaría volver a vivir allí."',
+ model:'When I was little, I lived in a village near the coast. Every day I used to play football with my cousins on the beach. Three years ago we moved to the city because my mother found a new job. Now I have more friends, but I miss the sea. In the future I would like to live there again.',
+ elements:[['Cuando era pequeño','When I was little / small / young'],['vivía en un pueblo','I lived / used to live in a village / town'],['cerca de la costa','near the coast'],['Todos los días','Every day'],['jugaba al fútbol','I used to play / I played football'],['con mis primos en la playa','with my cousins on the beach'],['Hace tres años','Three years ago'],['nos mudamos a la ciudad','we moved to the city'],['porque mi madre encontró','because my mother found'],['un trabajo nuevo','a new job'],['Ahora tengo más amigos','Now I have more friends'],['pero echo de menos el mar','but I miss the sea'],['En el futuro','In the future'],['me gustaría','I would like'],['volver a vivir allí','to live there again / to go back to live there']]});
+
+B({id:'bs7',paper:'Reading · Section A',marks:6,mins:8,type:'quiz',source:'sread',
+ q:'Read Lucía\'s blog post, then answer the questions **in English** by choosing the correct option.',
+ items:[
+  ['Why does Lucía avoid using her phone at night?',['She used to sleep badly','Her mother takes it away','The battery runs out','There is no wifi at night']],
+  ['What does Lucía use her phone for?',['Talking to friends and listening to music','Watching films and shopping','Homework and revision','Taking photos and playing games']],
+  ['What is her brother Pablo like?',['He can play video games for hours','He hates technology','He plays sport every day','He reads a lot']],
+  ['"Mi madre está harta." How does their mother feel?',['Fed up','Proud','Worried about money','Delighted']],
+  ['How did Pablo feel at the start of the camping trip?',['In a bad mood','Excited','Ill','Frightened']],
+  ['What does Pablo want now?',['To go back next year','To buy a new console','To stay at home next summer','To live in the mountains']]],
+ model:'In the real exam you sometimes have to work out a word that isn\'t on the vocabulary list, like **harta** (fed up). Use the context: "Mi madre está harta y dice que tiene que salir más."'});
+
+B({id:'bs8',paper:'Listening · Section A',marks:5,mins:6,type:'quiz',listen:'Hola, soy Marcos. Este año tengo muchos exámenes. Mi asignatura favorita es la historia porque el profesor es muy gracioso, pero odio la química porque me parece demasiado difícil. Después de las clases trabajo en la cafetería de mi tío dos tardes a la semana. No gano mucho dinero, pero aprendo mucho. En el futuro me gustaría ser periodista, así que el año que viene voy a estudiar idiomas en Inglaterra.',
+ q:'Listen to Marcos talking about school and work. You can play the recording **twice**, as in the exam. Then answer the questions.',
+ items:[
+  ['Why does Marcos like history?',['The teacher is funny','It is easy','He gets good marks','His friends are in the class']],
+  ['What does he think of chemistry?',['It is too difficult','It is boring','It is useful','It is fun']],
+  ['Where does he work?',['At his uncle\'s café','In a supermarket','In his dad\'s shop','In a hotel']],
+  ['How often does he work?',['Two afternoons a week','Every weekend','Every morning','Once a month']],
+  ['What is he going to do next year?',['Study languages in England','Become a journalist','Work full time','Study chemistry']]],
+ model:'Full transcript: "Hola, soy Marcos. Este año tengo muchos exámenes. Mi asignatura favorita es la historia porque el profesor es muy gracioso, pero odio la química porque me parece demasiado difícil. Después de las clases trabajo en la cafetería de mi tío dos tardes a la semana. No gano mucho dinero, pero aprendo mucho. En el futuro me gustaría ser periodista, así que el año que viene voy a estudiar idiomas en Inglaterra."'});
+
+B({id:'bs9',paper:'Listening · Section B dictation',marks:10,mins:8,type:'dict',
+ q:'Dictation. You will hear four sentences. Each can be played **three times**, as in the exam. Write exactly what you hear, in Spanish.',
+ sentences:['Los fines de semana suelo quedar con mis amigos en el centro.','El año pasado fuimos a Valencia y lo pasamos genial.','Creo que las redes sociales pueden ser peligrosas.','Mañana voy a ayudar a mi abuela en el jardín.'],
+ model:'Dictation is marked for meaning (5 marks) and for spelling and grammar (5 marks). Listen for sounds that are easy to mix up: **b/v** sound the same, **h** is silent, and **ll** sounds like **y**.'});
+
+B({id:'bs10',paper:'Speaking · Role-play',marks:10,mins:3,type:'speak',
+ q:'You are talking to your Spanish friend about free time. Answer **in Spanish**, out loud, using full sentences. When you see **?**, you must ask a question.',
+ prompts:[
+  ['Say what you usually do at the weekend (two details).','Normalmente los sábados juego al fútbol y por la tarde quedo con mis amigos en el centro.'],
+  ['Say what you did last weekend.','El fin de semana pasado fui al cine y vi una película de acción.'],
+  ['Give your opinion of social media and a reason.','Me gustan las redes sociales porque puedo hablar con mis amigos, pero a veces son peligrosas.'],
+  ['Say what you are going to do next summer.','El verano que viene voy a ir a la playa con mi familia.'],
+  ['? Ask your friend a question about their favourite series.','¿Cuál es tu serie favorita?']],
+ check:['Answered every prompt','Gave two details where asked','Used the past for "last weekend" and the future for "next summer"','Asked a proper question for the ? prompt'],
+ note:'Each task is worth 2 marks if the message is clear, 1 if it is partly clear or ambiguous, 0 if it is not conveyed.',levels:[{lv:'All clear',range:'9–10',d:'All five messages conveyed clearly, including a proper question.'},{lv:'Mostly clear',range:'6–8',d:'Most tasks clear; one or two partly conveyed.'},{lv:'Partly',range:'3–5',d:'Several tasks only partly conveyed or ambiguous.'},{lv:'Limited',range:'0–2',d:'Little of the message conveyed.'}]});
+
+B({id:'bs11',paper:'Speaking · Reading aloud',marks:15,mins:4,type:'speak',source:'saloud',
+ q:'Read the text **aloud**, then answer the four questions in Spanish. (In the exam, reading aloud is marked for pronunciation and the questions for what you say.)',
+ prompts:[
+  ['¿Con quién te llevas mejor en tu familia? ¿Por qué?','Me llevo mejor con mi madre porque es muy paciente y siempre me escucha.'],
+  ['¿Qué hiciste con tu familia el fin de semana pasado?','El domingo pasado comimos en casa de mis abuelos y después dimos un paseo con el perro.'],
+  ['¿Pasas demasiado tiempo con el móvil?','Creo que sí. Lo uso mucho para jugar y hablar con amigos, pero intento dejarlo por la noche.'],
+  ['¿Qué vas a hacer con tu familia en el futuro?','En el futuro me gustaría viajar con mi familia a México, porque tenemos ganas de conocer la cultura.']],
+ check:['Silent h (hermano, habitación)','j sound in "jugando"','Stress on accented syllables (después, móvil)','Answered all four questions with a reason or detail'],
+ note:'Reading aloud is 5 marks for pronunciation; the four questions are 10 marks for what you say.',levels:[{lv:'Top band',range:'13–15',d:'Pronunciation nearly always accurate; all four answers clear and developed.'},{lv:'Good',range:'9–12',d:'A few pronunciation slips; answers mostly clear with some development.'},{lv:'Developing',range:'5–8',d:'Some errors that affect meaning; short answers.'},{lv:'Basic',range:'1–4',d:'Regular errors; very short or unclear answers.'}]});
+
+B({id:'bs12',paper:'Speaking · Photo card',marks:25,mins:7,type:'speak',source:'sphoto',
+ q:'Describe both photos in Spanish (about 1½ minutes), then answer the conversation questions. Try to give extended answers with opinions, reasons and different time frames.',
+ prompts:[
+  ['Describe las fotos.','En la primera foto se ve un gato blanco con manchas negras. Está mirando a la cámara y parece muy serio. En la segunda foto el mismo gato está sentado en la ventana de una casa. Parece tranquilo y está mirando hacia abajo. Creo que las fotos muestran la vida de una mascota en casa.'],
+  ['¿Tienes mascotas? ¿Cómo son?','Sí, tengo un gato que se llama Louie. Es blanco y negro y es muy perezoso: ¡duerme casi todo el día! Lo mejor es que siempre se sienta conmigo cuando hago los deberes.'],
+  ['¿Cómo te llevas con tu familia?','En general me llevo bien con mi familia, aunque a veces discuto con mis padres por el móvil. Cuando era pequeño me peleaba mucho con mi hermana, pero ahora nos llevamos mejor.'],
+  ['¿Qué hiciste el fin de semana pasado con tus amigos?','El sábado pasado fui al centro con mis amigos. Comimos hamburguesas y después jugamos a los videojuegos en casa de mi amigo. Lo pasamos genial.'],
+  ['¿Qué cualidades debe tener un buen amigo?','Para mí, un buen amigo debe ser leal y gracioso. También es importante que te apoye cuando tienes problemas. Mi mejor amigo es así.']],
+ check:['Described BOTH photos (who, what, where, how they seem)','Gave opinions with reasons','Used past, present and future/conditional','Developed answers to 3+ sentences'],
+ note:'Real marks: description 5, conversation content 15, language 5.',levels:[{lv:'Top band',range:'21–25',d:'Both photos described in detail; consistently developed, extended answers; wide variety of language with few errors.'},{lv:'Good',range:'16–20',d:'Clear description; good development with some extended answers; very good variety, some errors.'},{lv:'Developing',range:'11–15',d:'Quite a lot of information; occasional extended answers; some repetition and errors.'},{lv:'Basic',range:'1–10',d:'Some information; short answers; frequent errors.'}]});
+
+D.sources.sread={title:'Lucía\'s blog post',verse:false,note:'Written for this practice.',body:`Me llamo Lucía y tengo dieciséis años. Vivo en Sevilla con mi madre y mi hermano pequeño, Pablo. Paso mucho tiempo con el móvil: lo uso para hablar con mis amigos y para escuchar música, pero intento no usarlo por la noche porque antes dormía muy mal.
+
+Mi hermano, en cambio, es un fanático de los videojuegos y puede jugar durante horas sin parar. Mi madre está harta y dice que tiene que salir más.
+
+El verano pasado fuimos de camping a los Pirineos, sin wifi. Al principio Pablo estaba de mal humor, pero después de dos días empezó a disfrutar del paisaje y de las excursiones. Ahora dice que quiere volver el año que viene.`};
+D.sources.saloud={title:'Text to read aloud',note:'Read slowly and clearly. Tap ▶ afterwards to compare.',say:true,body:`Me encanta pasar tiempo con mi familia, sobre todo los domingos. Normalmente comemos juntos en casa de mis abuelos y después damos un paseo por el parque. Sin embargo, mi hermano mayor prefiere quedarse en su habitación jugando a los videojuegos. Creo que es importante desconectar del móvil de vez en cuando.`};
+D.sources.sphoto={title:'Photo card',images:['p0','p1'],note:'Theme: People and lifestyle.'};
+})();
 </script>
 <script>(function(){
 'use strict';
 const C = window.CAMP, PH = window.LOUIE;
-const SUBJ = {geo:{name:'Geography',board:'Edexcel B'},lit:{name:'English Literature',board:'AQA'},lang:{name:'English Language',board:'AQA'},mine:{name:'My cards',board:''}};
+const SUBJ = {geo:{name:'Geography',board:'Edexcel B'},lit:{name:'English Literature',board:'AQA'},lang:{name:'English Language',board:'AQA'},span:{name:'Spanish',board:'AQA Higher'},mine:{name:'My cards',board:''}};
 const INTERVALS=[0,1,2,4,8,16,32];
 const THRESH=[0,8,20,35,55,80,110,145,185,230];
 const LKEY='louiesCamp.v1';
@@ -924,6 +1246,46 @@ const plain=s=>String(s).replace(/\*\*/g,'').replace(/\*/g,'');
 function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function seeded(arr,seed){const a=arr.slice();let s=seed||1;for(let i=a.length-1;i>0;i--){s=(Math.imul(s,1103515245)+12345)>>>0;const j=s%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
 function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,2200)}
+
+/* ---------- Spanish helpers ---------- */
+const TTS={ok:typeof window.speechSynthesis!=='undefined'&&typeof window.SpeechSynthesisUtterance!=='undefined',v:null,
+  pick(){try{const vs=speechSynthesis.getVoices();this.v=vs.find(v=>v.lang==='es-ES')||vs.find(v=>/^es[-_]/i.test(v.lang)||v.lang==='es')||null}catch(e){}return this.v},
+  say(t,rate){if(!this.ok||!t)return false;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';const v=this.v||this.pick();if(v)u.voice=v;u.rate=rate||0.9;speechSynthesis.speak(u);return true}catch(e){return false}}};
+if(TTS.ok){try{TTS.pick();speechSynthesis.addEventListener('voiceschanged',()=>TTS.pick())}catch(e){}}
+const playBtns=(t,limitKey,limit)=>`<div class="playrow"><button class="play" data-say="${esc(t)}"${limitKey?` data-lim="${limitKey}" data-max="${limit}"`:''}>▶ Play</button><button class="play ghost" data-say="${esc(t)}" data-rate="0.65"${limitKey?` data-lim="${limitKey}" data-max="${limit}"`:''}>Slow</button>${limitKey?`<span class="note mono" data-count="${limitKey}">${plays[limitKey]||0}/${limit} plays</span>`:''}</div>`;
+const plays={};
+const ACC=['á','é','í','ó','ú','ñ','ü','¿','¡'];
+const accentBar=id=>`<div class="accbar" role="group" aria-label="Spanish characters">${ACC.map(c=>`<button type="button" data-acc="${c}" data-for="${id}">${c}</button>`).join('')}</div>`;
+const stripAcc=x=>x.normalize('NFD').replace(/[̀-ͯ]/g,'');
+function norm(x,lang){let t=String(x||'').toLowerCase().replace(/[’`]/g,"'").replace(/[¿¡?!.,;:"“”«»()\/]/g,' ').replace(/\s+/g,' ').trim();
+  if(lang==='en')t=t.replace(/^(to|the|a|an) /,'');
+  if(lang==='es')t=t.replace(/^(yo|él|ella|nosotros|nosotras) /,'');
+  return t}
+function lev(a,b){const m=a.length,n=b.length;if(Math.abs(m-n)>2)return 9;let prev=Array.from({length:n+1},(_,j)=>j);for(let i=1;i<=m;i++){const cur=[i];for(let j=1;j<=n;j++)cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));prev=cur}return prev[n]}
+function checkTyped(input,ans,lang){const n=norm(input,lang);if(!n)return{g:0,empty:true};
+  for(const a of ans)if(norm(a,lang)===n)return{g:2};
+  for(const a of ans)if(stripAcc(norm(a,lang))===stripAcc(n))return{g:2,accent:a};
+  for(const a of ans){const x=stripAcc(norm(a,lang)),y=stripAcc(n);if(x.length>4&&lev(x,y)<=1)return{g:1,typo:a}}
+  return{g:0}}
+function wordCheck(input,target){
+  const T=norm(target,'').split(' ').filter(Boolean),U=norm(input,'').split(' ').filter(Boolean);
+  const ts=T.map(stripAcc),us=U.map(stripAcc),m=T.length,n=U.length;
+  const L=Array.from({length:m+1},()=>new Array(n+1).fill(0));
+  for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)L[i][j]=ts[i]===us[j]?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+  const out=[];let i=0,j=0,ok=0,acc=0;
+  while(i<m){if(j<n&&ts[i]===us[j]){if(T[i]===U[j]){out.push(`<span class="w ok">${esc(T[i])}</span>`);ok++}else{out.push(`<span class="w acc" title="you wrote ${esc(U[j])}">${esc(T[i])}</span>`);acc++}i++;j++}
+    else if(j<n&&L[i][j+1]>=L[i+1][j])j++;else{out.push(`<span class="w miss">${esc(T[i])}</span>`);i++}}
+  const extra=Math.max(0,n-(ok+acc));const errors=(m-ok-acc)+extra;
+  return{html:out.join(' '),ok,acc,total:m,errors,g:errors===0?2:errors<=2?1:0};
+}
+document.addEventListener('pointerdown',e=>{if(e.target.closest&&e.target.closest('[data-acc]'))e.preventDefault()});
+document.addEventListener('click',e=>{
+  const a=e.target.closest&&e.target.closest('[data-acc]');
+  if(a){const f=document.getElementById(a.dataset.for);if(f){const st=f.selectionStart??f.value.length,en=f.selectionEnd??st;f.value=f.value.slice(0,st)+a.dataset.acc+f.value.slice(en);f.focus();try{f.setSelectionRange(st+1,st+1)}catch(_){ }f.dispatchEvent(new Event('input',{bubbles:true}))}return}
+  const b=e.target.closest&&e.target.closest('[data-say]');
+  if(b){const k=b.dataset.lim;if(k){const mx=+b.dataset.max;if((plays[k]||0)>=mx){toast('That\'s the maximum number of plays in the exam');return}plays[k]=(plays[k]||0)+1;document.querySelectorAll(`[data-count="${k}"]`).forEach(x=>x.textContent=plays[k]+'/'+mx+' plays')}
+    if(!TTS.say(b.dataset.say,b.dataset.rate?+b.dataset.rate:0.9))toast('Audio isn\'t available here. See Guide → Spanish audio')}
+});
 
 /* ---------- state ---------- */
 const blank=()=>({v:1,name:'Eddie',cards:{},days:{},bounties:{},mine:[],removed:[],comebacks:[],cal:{sure:[0,0],think:[0,0],guess:[0,0]},ifthen:{when:'',act:'',t:0},seenUnlock:1,t:0});
@@ -1085,7 +1447,7 @@ function vCamp(){
   const all=allCards(),c=counts(all),ph=latestPhoto(),nu=nextUnlock(),un=unlocked();
   const mins=Math.max(1,Math.round(Math.min(c.due||runSize,runSize)*0.5));
   const sure=calPct('sure');
-  const subjRows=['geo','lit','lang'].map(s=>{const cs=counts(all.filter(x=>subjOf(x)===s));const pct=cs.total?Math.round(100*cs.sec/cs.total):0;
+  const subjRows=['geo','lit','lang','span'].map(s=>{const cs=counts(all.filter(x=>subjOf(x)===s));const pct=cs.total?Math.round(100*cs.sec/cs.total):0;
     return `<div class="prog s-${s}"><span class="subj s-${s}">${SUBJ[s].name}</span><span class="mono small muted">${cs.sec}/${cs.total} secured</span><div class="bar" style="--c:var(--${s})"><i style="width:${pct}%"></i></div></div>`}).join('');
   const bq=suggestBounty();
   const it=S.ifthen&&S.ifthen.when&&S.ifthen.act?`<div class="card"><div class="eyebrow">My plan</div><p class="ifthen" style="margin-top:6px">When ${esc(S.ifthen.when)}, I will ${esc(S.ifthen.act)}.</p></div>`:'';
@@ -1123,7 +1485,7 @@ function vCamp(){
 }
 function suggestBounty(){
   const last=b=>{const a=(S.bounties[b.id]||{}).attempts||[];return a.length?a[a.length-1].k:0};
-  const bySubj={};['geo','lit','lang'].forEach(s=>{bySubj[s]=Math.max(0,...C.bounties.filter(b=>b.s===s).map(last))});
+  const bySubj={};['geo','lit','lang','span'].forEach(s=>{bySubj[s]=Math.max(0,...C.bounties.filter(b=>b.s===s).map(last))});
   const s=Object.entries(bySubj).sort((a,b)=>a[1]-b[1])[0][0];
   return C.bounties.filter(b=>b.s===s).sort((a,b)=>last(a)-last(b))[0];
 }
@@ -1146,13 +1508,15 @@ function vRun(){
     <div class="runbar"><button class="back" id="quit" aria-label="End run">✕ End</button><div class="bar"><i style="width:${pct}%"></i></div><span class="mono small muted">${run.i+1}/${run.q.length}</span></div>
     <div class="flash rise s-${s}" style="--c:var(--${s==='mine'?'ember':s})">
       <div class="row" style="justify-content:space-between"><span class="subj s-${s}">${esc(dk.name)}</span>${item.isNew?'<span class="newtag">New</span>':item.retry?'<span class="newtag">Again</span>':''}</div>
-      <div class="prompt fmt">${md(card.q)}</div>
+      <div class="prompt fmt ${card.t==='v'&&card.al==='en'?'es-big':''}">${md(card.q)}</div>
+      ${card.say?playBtns(card.say):''}
       <div id="zone" class="stack"></div>
     </div>
   </div>`);
   node.querySelector('#quit').onclick=()=>{run.q=run.q.slice(0,run.i);render()};
   const zone=node.querySelector('#zone');
-  card.t==='m'?mcqZone(zone,card,item):recallZone(zone,card,item);
+  card.t==='m'?mcqZone(zone,card,item):card.t==='v'?typedZone(zone,card,item):card.t==='d'?dictZone(zone,card,item):recallZone(zone,card,item);
+  if(card.say&&(card.hide||card.t==='d')&&run.stage==='ask'&&run.auto!==run.i){run.auto=run.i;setTimeout(()=>TTS.say(card.say,0.9),250)}
   return node;
 }
 function emptyRun(nothing){
@@ -1162,16 +1526,54 @@ function emptyRun(nothing){
 const confBtns=`<div><p class="note" style="margin-bottom:8px">How sure are you? Pick one to reveal the answer.</p><div class="conf"><button data-c="sure">Sure<small>I know it</small></button><button data-c="think">Think so<small>fairly sure</small></button><button data-c="guess">Guessing<small>no idea</small></button></div></div>`;
 function recallZone(zone,card,item){
   if(run.stage==='ask'){
-    zone.innerHTML=`<label class="lab" for="typed">Answer from memory first. Typing it out helps, but it's optional.</label><textarea id="typed" rows="3" placeholder="Your answer…">${esc(run.typed)}</textarea>${confBtns}`;
+    zone.innerHTML=`<label class="lab" for="typed">Answer from memory first. Typing it out helps, but it's optional.</label><textarea id="typed" rows="3" placeholder="Your answer…">${esc(run.typed)}</textarea>${card.al==='es'?accentBar('typed'):''}${confBtns}`;
     zone.querySelector('#typed').addEventListener('input',e=>run.typed=e.target.value);
     on(zone,'[data-c]','click',e=>{run.conf=e.currentTarget.dataset.c;run.stage='reveal';render()});
   }else{
     const s=subjOf(card);
     zone.innerHTML=`${run.typed.trim()?`<div class="yours"><div class="eyebrow" style="margin-bottom:4px">You wrote</div>${esc(run.typed)}</div>`:''}
       <div class="answer fmt" style="--c:var(--${s==='mine'?'ember':s})">${md(card.a)}</div>
+      ${card.sayA?playBtns(card.sayA):''}
       ${card.x?`<p class="note">${md(card.x)}</p>`:''}
       <p class="note">Be honest. Only "Got it" if you had the key points.</p>
       <div class="grade"><button class="g0" data-g="0">Not yet</button><button class="g1" data-g="1">Partly</button><button class="g2" data-g="2">Got it</button></div>`;
+    on(zone,'[data-g]','click',e=>finishCard(item,+e.currentTarget.dataset.g));
+  }
+}
+function gradeRow(sug){const L=[['0','g0','Not yet'],['1','g1','Partly'],['2','g2','Got it']];return `<div class="grade">${L.map(([g,c,t])=>`<button class="${c}${String(sug)===g?' sug':''}" data-g="${g}">${t}${String(sug)===g?'<small>suggested</small>':''}</button>`).join('')}</div>`}
+function typedZone(zone,card,item){
+  const toEs=card.al==='es';
+  if(run.stage==='ask'){
+    zone.innerHTML=`<label class="lab" for="typed">${toEs?'Type the Spanish':'Type the English meaning'}</label><input type="text" id="typed" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="${toEs?'es':'en'}" value="${esc(run.typed)}">${toEs?accentBar('typed'):''}${confBtns}`;
+    const inp=zone.querySelector('#typed');inp.addEventListener('input',e=>run.typed=e.target.value);
+    on(zone,'[data-c]','click',e=>{run.conf=e.currentTarget.dataset.c;run.stage='reveal';run.chk=checkTyped(run.typed,card.ans,card.al);render()});
+  }else{
+    const r=run.chk||{g:0},s=subjOf(card);
+    const verdict=r.g===2?(r.accent?`Right, but check the accent: <b>${esc(r.accent)}</b>`:'Correct.'):r.typo?`Very close. Check the spelling: <b>${esc(r.typo)}</b>`:r.empty?'No answer typed.':'Not this time.';
+    const others=card.ans.slice(1).filter(a=>!/^(yo|él|ella|nosotros) /.test(a));
+    zone.innerHTML=`${run.typed.trim()?`<div class="yours"><div class="eyebrow" style="margin-bottom:4px">You typed</div>${esc(run.typed)}</div>`:''}
+      <p class="verdict ${r.g===2?'ok':r.g===1?'':'no'}">${verdict}</p>
+      <div class="answer fmt" style="--c:var(--${s==='mine'?'ember':s})"><p><strong>${esc(card.show)}</strong></p>${others.length?`<p class="note">Also accepted: ${esc(others.join(', '))}</p>`:''}</div>
+      ${card.sayA?playBtns(card.sayA):''}
+      ${card.x?`<p class="note">${md(card.x)}</p>`:''}
+      ${r.g===2?'<button class="btn primary block" id="nx">Next</button>':`<p class="note">Marked automatically. If your answer means the same thing, tap Got it.</p>${gradeRow(r.g)}`}`;
+    const nx=zone.querySelector('#nx');if(nx)nx.onclick=()=>finishCard(item,2);
+    on(zone,'[data-g]','click',e=>finishCard(item,+e.currentTarget.dataset.g));
+  }
+}
+function dictZone(zone,card,item){
+  if(run.stage==='ask'){
+    zone.innerHTML=`<label class="lab" for="typed">What you hear</label><textarea id="typed" rows="2" lang="es" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(run.typed)}</textarea>${accentBar('typed')}${confBtns}`;
+    zone.querySelector('#typed').addEventListener('input',e=>run.typed=e.target.value);
+    on(zone,'[data-c]','click',e=>{run.conf=e.currentTarget.dataset.c;run.stage='reveal';run.chk=wordCheck(run.typed,card.show);render()});
+  }else{
+    const r=run.chk;
+    zone.innerHTML=`<div class="answer dict">${r.html}</div>
+      <p class="note"><span class="w ok">green</span> = right · <span class="w acc">amber</span> = accent or small slip · <span class="w miss">red</span> = missed or wrong</p>
+      <p class="verdict ${r.g===2?'ok':r.g===1?'':'no'}">${r.ok+r.acc} of ${r.total} words${r.errors?`, ${r.errors} to fix`:''}.</p>
+      ${card.x?`<p class="note">Meaning: ${esc(card.x)}</p>`:''}
+      ${r.g===2?'<button class="btn primary block" id="nx">Next</button>':gradeRow(r.g)}`;
+    const nx=zone.querySelector('#nx');if(nx)nx.onclick=()=>finishCard(item,2);
     on(zone,'[data-g]','click',e=>finishCard(item,+e.currentTarget.dataset.g));
   }
 }
@@ -1198,7 +1600,7 @@ function finishCard(item,grade){
   if(grade===0&&!item.retry){const pos=Math.min(run.q.length,run.i+4);run.q.splice(pos,0,{id:item.id,retry:true,isNew:false})}
   const msg=grade===2?(r.box>=3?'Secured · back in '+INTERVALS[r.box]+' days':'Back in '+INTERVALS[r.box]+' day'+(INTERVALS[r.box]===1?'':'s')):grade===1?'Back tomorrow':'Coming back in a few cards';
   toast(msg);
-  run.i++;run.stage='ask';run.conf=null;run.pick=null;run.typed='';
+  run.i++;run.stage='ask';run.conf=null;run.pick=null;run.typed='';run.chk=null;
   render();window.scrollTo(0,0);
 }
 function runEnd(){
@@ -1233,7 +1635,7 @@ function runEnd(){
 /* ---------- PACKS ---------- */
 function vPacks(){
   const all=allCards();
-  const groups=['geo','lit','lang'].map(s=>{
+  const groups=['geo','lit','lang','span'].map(s=>{
     const decks=C.decks.filter(d=>d.s===s);
     return `<section class="stack"><div class="row" style="justify-content:space-between"><h2 class="h2">${SUBJ[s].name}</h2><span class="note">${SUBJ[s].board}</span></div>
     <div class="list">${decks.map(d=>{const cs=counts(all.filter(c=>c.d===d.id));const pct=Math.round(100*cs.sec/Math.max(1,cs.total));
@@ -1247,7 +1649,7 @@ function vPacks(){
         <p class="note">Add your own: quotes from <i>An Inspector Calls</i> or the modern poems, your class case studies, things you keep forgetting. They join your runs automatically.</p>
         <div><label class="lab" for="mq">Question side</label><input type="text" id="mq" placeholder="e.g. Inspector, Act 3: key quote about responsibility"></div>
         <div><label class="lab" for="ma">Answer side</label><textarea id="ma" rows="3" placeholder="Copy it exactly from your book, plus why it matters"></textarea></div>
-        <div><label class="lab" for="ms">Subject</label><select id="ms" class="chip" style="padding:8px 12px"><option value="lit">English Literature</option><option value="lang">English Language</option><option value="geo">Geography</option></select></div>
+        <div><label class="lab" for="ms">Subject</label><select id="ms" class="chip" style="padding:8px 12px"><option value="lit">English Literature</option><option value="lang">English Language</option><option value="geo">Geography</option><option value="span">Spanish</option></select></div>
         <button class="btn primary" id="madd">Add card</button>
       </div>
       <div class="list">${mine||'<p class="note">No cards of your own yet.</p>'}</div>
@@ -1268,7 +1670,7 @@ function vBounties(){
   const list=C.bounties.filter(b=>bountyFilter==='all'||b.s===bountyFilter);
   const node=el(`<div class="stack">
     <div><div class="eyebrow">Bounty board</div><h1 class="h-display">Exam questions</h1><p class="muted small" style="margin-top:6px">Written in the style of each exam board, with mark schemes in plain English. Time yourself, plan, write, then mark it honestly against the checklist.</p></div>
-    <div class="row" role="group" aria-label="Filter">${[['all','All'],['geo','Geography'],['lit','Literature'],['lang','Language']].map(([k,l])=>`<button class="chip" data-f="${k}" aria-pressed="${bountyFilter===k}">${l}</button>`).join('')}</div>
+    <div class="row" role="group" aria-label="Filter">${[['all','All'],['geo','Geography'],['lit','Literature'],['lang','Language'],['span','Spanish']].map(([k,l])=>`<button class="chip" data-f="${k}" aria-pressed="${bountyFilter===k}">${l}</button>`).join('')}</div>
     <div class="list">${list.map(b=>{const la=lastAttempt(b.id);const n=((S.bounties[b.id]||{}).attempts||[]).length;
       return `<button class="item" data-b="${b.id}"><div class="row" style="justify-content:space-between"><span class="subj s-${b.s}">${esc(b.paper)}</span><span class="marks">${b.marks} marks</span></div><div class="t">${esc(plain(b.q.split('\n')[0]).slice(0,150))}</div><div class="meta"><span>${b.mins} min</span>${n?`<span>· ${n} attempt${n>1?'s':''} · last: ${esc(la.lv||la.sc||'')}</span>`:'<span>· not tried yet</span>'}</div></button>`}).join('')}</div>
     <div class="card stack"><div class="eyebrow">Real past papers</div><p class="small">Past papers and mark schemes are published by the exam boards. Do one full paper under timed conditions every few weeks from January.</p>
@@ -1282,11 +1684,12 @@ function srcHTML(key,open){
   const s=C.sources[key];if(!s)return '';
   if(s.combo)return s.combo.map(k=>srcHTML(k,open)).join('');
   if(s.image){const p=PH[1];return `<div class="src"><div class="eyebrow">${esc(s.title)}</div><img src="${p.src}" alt="Louie sitting on a window sill" style="margin-top:8px;border-radius:10px;max-height:380px;width:100%;object-fit:cover"></div>`}
+  if(s.images){return `<div class="src"><div class="eyebrow">${esc(s.title)}</div>${s.note?`<p class="note" style="margin-top:4px">${esc(s.note)}</p>`:''}<div class="photos2">${s.images.map((k,i)=>{const p=PH[+k.slice(1)];return `<figure><img src="${p.src}" alt="Photo ${i+1}: Louie"><figcaption class="note">Foto ${i+1}</figcaption></figure>`}).join('')}</div></div>`}
   let body;
   if(s.numbered)body=s.body.split(/\n\s*\n/).map((p,i)=>`<div class="para"><b>${i+1}</b><span>${esc(p)}</span></div>`).join('');
   else body=s.verse?esc(s.body):s.body.split(/\n\s*\n/).map(p=>md(p)).join('');
   const also=s.also?srcHTML(s.also,open):'';
-  return also+`<details class="src" ${open?'open':''}><summary>${esc(s.title)}</summary>${s.note?`<p class="note" style="margin-top:6px">${esc(s.note)}</p>`:''}<div class="body ${s.verse?'verse':''}">${body}</div></details>`;
+  return also+`<details class="src" ${open?'open':''}><summary>${esc(s.title)}</summary>${s.note?`<p class="note" style="margin-top:6px">${esc(s.note)}</p>`:''}<div class="body ${s.verse?'verse':''}">${body}</div>${s.say?playBtns(s.body):''}</details>`;
 }
 function fmtClock(sec){return pad(Math.floor(sec/60))+':'+pad(sec%60)}
 function vBounty(){
@@ -1300,7 +1703,7 @@ function vBounty(){
     <div class="row" style="justify-content:space-between"><span class="subj s-${b.s}">${esc(b.paper)}</span><span class="marks">${b.marks} marks · ${b.mins} min</span></div>
     ${b.source?srcHTML(b.source,true):''}
     <div class="card qbox fmt">${md(b.q)}</div>
-    ${b.type==='essay'||b.type==='short'||b.type==='list'?`<div class="card timer"><span class="clock" id="clk">${fmtClock(tm.sec)}</span><span class="note">target ${b.mins}:00</span><button class="chip" id="tgo">${tm.on?'Pause':'Start timer'}</button><button class="chip" id="trs">Reset</button></div>`:''}
+    ${['essay','short','list','trans','speak'].includes(b.type)?`<div class="card timer"><span class="clock" id="clk">${fmtClock(tm.sec)}</span><span class="note">target ${b.mins}:00</span><button class="chip" id="tgo">${tm.on?'Pause':'Start timer'}</button><button class="chip" id="trs">Reset</button></div>`:''}
     <div id="work" class="stack"></div>
     ${atts?`<p class="attempts">Previous attempts: ${atts}</p>`:''}
   </div>`);
@@ -1313,7 +1716,7 @@ function vBounty(){
     node.querySelector('#trs').onclick=()=>{tm.sec=0;tm.on=false;clearInterval(tm.h);render()};tick();
   }
   const work=node.querySelector('#work');
-  if(b.type==='calc')calcWork(work,b);else if(b.type==='tf')tfWork(work,b);else essayWork(work,b,dr);
+  if(b.type==='calc')calcWork(work,b);else if(b.type==='tf')tfWork(work,b);else if(b.type==='quiz')quizWork(work,b);else if(b.type==='dict')dictWork(work,b);else if(b.type==='trans')transWork(work,b,dr);else if(b.type==='speak')speakWork(work,b);else essayWork(work,b,dr);
   return node;
 }
 function stopTimer(id){const t=timers[id];if(t){t.on=false;clearInterval(t.h)}}
@@ -1321,7 +1724,7 @@ function saveAttempt(b,rec){const st=S.bounties[b.id];st.attempts.push(Object.as
 function essayWork(work,b,dr){
   const planH=b.plan?`<details class="card" ${Object.values(dr.plan||{}).some(Boolean)?'open':''}><summary style="cursor:pointer;font-weight:700">Plan it (2–5 minutes)</summary><div class="stack" style="margin-top:10px">${b.plan.map((p,i)=>`<div><label class="lab" for="pl${i}">${esc(p)}</label><input type="text" id="pl${i}" data-p="${i}" value="${esc((dr.plan||{})[i]||'')}"></div>`).join('')}</div></details>`:'';
   work.innerHTML=`${planH}
-    <div><label class="lab" for="ans">${b.type==='list'?'Your four points':'Your answer'} (saved as you type)</label><textarea id="ans" rows="${b.marks>=20?14:b.marks>=8?9:5}" placeholder="Write here, or on paper and use this space for notes.">${esc(dr.text||'')}</textarea></div>
+    <div><label class="lab" for="ans">${b.type==='list'?'Your four points':'Your answer'} (saved as you type)</label><textarea id="ans" rows="${b.marks>=20?14:b.marks>=8?9:5}" placeholder="Write here, or on paper and use this space for notes." ${b.lang==='es'?'lang="es" autocorrect="off" spellcheck="false"':''}>${esc(dr.text||'')}</textarea>${b.lang==='es'?accentBar('ans'):''}</div>
     ${bountyStage[b.id]==='mark'?markHTML(b):`<button class="btn primary block" id="mk">I've finished: mark it</button>`}`;
   const save=()=>{dr.t=Date.now();persist()};
   on(work,'[data-p]','input',e=>{dr.plan=dr.plan||{};dr.plan[e.target.dataset.p]=e.target.value.slice(0,400);save()});
@@ -1333,7 +1736,7 @@ const bountyStage={};const pickLv={};
 function markHTML(b){
   return `<div class="card stack"><div class="eyebrow">Check your answer</div><p class="note">Tick what you really did. This is your checklist for next time too.</p>
     <div class="checks">${(b.check||[]).map((c,i)=>`<label class="check"><input type="checkbox" data-ck="${i}"><span>${esc(c)}</span></label>`).join('')}</div></div>
-    <details class="card"><summary style="cursor:pointer;font-weight:700">Show a model answer</summary><div class="model fmt" style="margin-top:10px">${md(b.model||'')}</div></details>
+    ${b.model?`<details class="card"><summary style="cursor:pointer;font-weight:700">Show a model answer</summary><div class="model fmt" style="margin-top:10px">${md(b.model)}</div>${b.lang==='es'?playBtns(b.model.split('\n\n*')[0].replace(/\*/g,'')):''}</details>`:''}
     <div class="card stack"><div class="eyebrow">Which level is it in?</div>${b.note?`<p class="note">${esc(b.note)}</p>`:''}
     <div class="lvls">${(b.levels||[]).map((l,i)=>`<button class="lvl" data-lv="${i}" aria-pressed="${pickLv[b.id]===i}"><b>${esc(l.lv)}</b><span class="mono">${esc(l.range)}</span><span>${esc(l.d)}</span></button>`).join('')}</div>
     <p class="note">Not sure? Pick the lower one. Examiners mark the whole answer, not its best moment.</p>
@@ -1347,6 +1750,51 @@ function wireMark(work,b){
     bountyStage[b.id]=null;pickLv[b.id]=null;timers[b.id]={sec:0,on:false};
     toast('Saved. +4 points');go('bounties');
   };
+}
+function quizWork(work,b){
+  const st=work._st=work._st||{pick:{},done:null};
+  const draw=()=>{
+    const letters='ABCD';
+    work.innerHTML=`${b.listen?`<div class="card stack"><div class="eyebrow">Recording</div>${playBtns(b.listen,b.id,2)}</div>`:''}
+    <div class="stack">${b.items.map(([q,o],qi)=>{const order=seeded(o.map((t,i)=>({t,i})),hash(b.id)+qi);
+      return `<div class="card stack"><p><b>${qi+1}.</b> ${esc(q)}</p><div class="opts">${order.map((x,k)=>{const cls=st.done?(x.i===0?'right':st.pick[qi]===x.i?'wrong':''):'';return `<button class="opt ${cls}" data-q="${qi}" data-o="${x.i}" aria-pressed="${st.pick[qi]===x.i}" ${st.done?'disabled':''}>${letters[k]}. ${esc(x.t)}</button>`}).join('')}</div></div>`}).join('')}</div>
+    ${st.done?`<div class="card stack"><p class="verdict ${st.done.sc===b.items.length?'ok':''}">${st.done.sc} out of ${b.items.length}.</p>${b.model?`<div class="model fmt">${md(b.model)}</div>`:''}</div>`:`<button class="btn primary block" id="qm" ${Object.keys(st.pick).length<b.items.length?'disabled':''}>Mark it</button>`}`;
+    if(st.done)return;
+    on(work,'[data-q]','click',e=>{st.pick[+e.currentTarget.dataset.q]=+e.currentTarget.dataset.o;draw()});
+    work.querySelector('#qm').onclick=()=>{const sc=b.items.filter((_,qi)=>st.pick[qi]===0).length;st.done={sc};saveAttempt(b,{sc:sc+'/'+b.items.length});draw()};
+  };draw();
+}
+function dictWork(work,b){
+  const st=work._st=work._st||{txt:{},done:null};
+  const draw=()=>{
+    work.innerHTML=`${b.sentences.map((t,i)=>{const r=st.done&&st.done.r[i];return `<div class="card stack"><div class="eyebrow">Sentence ${i+1}</div>${playBtns(t,b.id+'_'+i,3)}<textarea id="dc${i}" data-dc="${i}" rows="2" lang="es" autocapitalize="off" autocorrect="off" spellcheck="false" ${st.done?'readonly':''}>${esc(st.txt[i]||'')}</textarea>${st.done?`<div class="answer dict">${r.html}</div>`:accentBar('dc'+i)}</div>`}).join('')}
+    ${st.done?`<div class="card stack"><p class="verdict">${st.done.ok} of ${st.done.total} words exactly right${st.done.acc?`, plus ${st.done.acc} with a small slip`:''}.</p><p class="note"><span class="w ok">green</span> right · <span class="w acc">amber</span> accent or small slip · <span class="w miss">red</span> missed</p><div class="model fmt">${md(b.model)}</div></div>`:`<button class="btn primary block" id="dm">Mark it</button>`}`;
+    on(work,'[data-dc]','input',e=>st.txt[+e.target.dataset.dc]=e.target.value);
+    const dm=work.querySelector('#dm');if(dm)dm.onclick=()=>{const r=b.sentences.map((t,i)=>wordCheck(st.txt[i]||'',t));const ok=r.reduce((s,x)=>s+x.ok,0),acc=r.reduce((s,x)=>s+x.acc,0),total=r.reduce((s,x)=>s+x.total,0);st.done={r,ok,acc,total};saveAttempt(b,{sc:ok+'/'+total+' words'});draw()};
+  };draw();
+}
+function transWork(work,b,dr){
+  const marking=bountyStage[b.id]==='mark';
+  work.innerHTML=`<div><label class="lab" for="ans">Your translation (saved as you type)</label><textarea id="ans" rows="7" ${b.lang==='es'?'lang="es" autocorrect="off" spellcheck="false"':''}>${esc(dr.text||'')}</textarea>${b.lang==='es'&&!marking?accentBar('ans'):''}</div>
+    ${marking?`<div class="card stack"><div class="eyebrow">Model translation</div><div class="model">${esc(b.model)}</div>${b.lang==='es'?playBtns(b.model):''}</div>
+    <div class="card stack"><div class="eyebrow">Tick each part you got across</div><p class="note">This is how the real mark scheme works: the passage is split into 15 parts. Small slips are fine if the meaning comes across.</p>
+    <div class="checks">${b.elements.map(([src,tgt],i)=>`<label class="check"><input type="checkbox" data-el="${i}"><span><b>${esc(src)}</b><br><span class="muted">${esc(tgt)}</span></span></label>`).join('')}</div>
+    <p class="verdict" id="tr-sc">0 of 15 parts → 0 / 5 for meaning</p><p class="note">The other 5 marks are for the accuracy of your vocabulary and grammar overall.</p>
+    <button class="btn primary block" id="tsv">Save this attempt</button></div>`:`<button class="btn primary block" id="mk">I've finished: mark it</button>`}`;
+  work.querySelector('#ans').addEventListener('input',e=>{dr.text=e.target.value.slice(0,4000);dr.t=Date.now();persist()});
+  const mk=work.querySelector('#mk');if(mk)mk.onclick=()=>{stopTimer(b.id);bountyStage[b.id]='mark';render()};
+  if(marking){const conv=n=>n>=13?5:n>=10?4:n>=7?3:n>=4?2:n>=1?1:0;
+    const upd=()=>{const n=work.querySelectorAll('[data-el]:checked').length;work.querySelector('#tr-sc').textContent=`${n} of 15 parts → ${conv(n)} / 5 for meaning`;return n};
+    on(work,'[data-el]','change',upd);
+    work.querySelector('#tsv').onclick=()=>{const n=upd();saveAttempt(b,{sc:n+'/15 parts ('+conv(n)+'/5 meaning)'});bountyStage[b.id]=null;timers[b.id]={sec:0,on:false};toast('Saved. +4 points');go('bounties')}}
+}
+function speakWork(work,b){
+  const marking=bountyStage[b.id]==='mark';
+  work.innerHTML=`<div class="card stack"><div class="eyebrow">Say each answer out loud first</div><p class="note">Then open the model and play it. Copy any phrases you like into My cards.</p>
+    ${b.prompts.map(([p,m],i)=>`<div class="stack sp-item"><p><b>${i+1}.</b> ${esc(p)}</p>${/[¿¡áéíóúñ]/i.test(p)?playBtns(p):''}<details><summary class="note" style="cursor:pointer">Model answer</summary><div class="model" lang="es" style="margin-top:6px">${esc(m)}</div>${playBtns(m)}</details></div>`).join('<hr class="hr">')}</div>
+    ${marking?markHTML(b):`<button class="btn primary block" id="mk">I've done it: mark it</button>`}`;
+  const mk=work.querySelector('#mk');if(mk)mk.onclick=()=>{stopTimer(b.id);bountyStage[b.id]='mark';render()};
+  if(marking)wireMark(work,b);
 }
 function calcWork(work,b){
   const done=bountyStage[b.id];
@@ -1384,7 +1832,7 @@ function vAlbum(){
 function vTrail(){
   const wrong=allCards().filter(c=>S.cards[c.id]&&S.cards[c.id].w>0);
   const fixed=wrong.filter(c=>!S.cards[c.id].pend),onTrail=wrong.filter(c=>S.cards[c.id].pend);
-  const row=c=>{const st=S.cards[c.id];return `<details class="item"><summary style="cursor:pointer;list-style:none"><div class="row" style="justify-content:space-between"><span class="subj s-${subjOf(c)}">${esc((deckById[c.d]||{}).name||'')}</span><span class="mono small muted">wrong ${st.w}× · right ${st.c}×</span></div><div class="t" style="margin-top:6px">${esc(plain(c.q).split('\n')[0].slice(0,160))}</div></summary><div class="answer fmt" style="margin-top:10px;--c:var(--${subjOf(c)==='mine'?'ember':subjOf(c)})">${c.t==='m'?md(c.o[0]):md(c.a)}</div></details>`};
+  const row=c=>{const st=S.cards[c.id];return `<details class="item"><summary style="cursor:pointer;list-style:none"><div class="row" style="justify-content:space-between"><span class="subj s-${subjOf(c)}">${esc((deckById[c.d]||{}).name||'')}</span><span class="mono small muted">wrong ${st.w}× · right ${st.c}×</span></div><div class="t" style="margin-top:6px">${esc(plain(c.q).split('\n')[0].slice(0,160))}</div></summary><div class="answer fmt" style="margin-top:10px;--c:var(--${subjOf(c)==='mine'?'ember':subjOf(c)})">${c.t==='m'?md(c.o[0]):md(c.a||c.show||'')}</div></details>`};
   const node=el(`<div class="stack"><button class="back" id="bk">← Camp</button>
     <div><div class="eyebrow">Comeback Trail</div><h1 class="h-display">Mistakes, turned round</h1><p class="muted small" style="margin-top:6px">Every card you've got wrong lands here. When you get it right on a later day, that's a <b>comeback</b>. Mistakes you fix are remembered better than things you got right first time, so this list is good news.</p></div>
     <div class="tiles"><div class="tile"><div class="n">${S.comebacks.length}</div><div class="l">comebacks so far</div></div><div class="tile"><div class="n">${onTrail.length}</div><div class="l">still on the trail</div></div><div class="tile"><div class="n">${allCards().reduce((s,c)=>s+((S.cards[c.id]||{}).sw||0),0)}</div><div class="l">"Sure" but wrong</div></div></div>
@@ -1421,6 +1869,17 @@ function vGuide(){
       <div><label class="lab" for="iw">When…</label><input type="text" id="iw" value="${esc(S.ifthen.when||'')}" placeholder="I get home and have a snack"></div>
       <div><label class="lab" for="ia">I will…</label><input type="text" id="ia" value="${esc(S.ifthen.act||'')}" placeholder="do a standard run before gaming"></div>
       <button class="btn primary" id="isv">Save my plan</button></div>
+    <h2 class="h2" id="spanish">Spanish</h2>
+    <div class="card small stack">
+      <p><b>Say it out loud.</b> Speaking is a quarter of the GCSE. Say every answer out loud before you type or reveal it, and copy the model answers' pronunciation.</p>
+      <p><b>Typed answers are marked for you.</b> A missing accent counts as right, but you'll be shown it. If you've written something with the same meaning, tap <b>Got it</b>.</p>
+      <p><b>Dictation:</b> listen, type what you hear, and green, amber and red show which words you got. In the exam you hear each sentence three times.</p>
+      <p><b>Higher tier:</b> to reach the top bands in writing you need the past, present AND future in every answer, plus a couple of "show-off" structures like <i>me gustaría</i>, <i>lo que más me gusta es</i> and <i>si pudiera…</i>.</p>
+    </div>
+    <h2 class="h2" id="audio">Spanish audio</h2>
+    <div class="card small stack"><p>The ▶ buttons use your device's built-in voice. ${TTS.ok?(TTS.v?'A Spanish voice is installed on this device.':'No Spanish voice was found yet, so audio may sound English.'):'This browser doesn\'t support speech, so audio won\'t play here.'}</p>
+      <p>On an iPad or iPhone: <b>Settings → Accessibility → Spoken Content → Voices → Spanish</b>, then download a Spain voice. Make sure the side switch isn't on silent.</p>
+      <button class="btn" id="tst">Test the Spanish voice</button></div>
     <h2 class="h2">Marking yourself</h2>
     <div class="card small stack"><p>The bounty levels come from the exam boards' mark schemes, rewritten in plain English. For a grade 8 in English, aim to land in the top two levels. If you're unsure between two levels, pick the lower one, and show a teacher the answer when you can.</p></div>
     <h2 class="h2">Saving and devices</h2>
@@ -1441,6 +1900,7 @@ function vGuide(){
     </div>
     <p class="note">Content: Geography follows Edexcel GCSE Geography B (1GB0); English follows AQA GCSE English Language (8700) and English Literature (8702). Questions are written in the boards' style, not copied from real papers.</p>
   </div>`);
+  node.querySelector('#tst').onclick=()=>{if(!TTS.say('Hola Eddie. ¡Vamos a practicar español!',0.9))toast('Audio isn\'t available in this browser')};
   node.querySelector('#isv').onclick=()=>{S.ifthen={when:node.querySelector('#iw').value.trim().replace(/^when\s+/i,''),act:node.querySelector('#ia').value.trim().replace(/^i will\s+/i,''),t:Date.now()};persist();toast('Plan saved. It\'s on your Camp page now')};
   node.querySelector('#nm').addEventListener('change',e=>{S.name=e.target.value.trim()||'Eddie';persist();toast('Saved')});
   node.querySelector('#rs').onclick=()=>{const rz=node.querySelector('#rz');rz.innerHTML=`<div class="confirm"><p class="small">This wipes every card, bounty and photo unlock. It can't be undone.</p><div class="row"><button class="btn" id="rsy" style="border-color:var(--bad);color:var(--bad)">Yes, reset everything</button><button class="btn ghost" id="rsn">Cancel</button></div></div>`;
@@ -1465,7 +1925,7 @@ function vGuide(){
       node.querySelector('#bkin').value='';toast('Progress code loaded');
     }catch(e){msg.textContent='That code didn\'t work. Check you copied all of it, from "LC" to the very end.'}
   };
-  if(sub==='backup')setTimeout(()=>{const h=document.getElementById('backup');if(h)h.scrollIntoView()},0);
+  if(sub)setTimeout(()=>{const h=document.getElementById(sub);if(h)h.scrollIntoView()},0);
   return node;
 }
 
