@@ -25,7 +25,7 @@
   --ink:#ede6d6; --muted:#a3ab9c; --faint:#77806f;
   --ember:#e8913f; --ember-ink:#1b130a; --ember-soft:rgba(232,145,63,.14);
   --good:#8dbb7f; --warn:#e2b552; --bad:#e3765f;
-  --geo:#8fc0a0; --lit:#e39a86; --lang:#93b6e0; --span:#c5a6e8; --maths:#6cc6d6;
+  --geo:#8fc0a0; --lit:#e39a86; --lang:#93b6e0; --span:#c5a6e8; --maths:#6cc6d6; --sci:#e88fb9;
   --display:"Rye","Rockwell","Georgia",serif;
   --body:"Alegreya Sans","Avenir Next","Segoe UI",system-ui,sans-serif;
   --serif:"Alegreya","Georgia","Times New Roman",serif;
@@ -38,7 +38,7 @@
   --ink:#1b231e; --muted:#566057; --faint:#7d867a;
   --ember:#b4581a; --ember-ink:#fff8f0; --ember-soft:rgba(180,88,26,.12);
   --good:#3f7a37; --warn:#97700e; --bad:#b4422e;
-  --geo:#2f7a52; --lit:#b2533b; --lang:#36679f; --span:#7a4fb0; --maths:#1d7686;
+  --geo:#2f7a52; --lit:#b2533b; --lang:#36679f; --span:#7a4fb0; --maths:#1d7686; --sci:#a33d72;
   color-scheme:light;
 }}
 :root[data-theme="light"]{
@@ -46,7 +46,7 @@
   --ink:#1b231e; --muted:#566057; --faint:#7d867a;
   --ember:#b4581a; --ember-ink:#fff8f0; --ember-soft:rgba(180,88,26,.12);
   --good:#3f7a37; --warn:#97700e; --bad:#b4422e;
-  --geo:#2f7a52; --lit:#b2533b; --lang:#36679f; --span:#7a4fb0; --maths:#1d7686;
+  --geo:#2f7a52; --lit:#b2533b; --lang:#36679f; --span:#7a4fb0; --maths:#1d7686; --sci:#a33d72;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -96,7 +96,7 @@ b,strong{font-weight:700}
 .chip[aria-pressed="true"]{border-color:var(--ember);background:var(--ember-soft);color:var(--ink)}
 .subj{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .subj::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--c,var(--faint))}
-.s-geo{--c:var(--geo)} .s-lit{--c:var(--lit)} .s-lang{--c:var(--lang)} .s-span{--c:var(--span)} .s-maths{--c:var(--maths)} .s-mine{--c:var(--ember)}
+.s-geo{--c:var(--geo)} .s-lit{--c:var(--lit)} .s-lang{--c:var(--lang)} .s-span{--c:var(--span)} .s-maths{--c:var(--maths)} .s-sci{--c:var(--sci)} .s-mine{--c:var(--ember)}
 .back{background:none;border:0;color:var(--muted);padding:6px 0;font-size:15px;display:inline-flex;gap:6px;align-items:center}
 .hr{height:1px;background:var(--line);border:0;margin:4px 0}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:14.5px;z-index:50;max-width:calc(100% - 32px);text-align:center;transition:opacity .25s}
@@ -1677,11 +1677,451 @@ B({id:'bm5',paper:'Frontier · The Long Trail',marks:20,mins:25,story:'1899. You
  q:'**The Long Trail.** Ride from town to town by solving each problem.',
  items:[{gen:'speed',marks:3,th:'west',label:'Stage 1 · The ride out'},{gen:'share',marks:3,th:'west',label:'Stage 2 · Splitting the reward'},{gen:'pctrev',marks:3,th:'west',label:'Stage 3 · Horse trading'},{gen:'recipe',marks:2,th:'west',label:'Stage 4 · Camp stew'},{gen:'fracof',marks:2,th:'west',label:'Stage 5 · The cattle drive'},{gen:'pythag',marks:3,th:'west',label:'Stage 6 · The canyon'},{gen:'pctchange',marks:2,th:'west',label:'Stage 7 · The general store'},{gen:'inverse',marks:2,th:'west',label:'Stage 8 · Mending the fence'}]});
 })();
+
+/* Combined Science — Pearson Edexcel GCSE (9–1) Combined Science (1SC0), Foundation tier, aiming for 5-5. */
+(function(){
+const D = window.CAMP = window.CAMP || {decks:[],cards:[],bounties:[],sources:{}};
+const GEN = D.gens = D.gens || {};
+const deck=(id,name,paper,note)=>D.decks.push({id,s:'sci',name,paper,note});
+deck('sb1','Biology: cells, genetics, evolution','Biology Paper 1');
+deck('sb2','Biology: health and disease','Biology Paper 1');
+deck('sb3','Biology: plants, hormones, transport, ecosystems','Biology Paper 2');
+deck('sc1','Chemistry: atoms, bonding, mixtures','Chemistry Paper 1');
+deck('sc2','Chemistry: acids, electrolysis, metals','Chemistry Paper 1');
+deck('sc3','Chemistry: groups, rates, fuels','Chemistry Paper 2');
+deck('sp1','Physics: motion, energy, waves, radioactivity','Physics Paper 1');
+deck('sp2','Physics: work, electricity, magnetism, matter','Physics Paper 2');
+deck('scalc','Science calculations','All six papers','Each card makes a new question. Edexcel uses g = 10 N/kg. An equation sheet is given in the exam, so the skill is choosing the right equation, rearranging it and getting the units right.');
+deck('sprac','Core practicals','All six papers','Questions about the 18 core practicals come up on every paper: method, variables, risks and improvements.');
+
+const R=(id,d,q,a,x)=>D.cards.push({id,d,t:'r',q,a,x});
+const M=(id,d,q,o,x)=>D.cards.push({id,d,t:'m',q,o,x});
+const K=(id,d,q,ans,x)=>{const a=ans.split('|').map(s=>s.trim());D.cards.push({id,d,t:'v',q,ans:a,show:a[0],al:'en',lab:'Type your answer',x})};
+
+/* =============== BIOLOGY 1: cells, genetics, evolution =============== */
+M('b101','sb1','Which structure is found in plant cells but NOT animal cells?',['Cell wall','Nucleus','Cell membrane','Mitochondria'],'Plant cells also have chloroplasts and a permanent vacuole.');
+R('b102','sb1','What is the job of each of these: nucleus, mitochondria, ribosomes, cell membrane?','**Nucleus:** contains genetic material and controls the cell.\n**Mitochondria:** where aerobic respiration happens.\n**Ribosomes:** where proteins are made.\n**Cell membrane:** controls what enters and leaves the cell.');
+M('b103','sb1','Bacteria are prokaryotic. What does this mean?',['Their genetic material is not in a nucleus','They have no cell membrane','They are made of many cells','They contain chloroplasts'],'Bacterial DNA is a single loop (chromosomal DNA) plus small rings called plasmids.');
+R('b104','sb1','Why can an electron microscope see more detail than a light microscope?','It has a higher **magnification** and a much higher **resolution**, so it can show small structures such as ribosomes and the inside of mitochondria.');
+K('b105','sb1','Enzymes are biological catalysts. What is the name of the part of an enzyme where the substrate fits?','active site|the active site');
+R('b106','sb1','What happens to an enzyme if the temperature gets too high?','The shape of the **active site changes**, so the substrate no longer fits. The enzyme is **denatured**, and this is permanent.');
+M('b107','sb1','Which enzyme breaks down starch?',['Amylase','Protease','Lipase','Catalase'],'Amylase: starch → sugars. Protease: proteins → amino acids. Lipase: lipids → fatty acids and glycerol.');
+R('b108','sb1','Define diffusion, osmosis and active transport.','**Diffusion:** net movement of particles from high to low concentration (passive).\n**Osmosis:** net movement of water through a partially permeable membrane from a dilute to a more concentrated solution.\n**Active transport:** movement against a concentration gradient, using energy from respiration.');
+M('b109','sb1','What type of cell division makes body cells for growth and repair?',['Mitosis','Meiosis','Fertilisation','Differentiation'],'Mitosis makes two genetically identical diploid cells.');
+R('b110','sb1','What are stem cells, and where are they found?','Unspecialised cells that can **differentiate** into other types of cell.\nFound in **embryos** (can become any cell), **adults**, e.g. bone marrow (limited types), and **plant meristems** (root and shoot tips).');
+R('b111','sb1','Describe the path of a reflex arc.','Stimulus → **receptor** → **sensory neurone** → **relay neurone** (in the spinal cord) → **motor neurone** → **effector** (muscle or gland) → response.\nReflexes are fast and automatic because they don\'t involve the conscious brain.');
+K('b112','sb1','What is the name of the gap between two neurones?','synapse|a synapse','Chemicals called neurotransmitters diffuse across it.');
+M('b113','sb1','How many chromosomes does a human gamete (sex cell) contain?',['23','46','92','12'],'Gametes are haploid: half the number of chromosomes (46 ÷ 2).');
+R('b114','sb1','Describe the structure of DNA.','A **double helix** made of two strands of **nucleotides**. The bases pair up: **A with T**, **C with G**.');
+R('b115','sb1','Define: allele, dominant, recessive, homozygous, heterozygous.','**Allele:** a version of a gene.\n**Dominant:** always expressed if present (capital letter).\n**Recessive:** only expressed if there are two copies.\n**Homozygous:** two identical alleles (AA or aa).\n**Heterozygous:** two different alleles (Aa).');
+M('b116','sb1','What is the difference between genotype and phenotype?',['Genotype is the alleles; phenotype is the characteristic you can see','Genotype is what you look like; phenotype is your DNA','They mean the same thing','Phenotype is only for plants'],'');
+M('b117','sb1','Which sex chromosomes does a human male have?',['XY','XX','YY','X only']);
+R('b118','sb1','Explain Darwin\'s theory of evolution by natural selection.','1. There is **variation** within a species (caused by mutation).\n2. There is **competition** for resources.\n3. Individuals with **better-adapted** characteristics are more likely to survive and **reproduce**.\n4. They pass on their **alleles** to their offspring.\n5. Over many generations, the species changes.');
+R('b119','sb1','Give two pieces of evidence for human evolution.','• **Fossils**, e.g. "Ardi" (4.4 million years old), "Lucy" (3.2 million years old), and the Leakey finds (about 1.6 million years old), showing changes such as brain size and walking upright.\n• **Stone tools**, which become more complex over time.');
+M('b120','sb1','The three-domain classification system splits living things into…',['Archaea, Bacteria and Eukarya','Plants, animals and fungi','Vertebrates, invertebrates and bacteria','Prokaryotes, viruses and protists'],'Carl Woese proposed it after studying RNA.');
+R('b121','sb1','What is selective breeding?','Humans choose parents with a **desired characteristic** and breed them, then repeat over many generations. Examples: cows that make more milk, disease-resistant crops.');
+R('b122','sb1','Give one benefit and one risk of genetically modified (GM) crops.','**Benefit:** e.g. pest resistance or higher yields, so more food and fewer pesticides.\n**Risk:** e.g. genes could spread to wild plants, or unknown long-term effects on health and ecosystems.');
+K('b123','sb1','What is the name for a random change in DNA?','mutation|a mutation|mutations');
+
+/* =============== BIOLOGY 1: health and disease =============== */
+R('b201','sb2','How does the World Health Organization (WHO) define health?','"A state of complete **physical, mental and social** well-being, and not merely the absence of disease or infirmity."');
+M('b202','sb2','What is the difference between communicable and non-communicable diseases?',['Communicable diseases can spread between people; non-communicable cannot','Communicable diseases are always fatal','Non-communicable diseases are caused by viruses','There is no difference']);
+R('b203','sb2','Name the type of pathogen that causes: cholera, tuberculosis, malaria, HIV, Chalara ash dieback.','**Cholera:** bacterium (spread in water).\n**Tuberculosis:** bacterium (airborne droplets).\n**Malaria:** protist (spread by mosquitoes).\n**HIV:** virus (body fluids).\n**Chalara ash dieback:** fungus (spores in the air).');
+M('b204','sb2','Which of these is a chemical defence against pathogens?',['Hydrochloric acid in the stomach','The skin','Cilia in the airways','Mucus'],'Lysozymes in tears are another chemical defence. Skin, mucus and cilia are physical barriers.');
+R('b205','sb2','How do white blood cells (lymphocytes) fight a pathogen?','Lymphocytes recognise the **antigens** on the pathogen and make **antibodies** that fit them. The antibodies stick to the pathogen and help destroy it. **Memory lymphocytes** stay in the blood, so a second infection is fought off faster.');
+R('b206','sb2','How does a vaccine protect you?','It contains a **harmless (dead or weakened) form** of the pathogen, or its antigens. Your lymphocytes make antibodies and **memory cells**. If the real pathogen infects you later, antibodies are made **quickly**, before you get ill.');
+M('b207','sb2','Why are antibiotics NOT used to treat viral infections like flu?',['Antibiotics only kill bacteria','Viruses are too big','Antibiotics only work on fungi','Viruses are already dead'],'Viruses live inside your cells, where antibiotics can\'t reach them.');
+R('b208','sb2','What are the stages of developing a new drug?','1. **Discovery** of a possible drug.\n2. **Preclinical testing** on cells, tissues, then animals.\n3. **Clinical trials** on healthy volunteers (safety and dose), then patients (does it work?).\nTrials are often **double-blind**, with a **placebo**, so neither patients nor doctors know who gets the real drug.');
+K('b209','sb2','What do we call a fake treatment, with no drug in it, used in clinical trials?','placebo|a placebo');
+R('b210','sb2','Give three lifestyle factors that increase the risk of cardiovascular disease.','Any three: **smoking**, **poor diet** (high in fat and salt), **lack of exercise**, **obesity**, too much **alcohol**, stress.');
+R('b211','sb2','Name three treatments for cardiovascular disease.','• **Lifestyle changes:** diet, exercise, stopping smoking.\n• **Medication:** e.g. statins (lower cholesterol), anticoagulants.\n• **Surgery:** e.g. stents (hold arteries open), bypass, heart transplant.');
+K('b212','sb2','What is the name of the measurement calculated as mass (kg) ÷ height² (m²)?','bmi|body mass index');
+M('b213','sb2','Which STI is caused by a bacterium?',['Chlamydia','HIV','Influenza','Malaria'],'STIs can be prevented by using condoms. Chlamydia is treated with antibiotics.');
+R('b214','sb2','Why is antibiotic resistance a problem, and how can we reduce it?','Bacteria **mutate**, and resistant ones survive and reproduce (natural selection), so infections like MRSA become hard to treat.\nReduce it by: **not over-prescribing** antibiotics, always **finishing the course**, and good hygiene.');
+
+/* =============== BIOLOGY 2 =============== */
+R('b301','sb3','Write the word equation for photosynthesis.','**carbon dioxide + water → glucose + oxygen** (using light energy, absorbed by chlorophyll)');
+M('b302','sb3','Which is NOT a limiting factor of photosynthesis?',['Oxygen concentration','Light intensity','Carbon dioxide concentration','Temperature']);
+R('b303','sb3','How are root hair cells adapted for absorbing water and minerals?','They have a **large surface area** (long, thin extensions), a **thin wall**, and many **mitochondria** to release energy for **active transport** of mineral ions.');
+R('b304','sb3','Compare xylem and phloem.','**Xylem:** carries **water and minerals** up from the roots; made of dead cells with no end walls, strengthened with lignin.\n**Phloem:** carries **sugars (sucrose)** up and down the plant (translocation); living cells with sieve plates.');
+K('b305','sb3','What is the name of the loss of water vapour from a plant\'s leaves?','transpiration');
+M('b306','sb3','Which change would INCREASE the rate of transpiration?',['Higher temperature','Higher humidity','Lower light intensity','Less wind']);
+R('b307','sb3','Name the hormone made by each gland: pancreas, ovaries, testes, adrenal glands.','**Pancreas:** insulin.\n**Ovaries:** oestrogen and progesterone.\n**Testes:** testosterone.\n**Adrenal glands:** adrenaline.');
+R('b308','sb3','What happens in the body when blood glucose rises after a meal?','The **pancreas** releases **insulin**. Insulin makes cells take in glucose, and the liver and muscles store it as **glycogen**, so blood glucose falls.');
+R('b309','sb3','Compare type 1 and type 2 diabetes.','**Type 1:** the pancreas doesn\'t make enough insulin. Treated with insulin injections.\n**Type 2:** body cells stop responding to insulin. Linked to obesity. Treated with diet, exercise and sometimes medication.');
+R('b310','sb3','What do oestrogen and progesterone do in the menstrual cycle?','**Oestrogen:** makes the uterus lining thicken and triggers ovulation.\n**Progesterone:** maintains the uterus lining.\nWhen progesterone falls, the lining breaks down (menstruation).');
+M('b311','sb3','How does the hormone adrenaline prepare the body for "fight or flight"?',['It increases heart rate and blood flow to muscles','It lowers blood glucose','It slows breathing','It makes you sleepy']);
+R('b312','sb3','How are the alveoli adapted for gas exchange?','**Large surface area**, walls **one cell thick** (short diffusion distance), a **good blood supply** (keeps a steep concentration gradient) and moist surfaces.');
+R('b313','sb3','Compare arteries, veins and capillaries.','**Arteries:** carry blood away from the heart at high pressure; thick, muscular, elastic walls.\n**Veins:** carry blood back to the heart at low pressure; thin walls, large lumen, valves.\n**Capillaries:** walls one cell thick for exchange of substances.');
+R('b314','sb3','What are the four main parts of the blood?','**Red blood cells** (carry oxygen, contain haemoglobin, no nucleus), **white blood cells** (fight infection), **platelets** (help clot blood) and **plasma** (carries everything else).');
+M('b315','sb3','Which side of the heart pumps blood to the lungs?',['Right','Left','Both','Neither'],'The right side pumps deoxygenated blood to the lungs. The left side has a thicker wall because it pumps blood to the whole body.');
+R('b316','sb3','Write the word equations for aerobic and anaerobic respiration in humans.','**Aerobic:** glucose + oxygen → carbon dioxide + water\n**Anaerobic (muscles):** glucose → lactic acid\nAnaerobic releases much less energy and causes an oxygen debt.');
+M('b317','sb3','What are the products of anaerobic respiration in yeast and plants?',['Ethanol and carbon dioxide','Lactic acid','Oxygen and water','Glucose']);
+R('b318','sb3','Define: population, community, ecosystem.','**Population:** all the organisms of one species in an area.\n**Community:** all the populations of different species in an area.\n**Ecosystem:** a community plus the non-living (abiotic) parts of its environment.');
+M('b319','sb3','Which is an abiotic factor?',['Temperature','Predators','Competition','Disease'],'Abiotic = non-living (light, temperature, water, pollutants). Biotic = living factors.');
+R('b320','sb3','What is the difference between parasitism and mutualism?','**Parasitism:** one organism benefits and the other is harmed (e.g. tapeworms, fleas).\n**Mutualism:** both organisms benefit (e.g. nitrogen-fixing bacteria in plant roots, oxpeckers on buffalo).');
+R('b321','sb3','How do you use a quadrat to estimate a population?','Place quadrats **randomly** (using random coordinates), count the organisms in each, find the **mean per quadrat**, then multiply by (total area ÷ quadrat area).\nA **belt transect** is used to see how a population changes across an area, e.g. from a hedge into a field.');
+R('b322','sb3','Describe the carbon cycle.','• **Photosynthesis** takes CO₂ out of the air.\n• **Respiration** (plants, animals and decomposers) returns CO₂.\n• **Combustion** of fossil fuels and wood releases CO₂.\n• Carbon passes along food chains by **feeding**; decomposers break down dead matter.');
+K('b323','sb3','What is the variety of all the different species in an area called?','biodiversity');
+
+/* =============== CHEMISTRY 1: atoms, bonding, mixtures =============== */
+R('c101','sc1','Give the relative mass and charge of a proton, neutron and electron.','**Proton:** mass 1, charge +1.\n**Neutron:** mass 1, charge 0.\n**Electron:** mass very small (about 1/1836), charge −1.');
+R('c102','sc1','What do the atomic number and mass number tell you?','**Atomic number:** the number of protons (and electrons, in an atom).\n**Mass number:** protons + neutrons.\nNeutrons = mass number − atomic number.');
+K('c103','sc1','Atoms of the same element with different numbers of neutrons are called…','isotopes');
+R('c104','sc1','How did Mendeleev arrange his periodic table, and why did he leave gaps?','He arranged elements by **atomic mass** and put elements with **similar properties** in the same column. He left **gaps for undiscovered elements** and predicted their properties. When they were found (e.g. gallium), he was proved right.');
+M('c105','sc1','The modern periodic table is arranged in order of…',['Atomic number','Mass number','Number of neutrons','Date of discovery']);
+R('c106','sc1','How does an ionic bond form? Use sodium chloride as an example.','A **metal transfers electrons to a non-metal**. Sodium loses 1 electron → Na⁺. Chlorine gains 1 electron → Cl⁻. The oppositely charged ions are held together by strong **electrostatic attraction** in a giant lattice.');
+R('c107','sc1','Why do ionic compounds have high melting points, and when do they conduct electricity?','Lots of energy is needed to overcome the **strong electrostatic forces** between ions in the giant lattice. They conduct when **molten or dissolved**, because the ions can move.');
+M('c108','sc1','A covalent bond is…',['A shared pair of electrons between non-metal atoms','A transfer of electrons from a metal','Attraction between ions','A sea of delocalised electrons']);
+R('c109','sc1','Why do simple molecular substances (e.g. water, CO₂) have low melting and boiling points?','The **forces between molecules (intermolecular forces)** are weak and need little energy to overcome. The covalent bonds inside the molecules are strong but don\'t break.');
+R('c110','sc1','Why is graphite soft and able to conduct electricity, but diamond is hard?','**Graphite:** carbon atoms in **layers** with weak forces between them, so the layers slide. Each carbon forms 3 bonds, leaving **delocalised electrons** that carry charge.\n**Diamond:** each carbon forms **4 strong covalent bonds** in a rigid giant structure, with no free electrons.');
+R('c111','sc1','Describe metallic bonding.','Positive metal ions in a regular lattice, surrounded by a **"sea" of delocalised electrons**. This explains why metals conduct electricity and are malleable.');
+M('c112','sc1','How can you tell if a substance is pure?',['It melts or boils at one exact temperature','It is a liquid','It dissolves in water','It is colourless']);
+R('c113','sc1','Match the separation method to the job: filtration, crystallisation, simple distillation, fractional distillation, chromatography.','**Filtration:** insoluble solid from a liquid.\n**Crystallisation:** soluble solid from a solution.\n**Simple distillation:** a liquid from a solution (e.g. water from salt water).\n**Fractional distillation:** liquids with different boiling points.\n**Chromatography:** separating dyes, e.g. in ink.');
+R('c114','sc1','How is water made safe to drink (potable)?','**Sedimentation** (bits settle), **filtration** (through sand and gravel), then **chlorination** (kills microbes).\nFor chemical analysis, **distilled water** is used because it has no dissolved salts.');
+K('c115','sc1','In chromatography, what is the name of the value calculated as distance moved by spot ÷ distance moved by solvent?','rf value|rf|r f');
+
+/* =============== CHEMISTRY 1: acids, electrolysis, metals =============== */
+M('c201','sc2','An acid has a pH of…',['Less than 7','Exactly 7','More than 7','Always 14']);
+R('c202','sc2','What ions do acids and alkalis produce in water, and what happens in neutralisation?','Acids release **H⁺ ions**. Alkalis release **OH⁻ ions**.\nNeutralisation: **H⁺ + OH⁻ → H₂O**');
+R('c203','sc2','Complete the general equations: acid + metal → ?  acid + metal oxide → ?  acid + metal carbonate → ?','acid + metal → **salt + hydrogen**\nacid + metal oxide/hydroxide → **salt + water**\nacid + metal carbonate → **salt + water + carbon dioxide**');
+M('c204','sc2','Which acid makes sulfate salts?',['Sulfuric acid','Hydrochloric acid','Nitric acid','Citric acid'],'Hydrochloric acid → chlorides. Nitric acid → nitrates.');
+R('c205','sc2','Describe the tests for hydrogen and carbon dioxide.','**Hydrogen:** a lit splint gives a **squeaky pop**.\n**Carbon dioxide:** bubble through **limewater**, which turns **cloudy (milky)**.');
+M('c206','sc2','Which of these is insoluble in water?',['Silver chloride','Sodium chloride','Potassium nitrate','Ammonium sulfate'],'All sodium, potassium, ammonium and nitrate salts are soluble. Most chlorides are soluble, except silver and lead chloride.');
+R('c207','sc2','In electrolysis, which electrode do positive ions go to?','The **cathode** (negative electrode). Negative ions go to the **anode** (positive electrode).\nMemory aid: PANIC, which stands for Positive Anode, Negative Is Cathode.');
+R('c208','sc2','What forms at each electrode when molten lead bromide is electrolysed?','**Cathode:** lead (Pb²⁺ ions gain electrons).\n**Anode:** bromine (Br⁻ ions lose electrons).');
+R('c209','sc2','What forms at each electrode when copper sulfate solution is electrolysed with inert (graphite) electrodes?','**Cathode:** **copper** is deposited (copper is less reactive than hydrogen).\n**Anode:** **oxygen** gas.');
+M('c210','sc2','Which metal is MOST reactive?',['Potassium','Iron','Copper','Gold'],'Order: potassium, sodium, calcium, magnesium, aluminium, (carbon), zinc, iron, (hydrogen), copper, silver, gold.');
+R('c211','sc2','How are metals extracted from their ores?','Metals **less reactive than carbon** (e.g. iron) are extracted by **heating with carbon** (reduction).\nMetals **more reactive than carbon** (e.g. aluminium) are extracted by **electrolysis**, which uses a lot of energy and is expensive.');
+M('c212','sc2','In terms of oxygen, what is reduction?',['Loss of oxygen','Gain of oxygen','Gain of hydrogen ions','Loss of protons']);
+R('c213','sc2','Give two advantages of recycling metals.','Any two: **saves ores** (finite resources), **uses less energy** than extraction, **less waste** in landfill, less mining damage.');
+K('c214','sc2','What is the name of the assessment that looks at the environmental impact of a product from start to finish?','life cycle assessment|lca|life-cycle assessment');
+R('c215','sc2','What is dynamic equilibrium?','In a **reversible reaction** in a closed system, the **forward and backward reactions happen at the same rate**, so the amounts of reactants and products stay constant.');
+R('c216','sc2','Give the equation and conditions for the Haber process.','**N₂ + 3H₂ ⇌ 2NH₃** (makes ammonia, used in fertilisers).\nConditions: about **450 °C**, **200 atmospheres**, **iron catalyst**.');
+
+/* =============== CHEMISTRY 2: groups, rates, fuels =============== */
+R('c301','sc3','What happens when a Group 1 metal reacts with water? Give an example.','It forms a **metal hydroxide** (an alkali) and **hydrogen**: e.g. sodium + water → sodium hydroxide + hydrogen. It fizzes and moves on the surface.');
+M('c302','sc3','How does reactivity change going DOWN Group 1?',['It increases','It decreases','It stays the same','It increases then decreases'],'The outer electron is further from the nucleus, so it is lost more easily.');
+R('c303','sc3','Describe chlorine, bromine and iodine at room temperature.','**Chlorine:** pale yellow-green gas.\n**Bromine:** red-brown liquid.\n**Iodine:** dark grey solid (gives a purple vapour).');
+M('c304','sc3','How does reactivity change going DOWN Group 7?',['It decreases','It increases','It stays the same','It doubles'],'So a more reactive halogen displaces a less reactive one from its salt, e.g. chlorine displaces bromine.');
+K('c305','sc3','What happens to damp blue litmus paper in chlorine gas? (one word)','bleached|it is bleached|bleaches|turns white','It may turn red first, then is bleached white.');
+R('c306','sc3','Why are the noble gases (Group 0) unreactive?','They have a **full outer shell** of electrons, so they don\'t need to gain, lose or share electrons.');
+R('c307','sc3','List four factors that increase the rate of a reaction.','Higher **temperature**, higher **concentration** (or pressure for gases), larger **surface area** (smaller pieces or powder), adding a **catalyst**.');
+R('c308','sc3','Use collision theory to explain why increasing temperature increases the rate of reaction.','Particles have **more energy** and move **faster**, so they collide **more often**, and **more collisions have at least the activation energy**. So there are more successful collisions per second.');
+K('c309','sc3','What is the minimum energy particles need to react called?','activation energy');
+R('c310','sc3','What does a catalyst do, and how?','It **speeds up a reaction without being used up**, by providing a different pathway with a **lower activation energy**.');
+M('c311','sc3','An exothermic reaction…',['Gives out heat, so the temperature rises','Takes in heat, so the temperature falls','Has no energy change','Only happens in electrolysis'],'Combustion and neutralisation are exothermic. Thermal decomposition is endothermic.');
+R('c312','sc3','What is crude oil, and how is it separated?','A mixture of **hydrocarbons** (compounds of hydrogen and carbon only). It is separated by **fractional distillation**: it is heated and the vapour rises up a column that is hotter at the bottom. Fractions condense at different heights according to their boiling points.');
+R('c313','sc3','Name the main fractions of crude oil, from the top of the column to the bottom.','**Gases** (refinery gas), **petrol**, **kerosene**, **diesel oil**, **fuel oil**, **bitumen**.\nGoing down: longer molecules, higher boiling point, more viscous, harder to ignite.');
+M('c314','sc3','What is the general formula of the alkanes?',['CₙH₂ₙ₊₂','CₙH₂ₙ','CₙHₙ','CₙH₂ₙ₋₂']);
+R('c315','sc3','What is produced by complete and incomplete combustion of a hydrocarbon?','**Complete** (plenty of oxygen): carbon dioxide + water.\n**Incomplete** (limited oxygen): carbon monoxide (toxic) and/or carbon (soot) + water.');
+K('c316','sc3','What process breaks long-chain hydrocarbons into shorter, more useful ones?','cracking');
+R('c317','sc3','How did the Earth\'s early atmosphere change to today\'s?','Early atmosphere: mostly **CO₂ and water vapour** from **volcanoes**, little oxygen.\n• Water vapour **condensed** to form the oceans.\n• CO₂ dissolved in the oceans.\n• **Plants** (photosynthesis) used CO₂ and released **oxygen**.');
+R('c318','sc3','Explain the greenhouse effect.','The Sun\'s radiation passes through the atmosphere and warms the Earth. The Earth emits **infrared radiation**, and **greenhouse gases** (carbon dioxide, methane, water vapour) **absorb** some of it and re-emit it, keeping the Earth warm. More greenhouse gases means more warming.');
+K('c319','sc3','What is the test for oxygen? A glowing splint…','relights|re-lights|relights it');
+
+/* =============== PHYSICS 1 =============== */
+M('p101','sp1','Which of these is a vector quantity?',['Velocity','Speed','Distance','Mass'],'Vectors have size AND direction: velocity, displacement, force, acceleration, momentum.');
+R('p102','sp1','On a distance–time graph, what does the gradient show? On a velocity–time graph, what do the gradient and area show?','**Distance–time:** gradient = **speed**.\n**Velocity–time:** gradient = **acceleration**; area under the graph = **distance travelled**.');
+R('p103','sp1','State Newton\'s three laws of motion.','**1st:** an object stays at rest or keeps moving at constant velocity unless a **resultant force** acts.\n**2nd:** F = m × a.\n**3rd:** when two objects interact, they exert **equal and opposite forces** on each other.');
+M('p104','sp1','What is the difference between mass and weight?',['Mass is the amount of matter (kg); weight is the force of gravity on it (N)','They are the same','Weight is measured in kg','Mass changes on the Moon'],'W = m × g. On Earth, g = 10 N/kg.');
+R('p105','sp1','Stopping distance = thinking distance + braking distance. Give two factors that affect each.','**Thinking distance:** speed, reaction time (tiredness, alcohol, drugs, distractions).\n**Braking distance:** speed, road conditions (wet or icy), tyres, brakes, mass of the vehicle.');
+M('p106','sp1','A typical human reaction time is about…',['0.2 – 0.9 s','2 – 5 s','0.001 s','10 s']);
+R('p107','sp1','Name the energy stores.','**Kinetic, gravitational potential, elastic potential, thermal, chemical, magnetic, electrostatic, nuclear.**\nEnergy is transferred between stores by heating, by forces (mechanical work), by electric currents, and by radiation.');
+R('p108','sp1','What is the law of conservation of energy?','Energy **cannot be created or destroyed**, only transferred between stores. Some is usually **dissipated** (wasted) to the surroundings, often as thermal energy.');
+R('p109','sp1','How can unwanted energy transfers be reduced in a house?','**Insulation:** loft insulation, cavity wall insulation, double glazing, draught excluders. Materials with **low thermal conductivity** reduce the rate of energy transfer. Thicker walls also help.');
+M('p110','sp1','Which energy resource is renewable?',['Wind','Coal','Natural gas','Nuclear'],'Renewable: wind, solar, hydroelectric, tidal, wave, geothermal, biofuel.');
+R('p111','sp1','Compare transverse and longitudinal waves, with an example of each.','**Transverse:** oscillations are **at right angles** to the direction of travel (e.g. light, all EM waves, ripples on water).\n**Longitudinal:** oscillations are **parallel** to the direction of travel, with compressions and rarefactions (e.g. sound).');
+K('p112','sp1','What is the unit of frequency?','hertz|hz|hertz (hz)');
+R('p113','sp1','List the electromagnetic spectrum in order, from longest to shortest wavelength.','**Radio, microwaves, infrared, visible light, ultraviolet, X-rays, gamma rays.**\nFrom radio to gamma: wavelength decreases, frequency and energy increase. All travel at the same speed in a vacuum.');
+R('p114','sp1','Give one use and one danger of ultraviolet, X-rays and gamma rays.','**Ultraviolet:** use: security marking, sterilising. Danger: skin damage, skin cancer.\n**X-rays:** use: seeing broken bones. Danger: ionising, can cause cancer.\n**Gamma:** use: sterilising equipment, treating cancer. Danger: ionising, can cause cancer and mutations.');
+M('p115','sp1','When light passes from air into glass, it bends towards the normal because…',['It slows down','It speeds up','Its frequency increases','It is reflected'],'This is refraction. Core practical 5.9 uses a rectangular glass block.');
+R('p116','sp1','Describe how models of the atom changed: Thomson, Rutherford, Bohr.','**Thomson:** "plum pudding": a ball of positive charge with electrons embedded.\n**Rutherford (alpha scattering):** most of the atom is empty space, with a tiny, dense, positive **nucleus**.\n**Bohr:** electrons orbit in fixed **energy levels (shells)**.');
+R('p117','sp1','Compare alpha, beta and gamma radiation.','**Alpha (α):** 2 protons + 2 neutrons (a helium nucleus). Stopped by paper. Most ionising.\n**Beta (β⁻):** a fast electron from the nucleus. Stopped by a few mm of aluminium.\n**Gamma (γ):** an EM wave. Reduced by thick lead or concrete. Least ionising.');
+K('p118','sp1','What is the time taken for half the radioactive nuclei in a sample to decay called?','half-life|half life|halflife');
+R('p119','sp1','What is the difference between irradiation and contamination?','**Irradiation:** being exposed to radiation from an outside source. You don\'t become radioactive.\n**Contamination:** radioactive material gets on or inside you, so you keep being exposed until it is removed or decays. Usually more dangerous.');
+M('p120','sp1','Which is a source of background radiation?',['Radon gas from rocks','Mobile phones','Wi-Fi routers','Light bulbs'],'Others: cosmic rays, food, medical X-rays, nuclear power and weapons testing.');
+
+/* =============== PHYSICS 2 =============== */
+R('p201','sp2','What is work done, and what is power?','**Work done** = energy transferred when a force moves an object (E = F × d, in joules).\n**Power** = rate of energy transfer (P = E ÷ t, in watts). 1 W = 1 J/s.');
+R('p202','sp2','Give the rules for current and potential difference in series and parallel circuits.','**Series:** current is the **same** everywhere; the p.d. of the supply is **shared** between components; total resistance = sum of resistances.\n**Parallel:** p.d. is the **same** across each branch; the current **splits** between branches; adding resistors in parallel **decreases** total resistance.');
+K('p203','sp2','What is the unit of resistance?','ohm|ohms|Ω');
+M('p204','sp2','How is an ammeter connected in a circuit?',['In series','In parallel','Either way','It isn\'t connected'],'Voltmeters are connected in parallel, across the component.');
+R('p205','sp2','How does the resistance of a thermistor and an LDR change?','**Thermistor:** resistance **decreases** as temperature **increases**.\n**LDR (light-dependent resistor):** resistance **decreases** as light intensity **increases**.');
+M('p206','sp2','The I–V graph for a filament lamp is a curve because…',['Its resistance increases as it gets hotter','Its resistance is constant','It is a diode','Current can only flow one way'],'A fixed resistor at constant temperature gives a straight line through the origin (Ohm\'s law).');
+R('p207','sp2','Give the colours and jobs of the live, neutral and earth wires in a UK plug.','**Live:** brown, carries the 230 V alternating p.d.\n**Neutral:** blue, completes the circuit at about 0 V.\n**Earth:** green and yellow, a safety wire that stops the case becoming live.');
+M('p208','sp2','UK mains electricity is…',['230 V a.c. at 50 Hz','12 V d.c.','230 V d.c.','110 V a.c. at 60 Hz']);
+R('p209','sp2','What is the motor effect, and how can the force be increased?','A current-carrying wire in a magnetic field experiences a **force**. The force increases with a **bigger current** and a **stronger magnetic field**. Fleming\'s **left-hand rule** gives the direction.');
+R('p210','sp2','How does electromagnetic induction work?','When a wire **moves through a magnetic field** (or the field changes), a **potential difference is induced**. If it\'s part of a complete circuit, a current flows. Used in generators and transformers.');
+R('p211','sp2','Why does the National Grid use step-up transformers?','They **increase the p.d.** and **reduce the current** in the cables. Lower current means **less energy lost by heating** the cables, so transmission is more efficient. Step-down transformers lower the p.d. for homes.');
+M('p212','sp2','Magnetic field lines go…',['From north to south','From south to north','In circles around the north pole only','Nowhere'],'The closer the field lines, the stronger the field.');
+R('p213','sp2','Describe the arrangement and movement of particles in solids, liquids and gases.','**Solid:** close together, regular pattern, vibrate in fixed positions.\n**Liquid:** close together, random arrangement, move past each other.\n**Gas:** far apart, random, move quickly in all directions.');
+R('p214','sp2','What is specific heat capacity?','The energy needed to raise the temperature of **1 kg** of a substance by **1 °C**. ΔQ = m × c × Δθ. Water: 4200 J/kg °C.');
+R('p215','sp2','What is specific latent heat?','The energy needed to **change the state** of 1 kg of a substance **without changing its temperature**. Q = m × L.\nDuring melting or boiling, the temperature stays constant even though energy is supplied.');
+R('p216','sp2','Why does gas pressure increase when a gas is heated in a sealed container?','The particles **move faster**, so they hit the walls **more often** and **with more force**, giving a bigger pressure.');
+M('p217','sp2','A spring returns to its original shape when the force is removed. This is…',['Elastic deformation','Inelastic deformation','Plastic flow','Compression only'],'Hooke\'s law: F = k × x, up to the limit of proportionality.');
+K('p218','sp2','What is the name for the energy contained in the particles of a system (kinetic + potential)?','internal energy');
+
+/* =============== CORE PRACTICALS =============== */
+const CP=(id,title,method,vars,x)=>R(id,'sprac','Core practical: **'+title+'**\nDescribe the method, and name the variables.',method+'\n\n'+vars,x);
+CP('cp1','Using a light microscope','1. Put a thin specimen on a slide, add a stain (e.g. iodine), lower a coverslip at an angle to avoid air bubbles.\n2. Start with the **lowest-power objective lens**, focus with the coarse then fine focus.\n3. Switch to higher power to see more detail. Draw what you see with a sharp pencil and label it.','Magnification = eyepiece magnification × objective magnification.','Draw clear, unshaded outlines with straight label lines and a title.');
+CP('cp2','Effect of pH on enzyme activity (amylase)','1. Put drops of iodine in a spotting tile.\n2. Mix amylase, a buffer solution at one pH, and starch in a water bath at a constant temperature (e.g. 35 °C).\n3. Every 30 seconds, put a drop in the iodine. When it stays orange-brown, the starch is gone. Record the time.\n4. Repeat at different pH values.','**Independent:** pH. **Dependent:** time for starch to be broken down. **Control:** temperature, volumes and concentrations of amylase and starch.');
+CP('cp3','Osmosis in potatoes','1. Cut potato cylinders of the same size, blot and weigh them.\n2. Put each in a different concentration of sugar or salt solution for the same time (e.g. 24 hours).\n3. Remove, blot dry, reweigh, and calculate the % change in mass.\n4. Plot % change against concentration. Where the line crosses 0 shows the concentration of the potato cells.','**Independent:** concentration of solution. **Dependent:** % change in mass. **Control:** size of cylinders, time, temperature, type of potato.');
+CP('cp4','Light intensity and photosynthesis','1. Put pondweed in a test tube of water with sodium hydrogencarbonate (to supply CO₂).\n2. Place a lamp at a set distance; leave it for a few minutes to adjust.\n3. Count the oxygen bubbles in one minute (or collect the gas).\n4. Repeat at different distances.','**Independent:** light intensity (distance from the lamp). **Dependent:** number of bubbles per minute. **Control:** temperature (use a heat shield or water bath), CO₂ concentration, same piece of pondweed.');
+CP('cp5','Rate of respiration','1. Put small organisms (e.g. woodlice or seeds) in a respirometer with soda lime, which absorbs CO₂.\n2. As they respire, they take in oxygen, so a coloured liquid moves along the capillary tube.\n3. Measure the distance moved in a set time, at different temperatures (water bath).','**Independent:** temperature. **Dependent:** distance the liquid moves per minute. **Control:** mass of organisms, time.\nHandle animals with care and return them to their habitat.');
+CP('cp6','Quadrats and belt transects','**Random sampling:** use random coordinates to place quadrats, count the organisms, find the mean, then scale up to the whole area.\n**Belt transect:** lay a tape measure across an area, e.g. from shade into light; place quadrats at regular intervals and record organisms and an abiotic factor (e.g. light intensity).','**Independent:** distance along the transect. **Dependent:** number or % cover of organisms.');
+CP('cp7','Chromatography and distillation of ink','**Chromatography:** draw a pencil line on the paper, add spots of ink, stand the paper in solvent with the line above the solvent level. Let the solvent rise, mark the solvent front, and calculate Rf = spot distance ÷ solvent distance.\n**Simple distillation:** heat the ink; the solvent evaporates, condenses in a condenser and is collected.','Use pencil because pen ink would also run. Keep the line above the solvent so the ink doesn\'t dissolve into it.');
+CP('cp8','pH change when calcium hydroxide is added to hydrochloric acid','1. Measure a set volume of dilute hydrochloric acid into a beaker.\n2. Add a small, measured mass of calcium hydroxide powder, stir, and measure the pH (pH probe or universal indicator).\n3. Repeat until the powder is in excess. Plot pH against mass added.','**Independent:** mass of calcium hydroxide. **Dependent:** pH. The pH rises from about 1 towards 7, then above as the base is in excess.');
+CP('cp9','Making copper sulfate crystals','1. Warm dilute sulfuric acid. Add **copper oxide** a little at a time, stirring, until it is **in excess** (no more dissolves).\n2. **Filter** to remove the excess copper oxide.\n3. **Heat** the solution gently to evaporate some water, then leave it to **crystallise**.\n4. Pat the crystals dry with filter paper.','Excess copper oxide makes sure all the acid has reacted. Don\'t boil the solution dry, or you won\'t get crystals.');
+CP('cp10','Electrolysis of copper sulfate solution','1. Weigh two clean electrodes (copper, or graphite for inert).\n2. Place them in copper sulfate solution, connect to a d.c. supply, and run for a set time at a set current.\n3. Remove, rinse, dry and reweigh.\n**Copper electrodes:** the cathode gains mass and the anode loses mass.','**Independent:** current (or time). **Dependent:** change in mass of the electrodes.');
+CP('cp11','Rates of reaction','**Method 1:** marble chips + hydrochloric acid; collect CO₂ in a gas syringe and record the volume every 10 s.\n**Method 2:** sodium thiosulfate + acid over a black cross; time how long until the cross disappears (cloudiness).\nRepeat at different temperatures or concentrations.','**Independent:** temperature, concentration or surface area. **Dependent:** volume of gas per second, or time for the cross to disappear.');
+CP('cp12','Force, mass and acceleration','1. Set up a trolley on a runway, pulled by a string over a pulley with hanging masses.\n2. Use light gates (or ticker tape) to measure the acceleration.\n3. Change the force by moving masses from the trolley to the hanger (keeping total mass constant), or change the mass of the trolley.','**Independent:** force (or mass). **Dependent:** acceleration. **Control:** the other one of mass or force; the same runway.');
+CP('cp13','Waves in a ripple tank and on a string','**Ripple tank:** use a strobe or a phone camera to freeze the waves; measure the wavelength with a ruler (measure across 10 waves, then divide by 10); count the waves passing a point in 10 s for frequency. v = f × λ.\n**String:** a vibration generator drives a string over a pulley. Adjust the frequency to get a standing wave; measure the wavelength.','Measuring several wavelengths and dividing reduces uncertainty.');
+CP('cp14','Refraction in a glass block','1. Put a rectangular glass block on paper and draw round it.\n2. Shine a ray of light from a ray box into the block at an angle.\n3. Mark the rays, draw the normal, and measure the **angle of incidence** and **angle of refraction** with a protractor.\n4. Repeat for different angles.','Do it in a darkened room. Use a thin ray to make measurements more accurate.');
+CP('cp15','I–V characteristics and circuits','1. Set up a circuit with the component, an ammeter in series, a voltmeter in parallel, and a variable resistor.\n2. Change the p.d. and record current and p.d. Reverse the supply to get negative values.\n3. Plot current against p.d.','Resistor: a straight line through the origin. Filament lamp: an S-shaped curve. Switch off between readings so the components don\'t heat up.');
+CP('cp16','Density of solids and liquids','**Regular solid:** measure the sides with a ruler, calculate the volume; find the mass on a balance.\n**Irregular solid:** use a displacement (eureka) can to find the volume.\n**Liquid:** measure the volume in a measuring cylinder; find the mass on a balance (zero it with the empty cylinder).\nDensity = mass ÷ volume.','Read the measuring cylinder at eye level, from the bottom of the meniscus.');
+CP('cp17','Specific heat capacity and melting ice','**SHC:** heat a known mass of water with an electric heater. Measure the energy supplied with a joulemeter (or E = I × V × t) and the temperature rise. c = ΔQ ÷ (m × Δθ).\n**Melting ice:** heat crushed ice and record the temperature every 30 s. The graph is flat while the ice melts.','Insulate the beaker to reduce energy losses to the surroundings.');
+CP('cp18','Springs: extension and work done','1. Hang a spring from a clamp stand next to a ruler; note the starting length.\n2. Add masses one at a time; measure the new length; extension = new length − original length.\n3. Plot force (weight) against extension. The gradient = spring constant, k.','Use a pointer on the spring and read the ruler at eye level. Wear eye protection in case the spring snaps.');
+
+/* =============== EQUATIONS =============== */
+R('seq1','scalc','Which equation links force, mass and acceleration? Give the units.','**F = m × a**\nF in newtons (N), m in kilograms (kg), a in m/s².');
+R('seq2','scalc','Which equation links kinetic energy, mass and speed?','**KE = ½ × m × v²**\nKE in J, m in kg, v in m/s.');
+R('seq3','scalc','Which equation links gravitational potential energy, mass, g and height?','**ΔGPE = m × g × Δh**\nGPE in J, m in kg, g = 10 N/kg, h in m.');
+R('seq4','scalc','Which equations link potential difference, current, resistance and power?','**V = I × R**\n**P = I × V**\n**P = I² × R**\nV in volts, I in amps, R in ohms, P in watts.');
+R('seq5','scalc','Which equation links wave speed, frequency and wavelength?','**v = f × λ**\nv in m/s, f in Hz, λ in m.');
+M('seq6','scalc','Convert 2.5 kJ into joules.',['2500 J','25 J','0.0025 J','250 J'],'kilo = × 1000. Also: 1 g = 0.001 kg, 1 cm = 0.01 m, 1 mA = 0.001 A, 1 minute = 60 s.');
+R('seq7','scalc','How do you answer a calculation question to get full marks?','1. **Write the equation** (from the sheet, or rearranged).\n2. **Convert units** first (kJ → J, g → kg, cm → m, minutes → s).\n3. **Substitute** the numbers.\n4. Give the **answer with a unit**.\nIf you get it wrong, you can still get marks for the steps.');
+
+/* =============== CALCULATION GENERATORS =============== */
+const ri=(r,a,b)=>a+Math.floor(r()*(b-a+1));
+const pk=(r,a)=>a[Math.floor(r()*a.length)];
+const rnd=(x,dp)=>{const f=Math.pow(10,dp);return Math.round((x+Math.sign(x)*1e-9)*f)/f};
+const f=x=>{const y=Math.round(x*1e9)/1e9;return (y<0?'−':'')+Math.abs(y).toLocaleString('en-GB',{maximumFractionDigits:9})};
+const fp=x=>f(x).replace(/,/g,'');
+const num=(ans,unit,tol,o)=>Object.assign({type:'num',ans,unit,tol:tol==null?1e-9:tol},o||{});
+const th=(r,t)=>t||pk(r,['plain','plain','plain','surv','west']);
+const G=(id,grade,name,gen)=>{GEN[id]={grade,calc:true,name,gen};D.cards.push({id:'sg-'+id,d:'scalc',t:'g',gen:id,grade,calc:true,q:name})};
+const S3=(eq,sub,ans)=>[`Equation: ${eq}`,`Substitute: ${sub}`,`Answer: **${ans}**`];
+
+G('s_speed',2,'Speed, distance and time',(r,t)=>{
+  t=th(r,t);const v=ri(r,0,2);
+  const who=t==='west'?'A horse':t==='surv'?'A zombie':'A cyclist',sp=t==='surv'?pk(r,[0.5,0.8,1.2,1.5]):t==='west'?ri(r,6,16):ri(r,3,12);
+  if(v===0){const tt=ri(r,10,120),d=rnd(sp*tt,2);return {q:`${who} moves at an average speed of ${fp(sp)} m/s for ${tt} s. Calculate the distance travelled.`,fields:[num(d,'m')],steps:S3('distance = average speed × time',`${fp(sp)} × ${tt}`,`${fp(d)} m`),hint:'distance = speed × time'}}
+  if(v===1){const tt=ri(r,10,120),d=rnd(sp*tt,2);return {q:`${who} travels ${fp(d)} m in ${tt} s. Calculate the average speed.`,fields:[num(sp,'m/s')],steps:S3('average speed = distance ÷ time',`${fp(d)} ÷ ${tt}`,`${fp(sp)} m/s`),hint:'speed = distance ÷ time'}}
+  const mins=ri(r,2,12),tt=mins*60,d=rnd(sp*tt,2);return {q:`${who} moves at ${fp(sp)} m/s for ${mins} minutes. Calculate the distance travelled in metres.`,fields:[num(d,'m')],steps:[`Convert: ${mins} minutes = ${mins} × 60 = ${tt} s`,...S3('distance = average speed × time',`${fp(sp)} × ${tt}`,`${f(d)} m`)],hint:'Change minutes to seconds first.'}});
+
+G('s_accel',3,'Acceleration',(r,t)=>{
+  t=th(r,t);const v=ri(r,0,2),u=pk(r,[0,0,ri(r,2,10)]),a=ri(r,1,6),tt=ri(r,2,10),vv=u+a*tt;
+  const who=t==='west'?'A steam train':t==='surv'?'A truck escaping the city':'A car';
+  if(v===0)return {q:`${who} speeds up from ${u} m/s to ${vv} m/s in ${tt} s. Calculate its acceleration.`,fields:[num(a,'m/s²')],steps:S3('acceleration = (final velocity − initial velocity) ÷ time',`(${vv} − ${u}) ÷ ${tt}`,`${a} m/s²`),hint:'a = (v − u) ÷ t'};
+  if(v===1)return {q:`${who} accelerates at ${a} m/s² from ${u} m/s to ${vv} m/s. Calculate the time taken.`,fields:[num(tt,'s')],steps:S3('time = (v − u) ÷ a',`(${vv} − ${u}) ÷ ${a}`,`${tt} s`),hint:'Rearrange a = (v − u) ÷ t to get t.'};
+  const v0=a*tt+ri(r,0,5);return {q:`${who} slows down from ${v0} m/s to ${v0-a*tt} m/s in ${tt} s. Calculate its deceleration.`,fields:[num(a,'m/s²')],steps:S3('acceleration = (v − u) ÷ t',`(${v0-a*tt} − ${v0}) ÷ ${tt} = −${a}`,`a deceleration of ${a} m/s²`),hint:'The change in velocity is negative when slowing down.'}});
+
+G('s_fma',2,'Force, mass and acceleration',r=>{
+  const v=ri(r,0,2),m=pk(r,[2,5,10,50,60,75,800,1200,1500]),a=pk(r,[0.5,1.5,2,2.5,3,4,5]),F=rnd(m*a,2);
+  if(v===0)return {q:`An object of mass ${m} kg accelerates at ${a} m/s². Calculate the resultant force.`,fields:[num(F,'N')],steps:S3('F = m × a',`${m} × ${a}`,`${f(F)} N`),hint:'F = m × a'};
+  if(v===1)return {q:`A resultant force of ${f(F)} N acts on a mass of ${m} kg. Calculate the acceleration.`,fields:[num(a,'m/s²')],steps:S3('a = F ÷ m',`${fp(F)} ÷ ${m}`,`${a} m/s²`),hint:'Rearrange F = m × a.'};
+  return {q:`A resultant force of ${f(F)} N gives an object an acceleration of ${a} m/s². Calculate its mass.`,fields:[num(m,'kg')],steps:S3('m = F ÷ a',`${fp(F)} ÷ ${a}`,`${m} kg`),hint:'Rearrange F = m × a.'}});
+
+G('s_weight',1,'Weight and mass',r=>{
+  const v=ri(r,0,2),m=ri(r,2,90);
+  if(v===0)return {q:`Calculate the weight of a ${m} kg object on Earth. (g = 10 N/kg)`,fields:[num(m*10,'N')],steps:S3('W = m × g',`${m} × 10`,`${m*10} N`),hint:'W = m × g'};
+  if(v===1){const g=ri(r,150,950);return {q:`Calculate the weight of a ${g} g object on Earth. (g = 10 N/kg)`,fields:[num(rnd(g/100,3),'N')],steps:[`Convert: ${g} g = ${fp(g/1000)} kg`,...S3('W = m × g',`${fp(g/1000)} × 10`,`${fp(rnd(g/100,3))} N`)],hint:'Change grams to kilograms first.'}}
+  return {q:`An astronaut has a mass of ${m} kg. Calculate their weight on the Moon, where g = 1.6 N/kg.`,fields:[num(rnd(m*1.6,2),'N')],steps:S3('W = m × g',`${m} × 1.6`,`${fp(rnd(m*1.6,2))} N`),hint:'Mass stays the same; only g changes.'}});
+
+G('s_ke',3,'Kinetic energy',(r,t)=>{
+  t=th(r,t);const v=ri(r,0,1),m=t==='west'?pk(r,[400,500,600]):pk(r,[2,4,60,70,80,900,1000,1200]),s=t==='west'?ri(r,4,16):ri(r,2,25),KE=0.5*m*s*s;
+  const who=t==='west'?`A horse of mass ${m} kg gallops`:`An object of mass ${m} kg moves`;
+  if(v===0)return {q:`${who} at ${s} m/s. Calculate its kinetic energy.`,fields:[num(KE,'J')],steps:S3('KE = ½ × m × v²',`0.5 × ${m} × ${s}²`,`${f(KE)} J`),hint:'Square the speed before multiplying.'};
+  const g=pk(r,[50,100,150,200,250]);const ke=rnd(0.5*(g/1000)*s*s,4);return {q:`A ball of mass ${g} g moves at ${s} m/s. Calculate its kinetic energy.`,fields:[num(ke,'J',0.001)],steps:[`Convert: ${g} g = ${fp(g/1000)} kg`,...S3('KE = ½ × m × v²',`0.5 × ${fp(g/1000)} × ${s}²`,`${fp(ke)} J`)],hint:'Mass must be in kg.'}});
+
+G('s_gpe',2,'Gravitational potential energy',(r,t)=>{
+  t=th(r,t);const v=ri(r,0,1),m=ri(r,2,80),h=ri(r,2,40),E=m*10*h;
+  const ctx=t==='west'?`A climber of mass ${m} kg climbs ${h} m up a mesa.`:t==='surv'?`A survivor of mass ${m} kg climbs ${h} m up a watchtower.`:`A ${m} kg box is lifted ${h} m.`;
+  if(v===0)return {q:`${ctx} Calculate the change in gravitational potential energy. (g = 10 N/kg)`,fields:[num(E,'J')],steps:S3('ΔGPE = m × g × Δh',`${m} × 10 × ${h}`,`${f(E)} J`),hint:'g = 10 N/kg'};
+  return {q:`A ${m} kg object gains ${f(E)} J of gravitational potential energy. How high was it lifted? (g = 10 N/kg)`,fields:[num(h,'m')],steps:S3('Δh = ΔGPE ÷ (m × g)',`${fp(E)} ÷ (${m} × 10)`,`${h} m`),hint:'Rearrange GPE = m × g × h.'}});
+
+G('s_eff',3,'Efficiency',(r,t)=>{
+  t=th(r,t);const tot=pk(r,[200,400,500,800,1000,1200,2000,2500]),pc=pk(r,[15,20,25,30,35,40,45,60,75,80,90]),u=tot*pc/100,v=ri(r,0,1);
+  const dev=t==='west'?'A steam engine':t==='surv'?'The camp generator':'A motor';
+  if(v===0)return {q:`${dev} is supplied with ${tot} J of energy. It transfers ${f(u)} J of useful energy. Calculate its efficiency as a percentage.`,fields:[num(pc,'%')],steps:S3('efficiency = useful energy output ÷ total energy input',`${f(u)} ÷ ${tot} = ${fp(pc/100)}`,`× 100 = ${pc}%`),hint:'useful ÷ total, then × 100 for a percentage.'};
+  return {q:`${dev} has an efficiency of ${pc}%. It is supplied with ${tot} J. How much energy is transferred usefully?`,fields:[num(u,'J')],steps:S3('useful output = efficiency × total input',`${fp(pc/100)} × ${tot}`,`${f(u)} J`),hint:'Change the percentage to a decimal first.'}});
+
+G('s_wave',3,'Wave speed',r=>{
+  const v=ri(r,0,2),fq=pk(r,[2,4,5,10,20,50,100,250,400,500,1000]),lam=pk(r,[0.2,0.5,0.8,1.5,2,3,4,0.05]),c=rnd(fq*lam,4);
+  if(v===0)return {q:`A wave has a frequency of ${fq} Hz and a wavelength of ${lam} m. Calculate its wave speed.`,fields:[num(c,'m/s')],steps:S3('v = f × λ',`${fq} × ${lam}`,`${fp(c)} m/s`),hint:'wave speed = frequency × wavelength'};
+  if(v===1)return {q:`A wave travels at ${fp(c)} m/s with a frequency of ${fq} Hz. Calculate its wavelength.`,fields:[num(lam,'m')],steps:S3('λ = v ÷ f',`${fp(c)} ÷ ${fq}`,`${lam} m`),hint:'Rearrange v = f × λ.'};
+  return {q:`A wave travels at ${fp(c)} m/s with a wavelength of ${lam} m. Calculate its frequency.`,fields:[num(fq,'Hz')],steps:S3('f = v ÷ λ',`${fp(c)} ÷ ${lam}`,`${fq} Hz`),hint:'Rearrange v = f × λ.'}});
+
+G('s_work',2,'Work done',(r,t)=>{
+  t=th(r,t);const v=ri(r,0,1),F=ri(r,5,400),d=ri(r,2,50),E=F*d;
+  const ctx=t==='west'?`A horse pulls a wagon with a force of ${F} N for ${d} m.`:t==='surv'?`Survivors drag a supply crate with a force of ${F} N for ${d} m.`:`A force of ${F} N pushes a box ${d} m.`;
+  if(v===0)return {q:`${ctx} Calculate the work done.`,fields:[num(E,'J')],steps:S3('work done = force × distance',`${F} × ${d}`,`${f(E)} J`),hint:'E = F × d'};
+  return {q:`${f(E)} J of work is done moving an object ${d} m. Calculate the force used.`,fields:[num(F,'N')],steps:S3('F = E ÷ d',`${fp(E)} ÷ ${d}`,`${F} N`),hint:'Rearrange E = F × d.'}});
+
+G('s_power',3,'Power',(r,t)=>{
+  t=th(r,t);const v=ri(r,0,2),P=pk(r,[20,40,60,100,500,1000,1500,2000]),tt=ri(r,5,120);
+  const dev=t==='west'?'A steam engine':t==='surv'?'The camp generator':'A kettle';
+  if(v===0)return {q:`${dev} transfers ${f(P*tt)} J of energy in ${tt} s. Calculate its power.`,fields:[num(P,'W')],steps:S3('power = energy transferred ÷ time',`${fp(P*tt)} ÷ ${tt}`,`${P} W`),hint:'P = E ÷ t'};
+  if(v===1){const mins=ri(r,2,10);return {q:`A ${P} W heater is switched on for ${mins} minutes. Calculate the energy transferred.`,fields:[num(P*mins*60,'J')],steps:[`Convert: ${mins} minutes = ${mins*60} s`,...S3('E = P × t',`${P} × ${mins*60}`,`${f(P*mins*60)} J`)],hint:'Time must be in seconds.'}}
+  const kJ=P*tt/1000;return {q:`${dev} transfers ${fp(kJ)} kJ of energy in ${tt} s. Calculate its power in watts.`,fields:[num(P,'W')],steps:[`Convert: ${fp(kJ)} kJ = ${f(P*tt)} J`,...S3('P = E ÷ t',`${fp(P*tt)} ÷ ${tt}`,`${P} W`)],hint:'kJ → J: × 1000.'}});
+
+G('s_charge',3,'Charge and current',r=>{
+  const v=ri(r,0,2);
+  if(v===0){const I=pk(r,[0.5,1.5,2,3,4,5]),tt=ri(r,10,300);return {q:`A current of ${I} A flows for ${tt} s. Calculate the charge that flows.`,fields:[num(rnd(I*tt,3),'C')],steps:S3('Q = I × t',`${I} × ${tt}`,`${fp(rnd(I*tt,3))} C`),hint:'charge = current × time'}}
+  if(v===1){const mA=pk(r,[200,250,400,500,750]),tt=ri(r,10,200);return {q:`A current of ${mA} mA flows for ${tt} s. Calculate the charge that flows.`,fields:[num(rnd(mA/1000*tt,3),'C')],steps:[`Convert: ${mA} mA = ${fp(mA/1000)} A`,...S3('Q = I × t',`${fp(mA/1000)} × ${tt}`,`${fp(rnd(mA/1000*tt,3))} C`)],hint:'mA → A: ÷ 1000.'}}
+  const I=pk(r,[2,4,5]),tt=ri(r,10,100);return {q:`A charge of ${I*tt} C flows in ${tt} s. Calculate the current.`,fields:[num(I,'A')],steps:S3('I = Q ÷ t',`${I*tt} ÷ ${tt}`,`${I} A`),hint:'Rearrange Q = I × t.'}});
+
+G('s_ohm',3,'Potential difference, current and resistance',r=>{
+  const v=ri(r,0,2),I=pk(r,[0.1,0.2,0.25,0.5,1.5,2,3]),R=pk(r,[4,5,6,10,12,20,24,40,100]),V=rnd(I*R,3);
+  if(v===0)return {q:`A current of ${I} A flows through a ${R} Ω resistor. Calculate the potential difference across it.`,fields:[num(V,'V')],steps:S3('V = I × R',`${I} × ${R}`,`${fp(V)} V`),hint:'V = I × R'};
+  if(v===1)return {q:`The potential difference across a ${R} Ω resistor is ${fp(V)} V. Calculate the current.`,fields:[num(I,'A')],steps:S3('I = V ÷ R',`${fp(V)} ÷ ${R}`,`${I} A`),hint:'Rearrange V = I × R.'};
+  return {q:`A component has a p.d. of ${fp(V)} V across it and a current of ${I} A through it. Calculate its resistance.`,fields:[num(R,'Ω')],steps:S3('R = V ÷ I',`${fp(V)} ÷ ${I}`,`${R} Ω`),hint:'Rearrange V = I × R.'}});
+
+G('s_epower',3,'Electrical power and energy',r=>{
+  const v=ri(r,0,3),I=pk(r,[0.5,2,3,4,5,10,13]),V=pk(r,[6,12,230]);
+  if(v===0)return {q:`A ${V} V appliance draws a current of ${I} A. Calculate its power.`,fields:[num(rnd(I*V,3),'W')],steps:S3('P = I × V',`${I} × ${V}`,`${fp(rnd(I*V,3))} W`),hint:'P = I × V'};
+  if(v===1){const R=pk(r,[2,4,5,10,20]);return {q:`A current of ${I} A flows through a ${R} Ω resistor. Calculate the power.`,fields:[num(rnd(I*I*R,3),'W')],steps:S3('P = I² × R',`${I}² × ${R}`,`${fp(rnd(I*I*R,3))} W`),hint:'P = I² × R'}}
+  if(v===2){const Q=ri(r,10,500);return {q:`A charge of ${Q} C moves through a p.d. of ${V} V. Calculate the energy transferred.`,fields:[num(Q*V,'J')],steps:S3('E = Q × V',`${Q} × ${V}`,`${f(Q*V)} J`),hint:'E = Q × V'}}
+  const tt=ri(r,10,120);return {q:`A ${V} V device draws ${I} A for ${tt} s. Calculate the energy transferred.`,fields:[num(rnd(I*V*tt,3),'J')],steps:S3('E = I × V × t',`${I} × ${V} × ${tt}`,`${f(rnd(I*V*tt,3))} J`),hint:'E = I × V × t'}});
+
+G('s_density',3,'Density',r=>{
+  const v=ri(r,0,2);
+  if(v===0){const rho=pk(r,[700,800,1000,2700,7800,8900,11300]),V=pk(r,[0.002,0.005,0.01,0.02,0.05,0.5]),m=rnd(rho*V,4);return {q:`A block has a mass of ${fp(m)} kg and a volume of ${V} m³. Calculate its density.`,fields:[num(rho,'kg/m³')],steps:S3('ρ = m ÷ V',`${fp(m)} ÷ ${V}`,`${f(rho)} kg/m³`),hint:'density = mass ÷ volume'}}
+  if(v===1){const rho=pk(r,[0.8,1.2,2.7,7.8,8.9,11.3]),V=ri(r,10,200),m=rnd(rho*V,2);return {q:`An object has a mass of ${fp(m)} g and a volume of ${V} cm³. Calculate its density in g/cm³.`,fields:[num(rho,'g/cm³',0.005)],steps:S3('ρ = m ÷ V',`${fp(m)} ÷ ${V}`,`${rho} g/cm³`),hint:'density = mass ÷ volume'}}
+  const rho=pk(r,[800,1000,1200]),V=pk(r,[0.002,0.003,0.004,0.5]),m=rnd(rho*V,4);return {q:`A liquid has a density of ${rho} kg/m³. Calculate the mass of ${V} m³ of it.`,fields:[num(m,'kg')],steps:S3('m = ρ × V',`${rho} × ${V}`,`${fp(m)} kg`),hint:'Rearrange ρ = m ÷ V.'}});
+
+G('s_spring',3,'Springs',r=>{
+  const v=ri(r,0,2),k=pk(r,[20,25,40,50,80,100,200]),cm=ri(r,2,20),x=cm/100,F=rnd(k*x,3);
+  if(v===0)return {q:`A spring has a spring constant of ${k} N/m. It is stretched by ${cm} cm. Calculate the force applied.`,fields:[num(F,'N')],steps:[`Convert: ${cm} cm = ${fp(x)} m`,...S3('F = k × x',`${k} × ${fp(x)}`,`${fp(F)} N`)],hint:'Extension must be in metres.'};
+  if(v===1)return {q:`A force of ${fp(F)} N stretches a spring by ${fp(x)} m. Calculate the spring constant.`,fields:[num(k,'N/m')],steps:S3('k = F ÷ x',`${fp(F)} ÷ ${fp(x)}`,`${k} N/m`),hint:'Rearrange F = k × x.'};
+  const E=rnd(0.5*k*x*x,4);return {q:`A spring with spring constant ${k} N/m is stretched by ${fp(x)} m. Calculate the energy stored. (Use E = ½ × k × x²)`,fields:[num(E,'J',0.0005)],steps:S3('E = ½ × k × x²',`0.5 × ${k} × ${fp(x)}²`,`${fp(E)} J`),hint:'Square the extension first.'}});
+
+G('s_shc',4,'Specific heat capacity',r=>{
+  const v=ri(r,0,2),m=pk(r,[0.2,0.25,0.5,1,1.5,2]),dT=ri(r,5,60),c=4200,Q=rnd(m*c*dT,2);
+  if(v===0)return {q:`Calculate the energy needed to heat ${m} kg of water by ${dT} °C. (Specific heat capacity of water = 4200 J/kg °C)`,fields:[num(Q,'J')],steps:S3('ΔQ = m × c × Δθ',`${m} × 4200 × ${dT}`,`${f(Q)} J`),hint:'ΔQ = m × c × Δθ'};
+  if(v===1)return {q:`${f(Q)} J of energy heats ${m} kg of water. Calculate the temperature rise. (c = 4200 J/kg °C)`,fields:[num(dT,'°C')],steps:S3('Δθ = ΔQ ÷ (m × c)',`${fp(Q)} ÷ (${m} × 4200)`,`${dT} °C`),hint:'Rearrange ΔQ = m × c × Δθ.'};
+  const cc=pk(r,[390,450,900,2100,2400]),Q2=rnd(m*cc*dT,2);return {q:`${f(Q2)} J of energy raises the temperature of a ${m} kg block by ${dT} °C. Calculate the specific heat capacity of the material.`,fields:[num(cc,'J/kg °C')],steps:S3('c = ΔQ ÷ (m × Δθ)',`${fp(Q2)} ÷ (${m} × ${dT})`,`${cc} J/kg °C`),hint:'Rearrange ΔQ = m × c × Δθ.'}});
+
+G('s_latent',4,'Specific latent heat',r=>{
+  const v=ri(r,0,1),m=pk(r,[0.1,0.2,0.25,0.5,1,2]);
+  if(v===0){const L=334000,Q=rnd(m*L,2);return {q:`Calculate the energy needed to melt ${m} kg of ice at 0 °C. (Specific latent heat of fusion of ice = 334 000 J/kg)`,fields:[num(Q,'J')],steps:S3('Q = m × L',`${m} × 334 000`,`${f(Q)} J`),hint:'Q = m × L'}}
+  const L=pk(r,[200000,334000,850000,2260000]),Q=rnd(m*L,2);return {q:`${f(Q)} J of energy is needed to change the state of ${m} kg of a substance. Calculate its specific latent heat.`,fields:[num(L,'J/kg')],steps:S3('L = Q ÷ m',`${fp(Q)} ÷ ${m}`,`${f(L)} J/kg`),hint:'Rearrange Q = m × L.'}});
+
+G('s_suvat',5,'Using v² − u² = 2 × a × x',r=>{
+  const v=ri(r,0,1),a=pk(r,[2,3,4,5,10]),x=pk(r,[5,8,10,12.5,20,25,40,45]);
+  if(v===0){const vv=rnd(Math.sqrt(2*a*x),1);return {q:`An object starts from rest and accelerates at ${a} m/s² over ${x} m. Calculate its final velocity. Give your answer to 1 decimal place.`,fields:[num(vv,'m/s',0.051)],steps:['Equation: v² − u² = 2 × a × x, with u = 0',`v² = 2 × ${a} × ${x} = ${fp(2*a*x)}`,`v = √${fp(2*a*x)} = **${vv.toFixed(1)} m/s**`],hint:'u = 0 because it starts from rest. Remember to square root.'}}
+  const u=ri(r,0,5),vv=ri(r,u+5,u+25),aa=rnd((vv*vv-u*u)/(2*x),2);return {q:`A car speeds up from ${u} m/s to ${vv} m/s over a distance of ${x} m. Calculate its acceleration. Give your answer to 2 decimal places.`,fields:[num(aa,'m/s²',0.006)],steps:['Equation: v² − u² = 2 × a × x',`${vv}² − ${u}² = 2 × a × ${x}`,`${vv*vv-u*u} = ${2*x}a, so a = **${aa.toFixed(2)} m/s²**`],hint:'Rearrange to a = (v² − u²) ÷ 2x.'}});
+
+G('s_halflife',4,'Half-life',r=>{
+  const v=ri(r,0,1),A0=pk(r,[400,800,1200,1600,3200,6400]),T=pk(r,[2,3,4,5,6,8,10]),n=ri(r,1,4);
+  if(v===0)return {q:`A radioactive source has an activity of ${A0} Bq. Its half-life is ${T} hours. What will its activity be after ${n*T} hours?`,fields:[num(A0/Math.pow(2,n),'Bq')],steps:[`${n*T} hours ÷ ${T} hours = ${n} half-li${n>1?'ves':'fe'}.`,`Halve ${n} time${n>1?'s':''}: ${Array.from({length:n+1},(_,i)=>A0/Math.pow(2,i)).join(' → ')}`,`Answer: **${A0/Math.pow(2,n)} Bq**`],hint:'Work out how many half-lives have passed, then keep halving.'};
+  return {q:`The activity of a sample falls from ${A0} Bq to ${A0/Math.pow(2,n)} Bq in ${n*T} days. Calculate its half-life.`,fields:[num(T,'days')],steps:[`${A0} → ${A0/Math.pow(2,n)} is ${n} halving${n>1?'s':''}.`,`${n*T} ÷ ${n} = **${T} days**`],hint:'Count how many times it halves.'}});
+
+G('s_transformer',5,'Transformers',r=>{
+  const [Vp,Vs,Ips,where]=pk(r,[[230,12,[0.1,0.2,0.5],'a phone charger'],[230,6,[0.1,0.2,0.3],'a doorbell'],[25000,400000,[100,200,400],'a power station (step-up)'],[400000,11000,[5,10,20],'a substation (step-down)'],[11000,230,[2,5,10],'a local substation']]);
+  const Ip=pk(r,Ips),P=Vp*Ip,Is=P/Vs,IsR=Number(Is.toPrecision(3)),v=ri(r,0,1);
+  if(v===0)return {q:`A 100% efficient transformer in ${where} has a primary p.d. of ${f(Vp)} V and a primary current of ${Ip} A. The secondary p.d. is ${f(Vs)} V. Calculate the secondary current. Give your answer to 3 significant figures if needed.`,fields:[num(IsR,'A',Math.max(Math.abs(IsR)*0.006,1e-6))],steps:S3('V_P × I_P = V_S × I_S',`${f(Vp)} × ${Ip} = ${f(Vs)} × I_S`,`I_S = ${f(P)} ÷ ${f(Vs)} = ${fp(IsR)} A`),hint:'The power in equals the power out.'};
+  return {q:`A 100% efficient transformer in ${where} has an input power of ${f(P)} W. Its secondary p.d. is ${f(Vs)} V. Calculate the secondary current. Give your answer to 3 significant figures if needed.`,fields:[num(IsR,'A',Math.max(Math.abs(IsR)*0.006,1e-6))],steps:S3('power = V_S × I_S, so I_S = power ÷ V_S',`${f(P)} ÷ ${f(Vs)}`,`${fp(IsR)} A`),hint:'Power = V × I on both sides.'}});
+
+/* --- chemistry --- */
+const AR={H:1,C:12,N:14,O:16,Na:23,Mg:24,Al:27,S:32,Cl:35.5,K:39,Ca:40,Fe:56,Cu:63.5,Zn:65};
+const FORM=[['H₂O',{H:2,O:1}],['CO₂',{C:1,O:2}],['NaCl',{Na:1,Cl:1}],['MgO',{Mg:1,O:1}],['CaCO₃',{Ca:1,C:1,O:3}],['H₂SO₄',{H:2,S:1,O:4}],['NaOH',{Na:1,O:1,H:1}],['CuSO₄',{Cu:1,S:1,O:4}],['Mg(OH)₂',{Mg:1,O:2,H:2}],['Ca(OH)₂',{Ca:1,O:2,H:2}],['NH₃',{N:1,H:3}],['CH₄',{C:1,H:4}],['HCl',{H:1,Cl:1}],['KNO₃',{K:1,N:1,O:3}],['Al₂O₃',{Al:2,O:3}],['Fe₂O₃',{Fe:2,O:3}],['ZnO',{Zn:1,O:1}],['Na₂CO₃',{Na:2,C:1,O:3}],['CuO',{Cu:1,O:1}],['C₂H₆',{C:2,H:6}],['C₃H₈',{C:3,H:8}],['MgCl₂',{Mg:1,Cl:2}],['CaCl₂',{Ca:1,Cl:2}]];
+const mr=c=>Object.entries(c).reduce((s,[e,n])=>s+AR[e]*n,0);
+const arList=c=>Object.keys(c).map(e=>`${e} = ${AR[e]}`).join(', ');
+G('c_rfm',2,'Relative formula mass',r=>{
+  const [fm,c]=pk(r,FORM),M=mr(c);
+  return {q:`Calculate the relative formula mass (Mᵣ) of ${fm}.\n(Relative atomic masses: ${arList(c)})`,fields:[num(M)],steps:[`Count the atoms: ${Object.entries(c).map(([e,n])=>`${n} × ${e}`).join(', ')}`,`${Object.entries(c).map(([e,n])=>`${n} × ${AR[e]}`).join(' + ')}`,`Mᵣ = **${fp(M)}**`],hint:'Add up the relative atomic masses of every atom. Brackets multiply everything inside them.'}});
+G('c_pct',3,'Percentage by mass',r=>{
+  let fm,c;do{[fm,c]=pk(r,FORM)}while(Object.keys(c).length<2);const els=Object.keys(c),e=pk(r,els),M=mr(c),part=AR[e]*c[e],p=rnd(part/M*100,1);
+  return {q:`Calculate the percentage by mass of ${e} in ${fm}. Give your answer to 1 decimal place.\n(Relative atomic masses: ${arList(c)})`,fields:[num(p,'%',0.051)],steps:[`Mᵣ of ${fm} = ${fp(M)}`,`Mass of ${e} = ${c[e]} × ${AR[e]} = ${fp(part)}`,`% = ${fp(part)} ÷ ${fp(M)} × 100 = **${p.toFixed(1)}%**`],hint:'(mass of the element in the formula ÷ Mᵣ) × 100'}});
+G('c_rf',3,'Rf values',r=>{
+  const sol=ri(r,50,120),spot=ri(r,10,sol-5),rf=rnd(spot/sol,2);
+  return {q:`In a chromatography experiment, the solvent moved ${sol} mm and a spot moved ${spot} mm. Calculate the Rf value. Give your answer to 2 decimal places.`,fields:[num(rf,'',0.006)],steps:S3('Rf = distance moved by spot ÷ distance moved by solvent',`${spot} ÷ ${sol}`,`${rf.toFixed(2)}`),hint:'Rf is always less than 1 and has no unit.'}});
+G('c_rate',3,'Mean rate of reaction',r=>{
+  const v=ri(r,0,1),tt=pk(r,[20,30,40,50,60,80,100,120]);
+  if(v===0){const vol=ri(r,15,90),rate=rnd(vol/tt,2);return {q:`${vol} cm³ of gas is collected in ${tt} s. Calculate the mean rate of reaction. Give your answer to 2 decimal places.`,fields:[num(rate,'cm³/s',0.006)],steps:S3('mean rate = amount of product formed ÷ time',`${vol} ÷ ${tt}`,`${rate.toFixed(2)} cm³/s`),hint:'amount ÷ time'}}
+  const loss=ri(r,5,40)/10,rate=rnd(loss/tt,3);return {q:`The mass of a flask falls by ${fp(loss)} g in ${tt} s as gas escapes. Calculate the mean rate of reaction in g/s, to 3 decimal places.`,fields:[num(rate,'g/s',0.0006)],steps:S3('mean rate = change in mass ÷ time',`${fp(loss)} ÷ ${tt}`,`${rate.toFixed(3)} g/s`),hint:'mass lost ÷ time'}});
+G('c_conc',4,'Concentration in g/dm³',r=>{
+  const vol=pk(r,[100,200,250,500,1000]),c=pk(r,[2,4,5,8,10,20,40]),m=c*vol/1000;
+  return {q:`${fp(m)} g of sodium hydroxide is dissolved to make ${vol} cm³ of solution. Calculate the concentration in g/dm³.`,fields:[num(c,'g/dm³')],steps:[`Convert: ${vol} cm³ = ${fp(vol/1000)} dm³`,...S3('concentration = mass ÷ volume',`${fp(m)} ÷ ${fp(vol/1000)}`,`${c} g/dm³`)],hint:'1 dm³ = 1000 cm³.'}});
+const ELS=[['lithium','Li',3,7],['carbon','C',6,12],['nitrogen','N',7,14],['oxygen','O',8,16],['fluorine','F',9,19],['sodium','Na',11,23],['magnesium','Mg',12,24],['aluminium','Al',13,27],['sulfur','S',16,32],['chlorine','Cl',17,35],['potassium','K',19,39],['calcium','Ca',20,40]];
+G('c_atom',2,'Protons, neutrons and electrons',r=>{
+  const [nm,sym,Z,A]=pk(r,ELS);
+  return {q:`An atom of ${nm} has atomic number ${Z} and mass number ${A}.\nHow many protons, neutrons and electrons does it have?`,fields:[num(Z,'',1e-9,{label:'Protons'}),num(A-Z,'',1e-9,{label:'Neutrons'}),num(Z,'',1e-9,{label:'Electrons'})],steps:[`Protons = atomic number = ${Z}`,`Neutrons = mass number − atomic number = ${A} − ${Z} = ${A-Z}`,`Electrons = protons (atoms are neutral) = ${Z}`],hint:'Neutrons = mass number − atomic number.'}});
+const conf=Z=>{const s=[];let n=Z;for(const cap of [2,8,8,2]){if(n<=0)break;s.push(Math.min(cap,n));n-=cap}return s.join('.')};
+G('c_shells',2,'Electronic configuration',r=>{
+  const [nm,sym,Z]=pk(r,ELS),c=conf(Z);
+  return {q:`Write the electronic configuration of ${nm} (atomic number ${Z}). Write it like 2.8.1`,fields:[{type:'text',ans:[c],label:'Configuration'}],steps:[`${Z} electrons: fill 2 in the first shell, then up to 8, then up to 8.`,`Answer: **${c}**`,`The number of shells gives the period (${c.split('.').length}); the outer-shell electrons give the group.`],hint:'2 in the first shell, 8 in the second, 8 in the third.'}});
+
+/* --- biology --- */
+G('b_mag',3,'Magnification',(r,t)=>{
+  t=th(r,t);const v=ri(r,0,2);
+  if(v===0){const real=ri(r,2,40),M=pk(r,[100,200,400,500,1000]),img=real*M/1000;return {q:`${t==='surv'?'Under the camp\'s microscope, a':'A'} cell is ${real} µm long. Its image is ${fp(img)} mm long. Calculate the magnification.`,fields:[num(M,'×')],steps:[`Convert: ${fp(img)} mm = ${f(img*1000)} µm (× 1000)`,...S3('magnification = image size ÷ real size',`${f(img*1000)} ÷ ${real}`,`× ${M}`)],hint:'Both sizes must be in the same unit: 1 mm = 1000 µm.'}}
+  if(v===1){const real=ri(r,2,30)/10,M=pk(r,[10,20,40,50]),img=rnd(real*M,2);return {q:`An image of an insect leg is ${fp(img)} mm long. The real leg is ${fp(real)} mm long. Calculate the magnification.`,fields:[num(M,'×')],steps:S3('magnification = image size ÷ real size',`${fp(img)} ÷ ${fp(real)}`,`× ${M}`),hint:'image ÷ real'}}
+  const M=pk(r,[100,400,1000,1500]),img=ri(r,10,60),real=rnd(img/M*1000,3);return {q:`A drawing of a cell is ${img} mm long at a magnification of × ${M}. Calculate the real length of the cell in µm.`,fields:[num(real,'µm',0.01)],steps:[`Real size = image size ÷ magnification = ${img} ÷ ${M} = ${fp(rnd(img/M,5))} mm`,`Convert to µm: × 1000 = **${fp(real)} µm**`],hint:'real = image ÷ magnification; then mm → µm (× 1000).'}});
+G('b_bmi',2,'Body mass index (BMI)',r=>{
+  const h=ri(r,150,195)/100,m=ri(r,45,110),b=rnd(m/(h*h),1);
+  return {q:`A person has a mass of ${m} kg and a height of ${fp(h)} m. Calculate their BMI. Give your answer to 1 decimal place.`,fields:[num(b,'kg/m²',0.051)],steps:S3('BMI = mass ÷ height²',`${m} ÷ ${fp(h)}² = ${m} ÷ ${fp(rnd(h*h,4))}`,`${b.toFixed(1)}`),hint:'Square the height first.'}});
+G('b_osmosis',3,'Percentage change in mass',r=>{
+  const m0=ri(r,20,60)/10,ch=ri(r,-15,15)/10||0.3,m1=rnd(m0+ch,1),p=rnd(Math.abs(m1-m0)/m0*100,1),up=m1>m0;
+  return {q:`A potato cylinder had a mass of ${fp(m0)} g. After 24 hours in a sugar solution, its mass was ${fp(m1)} g. Calculate the percentage ${up?'increase':'decrease'} in mass, to 1 decimal place.`,fields:[num(p,'%',0.051)],steps:[`Change = ${fp(m1)} − ${fp(m0)} = ${fp(rnd(m1-m0,1))} g`,`% change = change ÷ original × 100 = ${fp(rnd(Math.abs(m1-m0),1))} ÷ ${fp(m0)} × 100`,`= **${p.toFixed(1)}%** ${up?'increase (water moved in by osmosis)':'decrease (water moved out by osmosis)'}`],hint:'Divide the change by the ORIGINAL mass.'}});
+G('b_quadrat',3,'Estimating population size',r=>{
+  const qa=pk(r,[0.25,1]),L=pk(r,[10,20,25,40,50]),W=pk(r,[10,20,30,40]),counts=Array.from({length:5},()=>ri(r,0,12));let sum=counts.reduce((a,b)=>a+b,0);const fix=(5-sum%5)%5;counts[0]+=fix;sum+=fix;const mean=sum/5,pop=mean*L*W/qa;
+  return {q:`A student placed five ${qa} m² quadrats randomly in a ${L} m × ${W} m field. The numbers of daisies were: ${counts.join(', ')}.\nEstimate the number of daisies in the whole field.`,fields:[num(pop,'daisies',0.5)],steps:[`Mean per quadrat = ${sum} ÷ 5 = ${f(mean)}`,`Field area = ${L} × ${W} = ${L*W} m²; number of quadrats that would fit = ${L*W} ÷ ${qa} = ${f(L*W/qa)}`,`Estimate = ${f(mean)} × ${f(L*W/qa)} = **${f(pop)}**`],hint:'Mean per quadrat × how many quadrats would fit in the field.'}});
+G('b_cardiac',3,'Cardiac output',r=>{
+  const sv=ri(r,55,95),hr=ri(r,55,140),v=ri(r,0,1);
+  if(v===0)return {q:`A person\'s heart has a stroke volume of ${sv} cm³ and a heart rate of ${hr} beats per minute. Calculate their cardiac output.`,fields:[num(sv*hr,'cm³/min')],steps:S3('cardiac output = stroke volume × heart rate',`${sv} × ${hr}`,`${f(sv*hr)} cm³/min`),hint:'cardiac output = stroke volume × heart rate'};
+  return {q:`A person has a cardiac output of ${f(sv*hr)} cm³/min and a stroke volume of ${sv} cm³. Calculate their heart rate.`,fields:[num(hr,'bpm')],steps:S3('heart rate = cardiac output ÷ stroke volume',`${fp(sv*hr)} ÷ ${sv}`,`${hr} beats per minute`),hint:'Rearrange cardiac output = SV × HR.'}});
+G('b_cross',4,'Genetic crosses',r=>{
+  const traits=[['F','free earlobes','attached earlobes'],['B','brown eyes','blue eyes'],['T','being able to roll your tongue','not being able to roll your tongue'],['R','round peas','wrinkled peas']];
+  const [L,dom,rec]=pk(r,traits),l=L.toLowerCase(),[p1,p2]=pk(r,[[L+l,L+l],[L+l,l+l],[L+L,l+l],[L+L,L+l]]),ask=pk(r,['rec','dom']);
+  const kids=[];for(const a of p1)for(const b of p2)kids.push([a,b].sort().join(''));const recN=kids.filter(k=>k===l+l).length,n=ask==='rec'?recN:4-recN;
+  return {q:`The allele for ${dom} (${L}) is dominant over the allele for ${rec} (${l}).\nTwo parents with genotypes ${p1} and ${p2} have a child. What is the probability that the child has ${ask==='rec'?rec:dom}?`,fields:[{type:'frac',n,d:4,form:'any',label:'Probability'}],steps:[`Punnett square: ${p1} × ${p2} gives ${kids.join(', ')}.`,`${ask==='rec'?`Only ${l}${l} shows the recessive characteristic`:`Any genotype with a ${L} shows the dominant characteristic`}: ${n} out of 4.`,`Probability = **${n}/4** (= ${n*25}%, or a ratio of ${n} : ${4-n})`],hint:'Draw a Punnett square: one parent\'s alleles across the top, the other\'s down the side.'}});
+
+/* --- Outbreak story generators --- */
+const shuffle=(r,arr,ans)=>{const idx=arr.map((_,i)=>i);for(let i=idx.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}return {opts:idx.map(i=>arr[i]),ans:idx.indexOf(ans)}};
+const choiceQ=(r,q,opts,steps,hint)=>{const s=shuffle(r,opts,0);return {q,fields:[{type:'choice',opts:s.opts,ans:s.ans,label:'Choose one'}],steps,hint}};
+G('ob_pathogen',2,'Types of pathogen',r=>{const [d,ty,how]=pk(r,[['cholera','Bacterium','spread in dirty water'],['tuberculosis','Bacterium','spread in airborne droplets'],['malaria','Protist','spread by mosquitoes'],['HIV','Virus','spread in body fluids'],['influenza (flu)','Virus','spread in airborne droplets']]);
+  return choiceQ(r,`A survivor at the camp has symptoms of ${d}, which is ${how}. What type of pathogen causes ${d}?`,[ty,...['Bacterium','Virus','Fungus','Protist'].filter(x=>x!==ty)],[`${d[0].toUpperCase()+d.slice(1)} is caused by a **${ty.toLowerCase()}**.`,'Bacteria: cholera, TB, chlamydia. Viruses: HIV, flu. Protist: malaria. Fungus: Chalara ash dieback.'],'Learn the pathogen for each disease on the spec.')});
+G('ob_barrier',2,'The body\'s defences',r=>choiceQ(r,'The camp medic explains how the body stops pathogens getting in. Which of these is a CHEMICAL defence?',[pk(r,['Hydrochloric acid in the stomach','Lysozymes in tears']),'The skin','Cilia in the airways','Mucus in the nose'],['Chemical defences: **hydrochloric acid in the stomach** and **lysozymes in tears**.','Physical barriers: skin, mucus and cilia.'],'Chemical = a substance that kills pathogens.'));
+G('ob_double',3,'Spread of infection',r=>{const c0=ri(r,2,6),n=ri(r,3,7);return {q:`On day 0, ${c0} people at the camp are infected. The number infected doubles every day. How many people are infected after ${n} days?`,fields:[num(c0*Math.pow(2,n),'people')],steps:[`Doubling ${n} times = × 2^{${n}} = × ${Math.pow(2,n)}`,`${c0} × ${Math.pow(2,n)} = **${c0*Math.pow(2,n)}**`],hint:'Keep doubling: × 2 each day.'}});
+G('ob_antibiotic',2,'Antibiotics',r=>choiceQ(r,'The infection turns out to be caused by a virus. Why won\'t the camp\'s antibiotics help?',['Antibiotics only kill bacteria, not viruses','Antibiotics only work on fungi','The virus is too big for antibiotics','Antibiotics make viruses multiply'],['Antibiotics kill **bacteria** (or stop them growing).','Viruses reproduce **inside** body cells, so antibiotics can\'t reach them. Painkillers can only ease the symptoms.'],'Which type of pathogen do antibiotics work against?'));
+G('ob_vaccine',3,'Vaccination',r=>choiceQ(r,'A vaccine arrives at the camp. How does it protect people?',['It makes white blood cells produce antibodies and memory cells','It kills the virus directly','It is an antibiotic','It makes the skin thicker'],['The vaccine contains a **dead or weakened** form of the pathogen (or its antigens).','Lymphocytes make **antibodies** and **memory cells**, so a future infection is destroyed quickly, before you get ill.'],'Think about memory cells.'));
+G('ob_pct',2,'Percentage infected',r=>{const tot=pk(r,[40,50,80,120,150,200,250]),p=pk(r,[5,10,15,20,25,30,40]),inf=tot*p/100;return {q:`There are ${tot} people at the camp. ${inf} are infected. What percentage of the camp is infected?`,fields:[num(p,'%')],steps:S3('percentage = part ÷ total × 100',`${inf} ÷ ${tot} × 100`,`${p}%`),hint:'part ÷ whole × 100'}});
+
+/* =============== 6-MARK QUESTIONS AND EXAM SETS =============== */
+const B=b=>D.bounties.push(Object.assign({s:'sci'},b));
+const L6=[{lv:'Level 3',range:'5–6',d:'A detailed, well-linked answer covering most of the key points in a logical order, using correct scientific words.'},{lv:'Level 2',range:'3–4',d:'Several relevant points with some linking; some detail missing, or the order is a bit muddled.'},{lv:'Level 1',range:'1–2',d:'One or two relevant points, not linked together.'}];
+const six=(id,paper,q,plan,check,model)=>B({id,paper:paper+' · 6-mark question',marks:6,mins:8,type:'essay',q,plan,check,levels:L6,model});
+six('bsc6a','Biology Paper 1','Explain how bacteria become resistant to antibiotics.',['Mutation','Antibiotic kills the non-resistant bacteria','Resistant ones survive and reproduce','Allele passed on → population resistant','How to reduce it'],['Mentioned mutation','Said resistant bacteria survive and reproduce','Linked it to natural selection','Gave a way to slow it down','Used the words: mutation, allele, resistant, natural selection'],'Bacteria reproduce very quickly, and a random **mutation** can make one bacterium **resistant** to an antibiotic. When the antibiotic is used, the non-resistant bacteria are killed, but the resistant one **survives** and **reproduces**, passing on the resistance **allele**. Over time, most of the population is resistant. This is **natural selection**. It happens faster if antibiotics are over-prescribed or courses aren\'t finished, so doctors should only prescribe them when needed and patients should finish the course.');
+six('bsc6b','Biology Paper 1','Describe how the body defends itself against pathogens.',['Physical barriers','Chemical barriers','White blood cells and antibodies','Memory cells'],['Physical barriers (skin, mucus, cilia)','Chemical barriers (stomach acid, lysozymes)','Lymphocytes make antibodies against antigens','Memory cells give a faster response next time'],'First, **physical barriers** stop pathogens getting in: the **skin** covers the body, and **mucus** traps pathogens in the airways, where **cilia** sweep them away. **Chemical** defences kill pathogens: **hydrochloric acid** in the stomach and **lysozymes** in tears. If pathogens get into the blood, **lymphocytes** recognise their **antigens** and make **antibodies**, which stick to them so they can be destroyed. **Memory lymphocytes** stay in the blood, so if the same pathogen returns, antibodies are made much faster.');
+six('bsc6c','Biology Paper 2','Describe how you could investigate the effect of light intensity on the rate of photosynthesis in pondweed.',['Equipment','Changing light intensity','Measuring the rate','Control variables','Repeats'],['Pondweed in water with sodium hydrogencarbonate','Lamp at different distances','Count bubbles (or gas volume) per minute','Control temperature and CO₂','Repeat and calculate a mean'],'Put a piece of **pondweed** in a test tube of water with **sodium hydrogencarbonate** (to provide CO₂). Place a **lamp** at a measured distance, e.g. 10 cm, and leave it for a few minutes to adjust. **Count the bubbles of oxygen** in one minute, or collect the gas in a measuring cylinder. Repeat with the lamp at 20, 30, 40 and 50 cm. Keep the **temperature** the same using a water bath or heat shield, use the **same piece of pondweed**, and the same concentration of sodium hydrogencarbonate. Repeat each distance three times and calculate a mean. The closer the lamp, the more bubbles.');
+six('bsc6d','Chemistry Paper 1','Describe how to make pure, dry crystals of copper sulfate from copper oxide and dilute sulfuric acid.',['Warm the acid','Add copper oxide until in excess','Filter','Evaporate and crystallise','Dry'],['Added copper oxide until no more dissolves (excess)','Filtered off the excess','Heated to evaporate some water, not to dryness','Left to crystallise','Dried with filter paper'],'Pour dilute **sulfuric acid** into a beaker and **warm** it gently. Add **copper oxide** a spatula at a time, stirring, until no more dissolves; it is now **in excess**, so all the acid has reacted. **Filter** the mixture to remove the excess copper oxide. Pour the blue solution into an evaporating basin and **heat** it gently to evaporate some of the water (don\'t boil it dry). Leave it in a warm place to **crystallise**. Remove the crystals and **pat them dry** with filter paper.');
+six('bsc6e','Chemistry Paper 2','Explain how crude oil is separated into useful fractions.',['Heating','Fractionating column temperature gradient','Condensing at different heights','Link to chain length and boiling point','Names of fractions'],['Crude oil is heated and evaporates','The column is hot at the bottom and cooler at the top','Fractions condense at different heights depending on boiling point','Longer chains → higher boiling point, collected lower down','Named some fractions'],'Crude oil is a mixture of **hydrocarbons**. It is **heated** so that most of it **evaporates**, and the vapour enters a **fractionating column**, which is **hot at the bottom and cooler at the top**. As the vapours rise, they cool, and each fraction **condenses** when it reaches a height that is below its **boiling point**. **Long-chain** hydrocarbons have **high boiling points**, so they condense near the bottom (fuel oil, bitumen). **Short-chain** hydrocarbons have low boiling points and rise higher (petrol, gases). The fractions are collected separately.');
+six('bsc6f','Chemistry Paper 2','Explain, using collision theory, how temperature and concentration affect the rate of a reaction.',['Particles must collide with enough energy','Temperature: speed and energy','Concentration: more particles','More successful collisions per second'],['Collisions need at least the activation energy','Higher temperature: faster particles, more frequent collisions','Higher temperature: more collisions have enough energy','Higher concentration: more particles in the same volume','Said "more frequent successful collisions"'],'Particles must **collide** with at least the **activation energy** to react. At a **higher temperature**, particles have more energy and **move faster**, so they collide **more often**, and a **greater proportion** of collisions have enough energy. At a **higher concentration**, there are **more particles in the same volume**, so collisions happen more often. In both cases there are **more successful collisions per second**, so the rate increases.');
+six('bsc6g','Physics Paper 1','Describe an experiment to investigate how the force on a trolley affects its acceleration.',['Equipment set-up','Changing the force','Measuring acceleration','Controls','Results'],['Trolley on a runway pulled by a hanging mass over a pulley','Changed the force by moving masses from trolley to hanger','Used light gates (or a stopwatch and distance)','Kept the total mass constant','Plotted force against acceleration'],'Set up a **trolley** on a flat runway with a string over a **pulley** at the end, attached to a **hanging mass**. The weight of the hanging mass is the **force**. Use **light gates** connected to a data logger to measure the **acceleration**. To change the force, **move masses** from the trolley to the hanger, so the **total mass stays the same**. Repeat for several forces and repeat each one three times to find a mean. Plot a graph of acceleration against force; it should be a straight line, showing that acceleration is **proportional** to force (F = m × a).');
+six('bsc6h','Physics Paper 2','Describe how to find the specific heat capacity of water in the lab.',['Measure mass','Heat with an electric heater','Measure energy supplied','Measure temperature rise','Calculate c and reduce errors'],['Measured the mass of water on a balance','Used a heater and a joulemeter (or E = I × V × t)','Measured the start and end temperature with a thermometer','Used c = ΔQ ÷ (m × Δθ)','Insulated the beaker to reduce heat loss'],'Measure the **mass** of an empty beaker, add water and measure again to find the mass of water. Record the **starting temperature** with a thermometer. Put an **electric heater** in the water, connected to a **joulemeter** (or an ammeter and voltmeter, so E = I × V × t). Switch on for a set time, e.g. 10 minutes, stirring, then record the **final temperature** and the **energy supplied**. Calculate **c = ΔQ ÷ (m × Δθ)**. **Insulate** the beaker and use a lid to reduce energy losses, otherwise the value of c will be too high.');
+
+const MP=b=>D.bounties.push(Object.assign({s:'sci',type:'mpaper'},b));
+MP({id:'bsc1',paper:'Physics calculations',marks:24,mins:25,q:'Physics calculation practice for both physics papers. Calculator allowed. Use the equation sheet method: equation, convert, substitute, answer with unit.',
+ items:[{gen:'s_speed',marks:2},{gen:'s_accel',marks:2},{gen:'s_fma',marks:2},{gen:'s_ke',marks:3},{gen:'s_gpe',marks:2},{gen:'s_wave',marks:2},{gen:'s_ohm',marks:2},{gen:'s_epower',marks:2},{gen:'s_density',marks:3},{gen:'s_shc',marks:2},{gen:'s_halflife',marks:2}]});
+MP({id:'bsc2',paper:'Chemistry calculations',marks:16,mins:18,q:'Chemistry calculations from both chemistry papers. Calculator allowed.',
+ items:[{gen:'c_atom',marks:3},{gen:'c_shells',marks:1},{gen:'c_rfm',marks:2},{gen:'c_pct',marks:3},{gen:'c_rf',marks:2},{gen:'c_rate',marks:2},{gen:'c_conc',marks:3}]});
+MP({id:'bsc3',paper:'Biology maths',marks:15,mins:18,q:'The maths skills that come up on the biology papers. Calculator allowed.',
+ items:[{gen:'b_mag',marks:3},{gen:'b_bmi',marks:2},{gen:'b_osmosis',marks:3},{gen:'b_quadrat',marks:3},{gen:'b_cardiac',marks:2},{gen:'b_cross',marks:2}]});
+MP({id:'bsc4',paper:'Biology · Outbreak at the Camp',marks:15,mins:15,story:'A fever is spreading through the survivors\' camp. The medic needs your help to work out what it is, how fast it is spreading, and how to stop it. Calculator allowed.',
+ q:'**Outbreak at the Camp.** Use your biology to stop the outbreak in seven days.',
+ items:[{gen:'ob_pathogen',marks:1,label:'Day 1 · What is it?'},{gen:'ob_barrier',marks:1,label:'Day 2 · First line of defence'},{gen:'ob_double',marks:2,label:'Day 3 · How fast is it spreading?'},{gen:'b_mag',marks:3,th:'surv',label:'Day 4 · Under the microscope'},{gen:'ob_antibiotic',marks:2,label:'Day 5 · The medicine cabinet'},{gen:'ob_vaccine',marks:2,label:'Day 6 · The vaccine'},{gen:'ob_pct',marks:2,label:'Day 7 · Counting the sick'},{gen:'b_cross',marks:2,label:'Day 7 · The newborn'}]});
+MP({id:'bsc5',paper:'Physics · The Iron Horse',marks:20,mins:20,story:'1899. The railroad is pushing west, and you\'re the engineer. Every stage of the line throws up a physics problem. Calculator allowed. g = 10 N/kg.',
+ q:'**The Iron Horse.** Get the train across the frontier, one stage at a time.',
+ items:[{gen:'s_speed',marks:2,th:'west',label:'Stage 1 · Riding out to the line'},{gen:'s_accel',marks:2,th:'west',label:'Stage 2 · Leaving the station'},{gen:'s_ke',marks:3,th:'west',label:'Stage 3 · The horses'},{gen:'s_gpe',marks:2,th:'west',label:'Stage 4 · Up the mesa'},{gen:'s_work',marks:2,th:'west',label:'Stage 5 · Hauling supplies'},{gen:'s_power',marks:3,th:'west',label:'Stage 6 · The steam engine'},{gen:'s_eff',marks:3,th:'west',label:'Stage 7 · Wasted steam'},{gen:'s_fma',marks:3,label:'Stage 8 · Pulling the freight'}]});
+})();
 </script>
 <script>(function(){
 'use strict';
 const C = window.CAMP, PH = window.LOUIE;
-const SUBJ = {geo:{name:'Geography',board:'Edexcel B'},lit:{name:'English Literature',board:'AQA'},lang:{name:'English Language',board:'AQA'},maths:{name:'Maths',board:'Edexcel Foundation'},span:{name:'Spanish',board:'AQA Higher'},mine:{name:'My cards',board:''}};
+const SUBJ = {geo:{name:'Geography',board:'Edexcel B'},lit:{name:'English Literature',board:'AQA'},lang:{name:'English Language',board:'AQA'},maths:{name:'Maths',board:'Edexcel Foundation'},sci:{name:'Combined Science',board:'Edexcel Foundation'},span:{name:'Spanish',board:'AQA Higher'},mine:{name:'My cards',board:''}};
 const INTERVALS=[0,1,2,4,8,16,32];
 const THRESH=[0,8,20,35,55,80,110,145,185,230];
 const LKEY='louiesCamp.v1';
@@ -1905,7 +2345,7 @@ function vCamp(){
   const all=allCards(),c=counts(all),ph=latestPhoto(),nu=nextUnlock(),un=unlocked();
   const mins=Math.max(1,Math.round(Math.min(c.due||runSize,runSize)*0.5));
   const sure=calPct('sure');
-  const subjRows=['geo','lit','lang','span','maths'].map(s=>{const cs=counts(all.filter(x=>subjOf(x)===s));const pct=cs.total?Math.round(100*cs.sec/cs.total):0;
+  const subjRows=['geo','lit','lang','span','maths','sci'].map(s=>{const cs=counts(all.filter(x=>subjOf(x)===s));const pct=cs.total?Math.round(100*cs.sec/cs.total):0;
     return `<div class="prog s-${s}"><span class="subj s-${s}">${SUBJ[s].name}</span><span class="mono small muted">${cs.sec}/${cs.total} secured</span><div class="bar" style="--c:var(--${s})"><i style="width:${pct}%"></i></div></div>`}).join('');
   const bq=suggestBounty();
   const it=S.ifthen&&S.ifthen.when&&S.ifthen.act?`<div class="card"><div class="eyebrow">My plan</div><p class="ifthen" style="margin-top:6px">When ${esc(S.ifthen.when)}, I will ${esc(S.ifthen.act)}.</p></div>`:'';
@@ -1943,7 +2383,7 @@ function vCamp(){
 }
 function suggestBounty(){
   const last=b=>{const a=(S.bounties[b.id]||{}).attempts||[];return a.length?a[a.length-1].k:0};
-  const bySubj={};['geo','lit','lang','span','maths'].forEach(s=>{bySubj[s]=Math.max(0,...C.bounties.filter(b=>b.s===s).map(last))});
+  const bySubj={};['geo','lit','lang','span','maths','sci'].forEach(s=>{bySubj[s]=Math.max(0,...C.bounties.filter(b=>b.s===s).map(last))});
   const s=Object.entries(bySubj).sort((a,b)=>a[1]-b[1])[0][0];
   return C.bounties.filter(b=>b.s===s).sort((a,b)=>last(a)-last(b))[0];
 }
@@ -1967,7 +2407,7 @@ function vRun(){
     <div class="runbar"><button class="back" id="quit" aria-label="End run">✕ End</button><div class="bar"><i style="width:${pct}%"></i></div><span class="mono small muted">${run.i+1}/${run.q.length}</span></div>
     <div class="flash rise s-${s}" style="--c:var(--${s==='mine'?'ember':s})">
       <div class="row" style="justify-content:space-between"><span class="subj s-${s}">${esc(card.t==='g'?GENS()[card.gen].name:dk.name)}</span>${card.t==='g'?`<span class="mbadges"><span class="mb">Grade ${card.grade}</span><span class="mb ${card.calc?'calc':'nocalc'}">${card.calc?'Calculator':'No calculator'}</span></span>`:''}${item.isNew?'<span class="newtag">New</span>':item.retry?'<span class="newtag">Again</span>':''}</div>
-      <div class="prompt fmt ${card.t==='v'&&card.al==='en'?'es-big':''}">${md(gq?gq.q:card.q)}</div>
+      <div class="prompt fmt ${card.t==='v'&&card.al==='en'&&card.say?'es-big':''}">${md(gq?gq.q:card.q)}</div>
       ${card.say?playBtns(card.say):''}
       <div id="zone" class="stack"></div>
     </div>
@@ -2003,7 +2443,7 @@ function gradeRow(sug){const L=[['0','g0','Not yet'],['1','g1','Partly'],['2','g
 function typedZone(zone,card,item){
   const toEs=card.al==='es';
   if(run.stage==='ask'){
-    zone.innerHTML=`<label class="lab" for="typed">${toEs?'Type the Spanish':'Type the English meaning'}</label><input type="text" id="typed" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="${toEs?'es':'en'}" value="${esc(run.typed)}">${toEs?accentBar('typed'):''}${confBtns}`;
+    zone.innerHTML=`<label class="lab" for="typed">${card.lab||(toEs?'Type the Spanish':'Type the English meaning')}</label><input type="text" id="typed" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="${toEs?'es':'en'}" value="${esc(run.typed)}">${toEs?accentBar('typed'):''}${confBtns}`;
     const inp=zone.querySelector('#typed');inp.addEventListener('input',e=>run.typed=e.target.value);
     on(zone,'[data-c]','click',e=>{run.conf=e.currentTarget.dataset.c;run.stage='reveal';run.chk=checkTyped(run.typed,card.ans,card.al);render()});
   }else{
@@ -2089,7 +2529,8 @@ function checkField(fd,raw){
     const tol=(fd.tol||1e-9)+1e-9*Math.abs(fd.ans);if(Math.abs(x-fd.ans)<=tol)return {g:2};
     if((fd.tol||0)>=0.01&&Math.abs(x-fd.ans)<=Math.max(fd.tol*20,Math.abs(fd.ans)*0.003))return {g:1,msg:'Very close. Check your rounding.'};
     return {g:0}}
-  if(fd.type==='frac'){const target=fd.n/fd.d;const m=v.replace(/[−–]/g,'-').match(/^(-?)(?:(\d+)\s+)?(\d+)\s*\/\s*(\d+)$/);
+  if(fd.type==='text'){const nz=x=>String(x).toLowerCase().trim().replace(/[\s,]+/g,'.');return fd.ans.some(a=>nz(a)===nz(v))?{g:2}:{g:0}}
+  if(fd.type==='frac'){const target=fd.n/fd.d;if(fd.form==='any'&&/%\s*$/.test(v)){const x=parseNum(v.replace('%',''));return !isNaN(x)&&Math.abs(x/100-target)<1e-6?{g:2}:{g:0}}const m=v.replace(/[−–]/g,'-').match(/^(-?)(?:(\d+)\s+)?(\d+)\s*\/\s*(\d+)$/);
     if(m){const whole=+(m[2]||0),a=+m[3],b=+m[4];const val=(whole+a/b)*(m[1]?-1:1);if(Math.abs(val-target)>1e-9)return {g:0};
       if(fd.form==='any'||gcdI(a,b)===1)return {g:2};return {g:1,msg:'Right value, but it isn\'t in its simplest form.'}}
     const x=parseNum(v);if(!isNaN(x)&&Math.abs(x-target)<1e-6)return fd.form==='any'?{g:2}:{g:1,msg:'Right value, but the question asks for a fraction.'};return {g:0}}
@@ -2124,7 +2565,7 @@ function fieldHTML(fd,i,val,prefix,done,res){
   return `<div class="mfield"><label for="${id}">${esc(fd.label||'Answer')}</label><span class="minput">${fd.pre&&fd.unit?`<span class="unit">${esc(fd.unit)}</span>`:''}<input type="text" id="${id}" data-mf="${i}" data-keys="${keys}" value="${esc(val||'')}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="${keys==='n'?'decimal':'text'}" ${done?'readonly':''}>${!fd.pre&&fd.unit?`<span class="unit">${esc(fd.unit)}</span>`:''}</span>${mark}</div>`}
 function ansText(fd){if(fd.type==='choice')return fd.opts[fd.ans];if(fd.type==='frac')return fd.form==='any'?`${fd.n}/${fd.d}`:(()=>{const g=gcdI(fd.n,fd.d);const n=fd.n/g,d=fd.d/g;return d===1?String(n):`${n}/${d}`})();
   if(fd.type==='expr')return prettyExpr(fd.ans);if(fd.type==='ratio')return fd.ans.join(' : ');if(fd.type==='sf'){const e=Math.floor(Math.log10(Math.abs(fd.ans))+1e-9);const a=Math.round(fd.ans/Math.pow(10,e)*1e9)/1e9;return `${a} × 10^${e}`}
-  if(fd.type==='pf')return 'see working';if(fd.type==='ineq')return `x ${fd.op} ${fd.v}`;const n=Math.round(fd.ans*1e9)/1e9;return (fd.pre&&fd.unit?fd.unit:'')+n+(!fd.pre&&fd.unit?' '+fd.unit:'')}
+  if(fd.type==='pf')return 'see working';if(fd.type==='text')return fd.ans[0];if(fd.type==='ineq')return `x ${fd.op} ${fd.v}`;const n=Math.round(fd.ans*1e9)/1e9;return (fd.pre&&fd.unit?fd.unit:'')+n+(!fd.pre&&fd.unit?' '+fd.unit:'')}
 function prettyExpr(a){let s=String(a).replace(/\s+/g,'').replace(/\*/g,'').replace(/\+-/g,'-').replace(/--/g,'+');
   s=s.replace(/(^|[^\d.])1(?=[a-z(])/g,'$1').replace(/([+-])0[a-z](\^\d)?(?=[+-]|$)/g,'').replace(/\+0(?=$|\))/g,'');
   s=s.replace(/([^\s(^])([+-])/g,'$1 $2 ').replace(/-/g,'−').replace(/\^2/g,'²').replace(/\^3/g,'³');return s}
@@ -2226,7 +2667,7 @@ function runEnd(){
 /* ---------- PACKS ---------- */
 function vPacks(){
   const all=allCards();
-  const groups=['maths','geo','lit','lang','span'].map(s=>{
+  const groups=['maths','sci','geo','lit','lang','span'].map(s=>{
     const decks=C.decks.filter(d=>d.s===s);
     return `<section class="stack"><div class="row" style="justify-content:space-between"><h2 class="h2">${SUBJ[s].name}</h2><span class="note">${SUBJ[s].board}</span></div>
     <div class="list">${decks.map(d=>{const cs=counts(all.filter(c=>c.d===d.id));const pct=Math.round(100*cs.sec/Math.max(1,cs.total));
@@ -2240,7 +2681,7 @@ function vPacks(){
         <p class="note">Add your own: quotes from <i>An Inspector Calls</i> or the modern poems, your class case studies, things you keep forgetting. They join your runs automatically.</p>
         <div><label class="lab" for="mq">Question side</label><input type="text" id="mq" placeholder="e.g. Inspector, Act 3: key quote about responsibility"></div>
         <div><label class="lab" for="ma">Answer side</label><textarea id="ma" rows="3" placeholder="Copy it exactly from your book, plus why it matters"></textarea></div>
-        <div><label class="lab" for="ms">Subject</label><select id="ms" class="chip" style="padding:8px 12px"><option value="lit">English Literature</option><option value="lang">English Language</option><option value="geo">Geography</option><option value="span">Spanish</option><option value="maths">Maths</option></select></div>
+        <div><label class="lab" for="ms">Subject</label><select id="ms" class="chip" style="padding:8px 12px"><option value="lit">English Literature</option><option value="lang">English Language</option><option value="geo">Geography</option><option value="span">Spanish</option><option value="maths">Maths</option><option value="sci">Science</option></select></div>
         <button class="btn primary" id="madd">Add card</button>
       </div>
       <div class="list">${mine||'<p class="note">No cards of your own yet.</p>'}</div>
@@ -2261,7 +2702,7 @@ function vBounties(){
   const list=C.bounties.filter(b=>bountyFilter==='all'||b.s===bountyFilter);
   const node=el(`<div class="stack">
     <div><div class="eyebrow">Bounty board</div><h1 class="h-display">Exam questions</h1><p class="muted small" style="margin-top:6px">Written in the style of each exam board, with mark schemes in plain English. Time yourself, plan, write, then mark it honestly against the checklist.</p></div>
-    <div class="row" role="group" aria-label="Filter">${[['all','All'],['geo','Geography'],['lit','Literature'],['lang','Language'],['span','Spanish'],['maths','Maths']].map(([k,l])=>`<button class="chip" data-f="${k}" aria-pressed="${bountyFilter===k}">${l}</button>`).join('')}</div>
+    <div class="row" role="group" aria-label="Filter">${[['all','All'],['geo','Geography'],['lit','Literature'],['lang','Language'],['span','Spanish'],['maths','Maths'],['sci','Science']].map(([k,l])=>`<button class="chip" data-f="${k}" aria-pressed="${bountyFilter===k}">${l}</button>`).join('')}</div>
     <div class="list">${list.map(b=>{const la=lastAttempt(b.id);const n=((S.bounties[b.id]||{}).attempts||[]).length;
       return `<button class="item" data-b="${b.id}"><div class="row" style="justify-content:space-between"><span class="subj s-${b.s}">${esc(b.paper)}</span><span class="marks">${b.marks} marks</span></div><div class="t">${esc(plain(b.q.split('\n')[0]).slice(0,150))}</div><div class="meta"><span>${b.mins} min</span>${n?`<span>· ${n} attempt${n>1?'s':''} · last: ${esc(la.lv||la.sc||'')}</span>`:'<span>· not tried yet</span>'}</div></button>`}).join('')}</div>
     <div class="card stack"><div class="eyebrow">Real past papers</div><p class="small">Past papers and mark schemes are published by the exam boards. Do one full paper under timed conditions every few weeks from January.</p>
@@ -2467,6 +2908,14 @@ function vGuide(){
       <p><b>Hints</b> are there if you're stuck. Using one is fine, but the card comes back sooner so you can try it without help.</p>
       <p><b>Grade 5 at Foundation</b> needs roughly three-quarters of the marks (175 out of 240 in June 2025). Easier topics are worth securing first, so new cards start at grade 1–2 and build up.</p>
       <p>The keys under each answer box give you −, fractions, x, powers and brackets.</p>
+    </div>
+    <h2 class="h2" id="science">Combined Science</h2>
+    <div class="card small stack">
+      <p><b>Six papers, 1 hour 10 minutes each.</b> Two each for biology, chemistry and physics. Grade 5-5 at Foundation needed about 60% of the marks in June 2025 (215 out of 360).</p>
+      <p><b>You get an equation sheet in the exam.</b> You don't need to memorise the physics equations, but you do need to pick the right one quickly, rearrange it and convert units. The calculation cards train exactly that. Edexcel uses g = 10 N/kg.</p>
+      <p><b>Calculations:</b> write the equation, convert units, substitute, then give the answer WITH a unit. Each step can earn a mark.</p>
+      <p><b>6-mark questions</b> (in Bounties) are marked by level. Plan the key points first, then write them in a logical order using scientific words.</p>
+      <p><b>Core practicals</b> appear on every paper. Know the method, the variables, and one way to improve accuracy.</p>
     </div>
     <h2 class="h2" id="spanish">Spanish</h2>
     <div class="card small stack">
